@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说阅读 - Arseeya</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        h1 { color: #e94560; text-align: center; }
+        .book-list { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+        .book-card {
+            background: #16213e;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        .book-card:hover { background: #1e2a4a; }
+        .back-btn {
+            background: #333;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        .chapter-item {
+            background: #0f0f1a;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .content-view {
+            background: #16213e;
+            padding: 2rem;
+            border-radius: 1rem;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        const BOOKS = [
+            { name: "听潮事记", folder: "听潮事记" },
+            { name: "听潮事记番外集", folder: "听潮事记番外集" }
+        ];
+        
+        let state = { view: "books", book: null, bookFolder: null, chapters: [], content: "", chapterName: "" };
+        
+        async function fetchFile(path) {
+            const res = await fetch(`https://raw.githubusercontent.com/Arseeya/arseeya.github.io/main/${path}`);
+            return res.text();
+        }
+        
+        async function fetchChapters(folder) {
+            const api = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents/novels/${encodeURIComponent(folder)}`;
+            const res = await fetch(api);
+            if (!res.ok) return [];
+            const files = await res.json();
+            return files.filter(f => f.name.endsWith('.txt')).sort((a,b) => a.name.localeCompare(b.name));
+        }
+        
+        async function render() {
+            const app = document.getElementById("app");
+            if (state.view === "books") {
+                app.innerHTML = `
+                    <h1>📚 Arseeya 的小说屋</h1>
+                    <div class="book-list">
+                        ${BOOKS.map(book => `
+                            <div class="book-card" onclick="selectBook('${book.folder}', '${book.name}')">
+                                <strong>${book.name}</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (state.view === "chapters") {
+                app.innerHTML = `
+                    <div class="back-btn" onclick="goBack()">← 返回</div>
+                    <h1>📖 ${state.book}</h1>
+                    <div id="chapterList">加载中...</div>
+                `;
+                const chapters = await fetchChapters(state.bookFolder);
+                state.chapters = chapters;
+                const listDiv = document.getElementById("chapterList");
+                if (!listDiv) return;
+                if (chapters.length === 0) {
+                    listDiv.innerHTML = '<div>暂无章节~</div>';
+                } else {
+                    listDiv.innerHTML = chapters.map(ch => `
+                        <div class="chapter-item" onclick="readChapter('${ch.path}')">
+                            ${ch.name.replace('.txt', '')}
+                        </div>
+                    `).join('');
+                }
+            } else if (state.view === "content") {
+                app.innerHTML = `
+                    <div class="back-btn" onclick="goBack()">← 目录</div>
+                    <div class="content-view">
+                        <h2>${state.chapterName}</h2>
+                        <div>${state.content.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        window.selectBook = async function(folder, name) {
+            state.bookFolder = folder;
+            state.book = name;
+            state.view = "chapters";
+            render();
+        };
+        
+        window.readChapter = async function(path) {
+            try {
+                const text = await fetchFile(path);
+                const lines = text.split('\n');
+                const title = lines[0].trim() || "无标题";
+                const content = lines.slice(1).join('\n').trim() || "暂无内容";
+                state.chapterName = title;
+                state.content = content;
+                state.view = "content";
+                render();
+            } catch(e) {
+                state.chapterName = "加载失败";
+                state.content = "无法读取章节内容";
+                state.view = "content";
+                render();
+            }
+        };
+        
+        window.goBack = function() {
+            if (state.view === "chapters") {
+                state.view = "books";
+                render();
+            } else if (state.view === "content") {
+                state.view = "chapters";
+                render();
+            }
+        };
+        
+        render();
+    </script>
+</body>
+</html>
