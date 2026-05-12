@@ -1,11 +1,11 @@
 {
   "apps": [
     {
-      "name": "Arseeya 助手",
-      "version": "1.0.0",
-      "size": "12.5 MB",
-      "description": "OC 潮汐记录配套工具",
-      "filename": "your-app.apk"
+      "name": "公文助手",
+      "version": "1.1.9",
+      "size": "5.73 MB",
+      "description": "仿真公文生成工具",
+      "filename": "com.arseeya.Government"
     }
   ],
   "music_enabled": false
