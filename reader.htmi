@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>阅读器 · Arseeya</title>
+    <title>阅读 · Arseeya</title>
     <style>
         * {
             margin: 0;
@@ -21,28 +21,28 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        .btn-back, .btn-home {
+        .back-home {
+            display: inline-block;
             background: #333;
-            border: none;
             color: white;
             padding: 0.5rem 1.2rem;
             border-radius: 2rem;
-            cursor: pointer;
-            margin-right: 0.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            font-size: 0.9rem;
             text-decoration: none;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
-        .book-card, .chapter-item {
+        .chapter-list {
+            margin-top: 1rem;
+        }
+        .chapter-item {
             background: rgba(255,255,255,0.05);
-            border-radius: 1.2rem;
-            padding: 1.2rem;
+            border-radius: 1rem;
+            padding: 1rem;
             margin-bottom: 0.8rem;
             cursor: pointer;
             transition: 0.2s;
         }
-        .book-card:hover, .chapter-item:hover {
+        .chapter-item:hover {
             background: rgba(255,255,255,0.12);
         }
         .content-view {
@@ -55,7 +55,7 @@
             display: flex;
             gap: 0.8rem;
             justify-content: flex-end;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
         .font-controls button {
             background: #e94560;
@@ -65,177 +65,173 @@
             border-radius: 2rem;
             cursor: pointer;
         }
-        @media (min-width: 768px) {
-            body {
-                padding: 2rem;
-            }
-        }
-        .nav-bottom {
+        .nav-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
+        }
+        .nav-btn {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .back-chapter {
+            background: #333;
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
 <div class="container" id="app">
+    <a href="index.html" class="back-home">← 返回首页</a>
     <div id="dynamicView">加载中...</div>
 </div>
 
 <script>
-    const state = {
-        view: 'books', // books, chapters, content
-        books: [],
-        currentBook: null,
-        currentBookFolder: '',
-        chapters: [],
-        currentChapterIndex: -1,
-        chapterTitle: '',
-        content: '',
-        fontSize: 18
-    };
-
     let catalogData = null;
+    let currentBook = null;
+    let currentChapters = [];
+    let currentChapterIndex = -1;
+    let currentContent = '';
+    let currentTitle = '';
+    let fontSize = 18;
 
     async function loadCatalog() {
         const res = await fetch('catalog.json');
         const data = await res.json();
-        state.books = data.books;
+        catalogData = data;
         return data;
     }
 
-    function saveProgress(bookId, chapterIdx) {
-        localStorage.setItem('reading_progress', JSON.stringify({ bookId, chapterIdx }));
+    function getBookFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('book');
     }
 
-    function loadProgress() {
+    function saveProgress(bookName, chapterIdx) {
+        localStorage.setItem('arseeya_reading', JSON.stringify({ book: bookName, idx: chapterIdx }));
+    }
+
+    function loadProgress(bookName) {
         try {
-            return JSON.parse(localStorage.getItem('reading_progress'));
-        } catch(e) { return null; }
+            const saved = JSON.parse(localStorage.getItem('arseeya_reading'));
+            if(saved && saved.book === bookName && typeof saved.idx === 'number') return saved.idx;
+        } catch(e) {}
+        return -1;
     }
 
-    async function render() {
-        const appDiv = document.getElementById('app');
-        if(state.view === 'books') {
-            let html = `<div><a href="index.html" class="btn-home">← 返回首页</a></div>`;
-            html += `<h1>📚 选择书籍</h1>`;
-            for(const book of state.books) {
-                html += `<div class="book-card" data-book='${JSON.stringify(book)}'>📖 <strong>${book.name}</strong><br><span style="font-size:0.8rem;">${book.chapters.length} 章</span></div>`;
-            }
-            appDiv.innerHTML = html;
-            document.querySelectorAll('.book-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const book = JSON.parse(card.getAttribute('data-book'));
-                    state.currentBook = book.name;
-                    state.currentBookFolder = book.folder;
-                    state.chapters = book.chapters;
-                    state.view = 'chapters';
-                    render();
-                });
-            });
-        }
-        else if(state.view === 'chapters') {
-            let html = `<div><button class="btn-back" id="backBooks">← 返回书架</button> <a href="index.html" class="btn-home">首页</a></div>`;
-            html += `<h1>📖 ${state.currentBook}</h1>`;
-            for(let i=0; i<state.chapters.length; i++) {
-                html += `<div class="chapter-item" data-idx="${i}">📄 ${state.chapters[i]}</div>`;
-            }
-            appDiv.innerHTML = html;
-            document.getElementById('backBooks')?.addEventListener('click', () => {
-                state.view = 'books';
-                render();
-            });
-            document.querySelectorAll('.chapter-item').forEach(el => {
-                el.addEventListener('click', async () => {
-                    const idx = parseInt(el.getAttribute('data-idx'));
-                    await loadChapterContent(idx);
-                });
-            });
-            // 自动跳转上次进度
-            const prog = loadProgress();
-            if(prog && prog.bookId === state.currentBook && prog.chapterIdx >=0 && prog.chapterIdx < state.chapters.length) {
-                if(confirm('是否继续上次阅读进度？')) {
-                    loadChapterContent(prog.chapterIdx);
-                }
-            }
-        }
-        else if(state.view === 'content') {
-            let html = `<div><button class="btn-back" id="backChapters">← 目录</button> <div class="font-controls"><button id="fontMinus">A-</button><button id="fontPlus">A+</button></div></div>`;
-            html += `<div class="content-view" id="contentView" style="font-size:${state.fontSize}px"><h2>${escapeHtml(state.chapterTitle)}</h2><div>${state.content.replace(/\n/g, '<br>')}</div></div>`;
-            html += `<div class="nav-bottom"><button id="prevChapter" class="btn-back">上一章</button><button id="nextChapter" class="btn-back">下一章</button></div>`;
-            appDiv.innerHTML = html;
-            document.getElementById('backChapters')?.addEventListener('click', () => {
-                state.view = 'chapters';
-                render();
-            });
-            document.getElementById('fontMinus')?.addEventListener('click', () => {
-                state.fontSize = Math.max(14, state.fontSize - 2);
-                document.getElementById('contentView').style.fontSize = state.fontSize + 'px';
-            });
-            document.getElementById('fontPlus')?.addEventListener('click', () => {
-                state.fontSize = Math.min(28, state.fontSize + 2);
-                document.getElementById('contentView').style.fontSize = state.fontSize + 'px';
-            });
-            document.getElementById('prevChapter')?.addEventListener('click', () => {
-                if(state.currentChapterIndex > 0) loadChapterContent(state.currentChapterIndex-1);
-            });
-            document.getElementById('nextChapter')?.addEventListener('click', () => {
-                if(state.currentChapterIndex < state.chapters.length-1) loadChapterContent(state.currentChapterIndex+1);
-            });
-        }
-    }
-
-    async function loadChapterContent(idx) {
-        const chapterName = state.chapters[idx];
-        const folder = state.currentBookFolder;
-        const url = `novels/${encodeURIComponent(folder)}/${encodeURIComponent(chapterName)}.txt`;
+    async function loadChapterContent(bookFolder, chapterName, idx) {
+        const url = `novels/${encodeURIComponent(bookFolder)}/${encodeURIComponent(chapterName)}.txt`;
         try {
             const res = await fetch(url);
             if(!res.ok) throw new Error();
             const text = await res.text();
             const lines = text.split('\n');
             const title = lines[0].trim() || chapterName;
-            let content = lines.slice(1).join('\n').trim() || '暂无正文内容';
-            content = escapeHtml(content);
-            state.chapterTitle = title;
-            state.content = content;
-            state.currentChapterIndex = idx;
-            state.view = 'content';
-            saveProgress(state.currentBook, idx);
-            render();
+            const content = lines.slice(1).join('\n').trim() || '暂无正文内容';
+            currentTitle = title;
+            currentContent = content.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            }).replace(/\n/g, '<br>');
+            currentChapterIndex = idx;
+            saveProgress(currentBook.name, idx);
+            renderContent();
         } catch(e) {
-            state.chapterTitle = '加载失败';
-            state.content = '无法读取章节内容，请检查文件路径或网络。';
-            state.view = 'content';
-            render();
+            currentTitle = '加载失败';
+            currentContent = '无法读取章节内容，请确认文件存在。';
+            renderContent();
         }
     }
 
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
+    function renderContent() {
+        const viewDiv = document.getElementById('dynamicView');
+        viewDiv.innerHTML = `
+            <div>
+                <button class="back-chapter" id="backToListBtn">← 章节列表</button>
+                <div class="font-controls">
+                    <button id="fontMinus">A-</button>
+                    <button id="fontPlus">A+</button>
+                </div>
+            </div>
+            <div class="content-view" id="contentView" style="font-size:${fontSize}px">
+                <h2>${currentTitle}</h2>
+                <div>${currentContent}</div>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">上一章</button>
+                <button class="nav-btn" id="nextBtn">下一章</button>
+            </div>
+        `;
+
+        document.getElementById('backToListBtn').addEventListener('click', () => renderChapterList());
+        document.getElementById('fontMinus').addEventListener('click', () => {
+            fontSize = Math.max(14, fontSize - 2);
+            document.getElementById('contentView').style.fontSize = fontSize + 'px';
+        });
+        document.getElementById('fontPlus').addEventListener('click', () => {
+            fontSize = Math.min(28, fontSize + 2);
+            document.getElementById('contentView').style.fontSize = fontSize + 'px';
+        });
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if(currentChapterIndex > 0) loadChapterContent(currentBook.folder, currentChapters[currentChapterIndex-1], currentChapterIndex-1);
+        });
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if(currentChapterIndex < currentChapters.length-1) loadChapterContent(currentBook.folder, currentChapters[currentChapterIndex+1], currentChapterIndex+1);
+        });
+    }
+
+    function renderChapterList() {
+        const viewDiv = document.getElementById('dynamicView');
+        let html = `<h1>📖 ${currentBook.name}</h1><div class="chapter-list">`;
+        currentChapters.forEach((ch, i) => {
+            html += `<div class="chapter-item" data-idx="${i}">📄 ${ch}</div>`;
+        });
+        html += `</div>`;
+        viewDiv.innerHTML = html;
+        document.querySelectorAll('.chapter-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const idx = parseInt(el.getAttribute('data-idx'));
+                loadChapterContent(currentBook.folder, currentChapters[idx], idx);
+            });
         });
     }
 
     (async () => {
         await loadCatalog();
-        const urlParams = new URLSearchParams(window.location.search);
-        const bookParam = urlParams.get('book');
-        if(bookParam) {
-            const found = state.books.find(b => b.name === bookParam);
-            if(found) {
-                state.currentBook = found.name;
-                state.currentBookFolder = found.folder;
-                state.chapters = found.chapters;
-                state.view = 'chapters';
+        const bookName = getBookFromUrl();
+        if(!bookName) {
+            document.getElementById('dynamicView').innerHTML = '<p>未指定书籍，请返回首页选择。</p>';
+            return;
+        }
+        const book = catalogData.books.find(b => b.name === bookName);
+        if(!book) {
+            document.getElementById('dynamicView').innerHTML = '<p>书籍不存在。</p>';
+            return;
+        }
+        currentBook = book;
+        currentChapters = book.chapters;
+        const savedIdx = loadProgress(bookName);
+        if(savedIdx >= 0 && savedIdx < currentChapters.length) {
+            if(confirm('是否继续上次阅读进度？')) {
+                await loadChapterContent(book.folder, currentChapters[savedIdx], savedIdx);
+                return;
             }
         }
-        render();
+        renderChapterList();
     })();
 </script>
 </body>
