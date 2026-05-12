@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "Arseeya 助手",
+      "version": "1.0.0",
+      "size": "12.5 MB",
+      "description": "OC 潮汐记录配套工具",
+      "filename": "your-app.apk"
+    }
+  ],
+  "music_enabled": false
+}
