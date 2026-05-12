@@ -2,154 +2,241 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小说阅读 - Arseeya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>阅读器 · Arseeya</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: system-ui, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0c1f;
+            color: #e0e0e0;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
-            background: #1a1a2e;
-            color: #eee;
         }
-        h1 { color: #e94560; text-align: center; }
-        .book-list { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
-        .book-card {
-            background: #16213e;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            cursor: pointer;
-            flex: 1;
-            min-width: 150px;
-            text-align: center;
-        }
-        .book-card:hover { background: #1e2a4a; }
-        .back-btn {
+        .btn-back, .btn-home {
             background: #333;
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
             margin-bottom: 1rem;
-            cursor: pointer;
+            display: inline-block;
+            font-size: 0.9rem;
+            text-decoration: none;
         }
-        .chapter-item {
-            background: #0f0f1a;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0.5rem;
+        .book-card, .chapter-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            margin-bottom: 0.8rem;
             cursor: pointer;
+            transition: 0.2s;
+        }
+        .book-card:hover, .chapter-item:hover {
+            background: rgba(255,255,255,0.12);
         }
         .content-view {
-            background: #16213e;
-            padding: 2rem;
-            border-radius: 1rem;
+            background: rgba(0,0,0,0.3);
+            padding: 1.8rem;
+            border-radius: 1.5rem;
             line-height: 1.8;
+        }
+        .font-controls {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+        .font-controls button {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+        }
+        .nav-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <div id="app"></div>
-    <script>
-        const BOOKS = [
-            { name: "听潮事记", folder: "听潮事记" },
-            { name: "听潮事记番外集", folder: "听潮事记番外集" }
-        ];
-        
-        let state = { view: "books", book: null, bookFolder: null, chapters: [], content: "", chapterName: "" };
-        
-        async function fetchFile(path) {
-            const res = await fetch(`https://raw.githubusercontent.com/Arseeya/arseeya.github.io/main/${path}`);
-            return res.text();
+<div class="container" id="app">
+    <div id="dynamicView">加载中...</div>
+</div>
+
+<script>
+    const state = {
+        view: 'books', // books, chapters, content
+        books: [],
+        currentBook: null,
+        currentBookFolder: '',
+        chapters: [],
+        currentChapterIndex: -1,
+        chapterTitle: '',
+        content: '',
+        fontSize: 18
+    };
+
+    let catalogData = null;
+
+    async function loadCatalog() {
+        const res = await fetch('catalog.json');
+        const data = await res.json();
+        state.books = data.books;
+        return data;
+    }
+
+    function saveProgress(bookId, chapterIdx) {
+        localStorage.setItem('reading_progress', JSON.stringify({ bookId, chapterIdx }));
+    }
+
+    function loadProgress() {
+        try {
+            return JSON.parse(localStorage.getItem('reading_progress'));
+        } catch(e) { return null; }
+    }
+
+    async function render() {
+        const appDiv = document.getElementById('app');
+        if(state.view === 'books') {
+            let html = `<div><a href="index.html" class="btn-home">← 返回首页</a></div>`;
+            html += `<h1>📚 选择书籍</h1>`;
+            for(const book of state.books) {
+                html += `<div class="book-card" data-book='${JSON.stringify(book)}'>📖 <strong>${book.name}</strong><br><span style="font-size:0.8rem;">${book.chapters.length} 章</span></div>`;
+            }
+            appDiv.innerHTML = html;
+            document.querySelectorAll('.book-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const book = JSON.parse(card.getAttribute('data-book'));
+                    state.currentBook = book.name;
+                    state.currentBookFolder = book.folder;
+                    state.chapters = book.chapters;
+                    state.view = 'chapters';
+                    render();
+                });
+            });
         }
-        
-        async function fetchChapters(folder) {
-            const api = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents/novels/${encodeURIComponent(folder)}`;
-            const res = await fetch(api);
-            if (!res.ok) return [];
-            const files = await res.json();
-            return files.filter(f => f.name.endsWith('.txt')).sort((a,b) => a.name.localeCompare(b.name));
-        }
-        
-        async function render() {
-            const app = document.getElementById("app");
-            if (state.view === "books") {
-                app.innerHTML = `
-                    <h1>📚 Arseeya 的小说屋</h1>
-                    <div class="book-list">
-                        ${BOOKS.map(book => `
-                            <div class="book-card" onclick="selectBook('${book.folder}', '${book.name}')">
-                                <strong>${book.name}</strong>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (state.view === "chapters") {
-                app.innerHTML = `
-                    <div class="back-btn" onclick="goBack()">← 返回</div>
-                    <h1>📖 ${state.book}</h1>
-                    <div id="chapterList">加载中...</div>
-                `;
-                const chapters = await fetchChapters(state.bookFolder);
-                state.chapters = chapters;
-                const listDiv = document.getElementById("chapterList");
-                if (!listDiv) return;
-                if (chapters.length === 0) {
-                    listDiv.innerHTML = '<div>暂无章节~</div>';
-                } else {
-                    listDiv.innerHTML = chapters.map(ch => `
-                        <div class="chapter-item" onclick="readChapter('${ch.path}')">
-                            ${ch.name.replace('.txt', '')}
-                        </div>
-                    `).join('');
+        else if(state.view === 'chapters') {
+            let html = `<div><button class="btn-back" id="backBooks">← 返回书架</button> <a href="index.html" class="btn-home">首页</a></div>`;
+            html += `<h1>📖 ${state.currentBook}</h1>`;
+            for(let i=0; i<state.chapters.length; i++) {
+                html += `<div class="chapter-item" data-idx="${i}">📄 ${state.chapters[i]}</div>`;
+            }
+            appDiv.innerHTML = html;
+            document.getElementById('backBooks')?.addEventListener('click', () => {
+                state.view = 'books';
+                render();
+            });
+            document.querySelectorAll('.chapter-item').forEach(el => {
+                el.addEventListener('click', async () => {
+                    const idx = parseInt(el.getAttribute('data-idx'));
+                    await loadChapterContent(idx);
+                });
+            });
+            // 自动跳转上次进度
+            const prog = loadProgress();
+            if(prog && prog.bookId === state.currentBook && prog.chapterIdx >=0 && prog.chapterIdx < state.chapters.length) {
+                if(confirm('是否继续上次阅读进度？')) {
+                    loadChapterContent(prog.chapterIdx);
                 }
-            } else if (state.view === "content") {
-                app.innerHTML = `
-                    <div class="back-btn" onclick="goBack()">← 目录</div>
-                    <div class="content-view">
-                        <h2>${state.chapterName}</h2>
-                        <div>${state.content.replace(/\n/g, '<br>')}</div>
-                    </div>
-                `;
             }
         }
-        
-        window.selectBook = async function(folder, name) {
-            state.bookFolder = folder;
-            state.book = name;
-            state.view = "chapters";
+        else if(state.view === 'content') {
+            let html = `<div><button class="btn-back" id="backChapters">← 目录</button> <div class="font-controls"><button id="fontMinus">A-</button><button id="fontPlus">A+</button></div></div>`;
+            html += `<div class="content-view" id="contentView" style="font-size:${state.fontSize}px"><h2>${escapeHtml(state.chapterTitle)}</h2><div>${state.content.replace(/\n/g, '<br>')}</div></div>`;
+            html += `<div class="nav-bottom"><button id="prevChapter" class="btn-back">上一章</button><button id="nextChapter" class="btn-back">下一章</button></div>`;
+            appDiv.innerHTML = html;
+            document.getElementById('backChapters')?.addEventListener('click', () => {
+                state.view = 'chapters';
+                render();
+            });
+            document.getElementById('fontMinus')?.addEventListener('click', () => {
+                state.fontSize = Math.max(14, state.fontSize - 2);
+                document.getElementById('contentView').style.fontSize = state.fontSize + 'px';
+            });
+            document.getElementById('fontPlus')?.addEventListener('click', () => {
+                state.fontSize = Math.min(28, state.fontSize + 2);
+                document.getElementById('contentView').style.fontSize = state.fontSize + 'px';
+            });
+            document.getElementById('prevChapter')?.addEventListener('click', () => {
+                if(state.currentChapterIndex > 0) loadChapterContent(state.currentChapterIndex-1);
+            });
+            document.getElementById('nextChapter')?.addEventListener('click', () => {
+                if(state.currentChapterIndex < state.chapters.length-1) loadChapterContent(state.currentChapterIndex+1);
+            });
+        }
+    }
+
+    async function loadChapterContent(idx) {
+        const chapterName = state.chapters[idx];
+        const folder = state.currentBookFolder;
+        const url = `novels/${encodeURIComponent(folder)}/${encodeURIComponent(chapterName)}.txt`;
+        try {
+            const res = await fetch(url);
+            if(!res.ok) throw new Error();
+            const text = await res.text();
+            const lines = text.split('\n');
+            const title = lines[0].trim() || chapterName;
+            let content = lines.slice(1).join('\n').trim() || '暂无正文内容';
+            content = escapeHtml(content);
+            state.chapterTitle = title;
+            state.content = content;
+            state.currentChapterIndex = idx;
+            state.view = 'content';
+            saveProgress(state.currentBook, idx);
             render();
-        };
-        
-        window.readChapter = async function(path) {
-            try {
-                const text = await fetchFile(path);
-                const lines = text.split('\n');
-                const title = lines[0].trim() || "无标题";
-                const content = lines.slice(1).join('\n').trim() || "暂无内容";
-                state.chapterName = title;
-                state.content = content;
-                state.view = "content";
-                render();
-            } catch(e) {
-                state.chapterName = "加载失败";
-                state.content = "无法读取章节内容";
-                state.view = "content";
-                render();
+        } catch(e) {
+            state.chapterTitle = '加载失败';
+            state.content = '无法读取章节内容，请检查文件路径或网络。';
+            state.view = 'content';
+            render();
+        }
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    (async () => {
+        await loadCatalog();
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookParam = urlParams.get('book');
+        if(bookParam) {
+            const found = state.books.find(b => b.name === bookParam);
+            if(found) {
+                state.currentBook = found.name;
+                state.currentBookFolder = found.folder;
+                state.chapters = found.chapters;
+                state.view = 'chapters';
             }
-        };
-        
-        window.goBack = function() {
-            if (state.view === "chapters") {
-                state.view = "books";
-                render();
-            } else if (state.view === "content") {
-                state.view = "chapters";
-                render();
-            }
-        };
-        
+        }
         render();
-    </script>
+    })();
+</script>
 </body>
 </html>
