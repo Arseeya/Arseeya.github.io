@@ -56,7 +56,6 @@
             border-top: 1px solid rgba(255,255,255,0.1);
             padding: 1rem;
         }
-        /* 配乐板块完全隐藏，未来启用时删除下一行即可 */
         .music-section {
             display: none;
         }
@@ -66,7 +65,6 @@
 <div class="container">
     <div class="navbar">
         <a href="index.html">首页</a>
-        <a href="reader.html">阅读器</a>
         <a href="world.html">世界观</a>
         <a href="download.html">下载</a>
     </div>
@@ -100,11 +98,9 @@
             } else {
                 appsGrid.innerHTML = '<div class="card">暂无 App，敬请期待。</div>';
             }
-            // 配乐预留：根据 music_enabled 决定是否显示区块（当前 false 完全不显示）
             if(data.music_enabled === true) {
                 const musicSection = document.querySelector('.music-section');
                 if(musicSection) musicSection.style.display = 'block';
-                // 可继续渲染音乐列表
             }
         } catch(e) {
             document.getElementById('appsGrid').innerHTML = '<div class="card">加载失败，请稍后重试。</div>';
