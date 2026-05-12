@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>世界观 · Arseeya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>归终百科 · Arseeya</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: system-ui, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
             color: #eee;
             padding: 1rem;
@@ -34,6 +34,7 @@
             padding: 0.5rem 1rem;
             border-radius: 2rem;
             background: rgba(255,255,255,0.05);
+            transition: 0.2s;
         }
         .navbar a:hover {
             background: #e94560;
@@ -52,21 +53,36 @@
             padding: 0.5rem 1.5rem;
             border-radius: 2rem;
             cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .tab-btn:hover {
+            background: rgba(233, 69, 96, 0.3);
         }
         .tab-btn.active {
             background: #e94560;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-top: 1rem;
         }
         .card {
             background: rgba(255,255,255,0.05);
             border-radius: 1.5rem;
-            padding: 1.2rem;
+            padding: 1.5rem;
             backdrop-filter: blur(4px);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        .card h3 {
+            color: #e94560;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
         }
         footer {
             margin-top: 3rem;
@@ -74,10 +90,33 @@
             border-top: 1px solid rgba(255,255,255,0.1);
             padding: 1.5rem;
             font-size: 0.8rem;
+            color: #aaa;
+        }
+        .hero-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .hero-title h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .hero-title p {
+            color: #aaa;
         }
         @media (max-width: 640px) {
             .grid {
                 grid-template-columns: 1fr;
+            }
+            .tabs {
+                gap: 0.5rem;
+            }
+            .tab-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -86,45 +125,107 @@
 <div class="container">
     <div class="navbar">
         <a href="index.html">首页</a>
-        <a href="world.html">世界观</a>
+        <a href="world.html">归终百科</a>
         <a href="download.html">下载</a>
     </div>
-    <h1 style="text-align:center;">🌊 潮汐世界观百科</h1>
-    <div class="tabs">
-        <button class="tab-btn active" data-cat="char">人物</button>
-        <button class="tab-btn" data-cat="place">地点</button>
-        <button class="tab-btn" data-cat="event">事件</button>
+
+    <div class="hero-title">
+        <h1>📜 归终百科</h1>
+        <p>人物 · 地点 · 知识 —— 记录世界的每一片潮汐</p>
     </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-cat="char">🌊 人物</button>
+        <button class="tab-btn" data-cat="place">📍 地点</button>
+        <button class="tab-btn" data-cat="knowledge">📖 知识</button>
+    </div>
+
     <div id="contentGrid" class="grid"></div>
-    <footer>© Arseeya. All Rights Reserved</footer>
+
+    <footer>
+        © Arseeya. All Rights Reserved
+    </footer>
 </div>
 
 <script>
     const data = {
         char: [
-            { name: "Arseeya", desc: "潮汐的记录者，梦境旅人。在海浪与记忆之间书写故事。" },
-            { name: "潮汐守护者", desc: "远古的守望，维持潮汐与现实的平衡。" }
+            { 
+                name: "Arseeya", 
+                desc: "祂的宠儿，记忆的冲浪者。在潮汐之间记录被毁灭与重生的故事。",
+                epithet: "潮汐记录者"
+            },
+            { 
+                name: "归终", 
+                desc: "世界的根源意志，潮汐的起点与终点。祂的注视下，万物归终亦复始。",
+                epithet: "本源之潮"
+            },
+            { 
+                name: "潮汐守护者", 
+                desc: "远古的守望者，维持记忆与现实之间的平衡。每一位守护者都是潮汐的一部分。",
+                epithet: "潮汐之刃"
+            }
         ],
         place: [
-            { name: "听潮镇", desc: "海边的小镇，永远能听见浪声。" },
-            { name: "梦境海岸", desc: "现实与梦境的交界处，潮水会带来记忆。" }
+            { 
+                name: "听潮镇", 
+                desc: "海边的小镇，永远能听见浪声。这里是现实与记忆交汇的第一站。",
+                feature: "潮汐之声常驻"
+            },
+            { 
+                name: "梦境海岸", 
+                desc: "现实与梦境的交界处，潮水会带来被遗忘的记忆，也会带走不愿面对的过往。",
+                feature: "记忆的边界"
+            },
+            { 
+                name: "归终之境", 
+                desc: "潮汐的终点，也是起点。只有被祂选中的人才能抵达。",
+                feature: "世界的根源"
+            }
         ],
-        event: [
-            { name: "潮汐觉醒", desc: "第一次潮汐之力显现的时刻。" },
-            { name: "记忆回溯", desc: "通过海浪找回遗失的过往。" }
+        knowledge: [
+            { 
+                name: "潮汐之力", 
+                desc: "源于归终的力量，能够影响记忆、时间与现实的边界。每位记录者都以其独特方式驾驭。",
+                type: "本源能量"
+            },
+            { 
+                name: "记忆之潮", 
+                desc: "潮汐带来的记忆碎片，可能是被毁灭的世界的回响，也可能是未来的预兆。",
+                type: "潮汐现象"
+            },
+            { 
+                name: "记录者的使命", 
+                desc: "Arseeya 的使命是在潮汐之间记录那些被毁灭、被遗忘、或即将重生的故事。",
+                type: "传承"
+            }
         ]
     };
+
     let currentCat = 'char';
+
     function render() {
         const grid = document.getElementById('contentGrid');
         const items = data[currentCat];
-        grid.innerHTML = items.map(item => `
-            <div class="card">
-                <h3>${item.name}</h3>
-                <p>${item.desc}</p>
-            </div>
-        `).join('');
+        if (!items || items.length === 0) {
+            grid.innerHTML = '<div class="card">暂无内容，潮汐正在酝酿...</div>';
+            return;
+        }
+        grid.innerHTML = items.map(item => {
+            let extraHtml = '';
+            if (item.epithet) extraHtml = `<div style="margin-top:0.5rem; font-size:0.85rem; color:#e94560;">「${item.epithet}」</div>`;
+            if (item.feature) extraHtml = `<div style="margin-top:0.5rem; font-size:0.85rem; color:#e94560;">🏷️ ${item.feature}</div>`;
+            if (item.type) extraHtml = `<div style="margin-top:0.5rem; font-size:0.85rem; color:#e94560;">📖 ${item.type}</div>`;
+            return `
+                <div class="card">
+                    <h3>${item.name}</h3>
+                    <p>${item.desc}</p>
+                    ${extraHtml}
+                </div>
+            `;
+        }).join('');
     }
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -133,6 +234,7 @@
             render();
         });
     });
+
     render();
 </script>
 </body>
