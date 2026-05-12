@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载中心 · Arseeya</title>
+    <style>
+        * { margin:0; padding:0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0f0c1f;
+            color: #eee;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .navbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .navbar a {
+            color: #ddd;
+            text-decoration: none;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(4px);
+        }
+        .btn {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+        }
+        /* 配乐板块完全隐藏，未来启用时删除下一行即可 */
+        .music-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <a href="index.html">首页</a>
+        <a href="reader.html">阅读器</a>
+        <a href="world.html">世界观</a>
+        <a href="download.html">下载</a>
+    </div>
+    <h1>📦 下载中心</h1>
+    <div id="appsGrid" class="grid">加载中...</div>
+
+    <!-- 配乐预留区块，完全不显示 -->
+    <div class="music-section" id="musicReserved">
+        <h2>🎵 原声配乐</h2>
+        <div class="grid" id="musicGrid"></div>
+    </div>
+
+    <footer>© Arseeya. All Rights Reserved</footer>
+</div>
+
+<script>
+    async function loadDownloads() {
+        try {
+            const res = await fetch('download.json');
+            const data = await res.json();
+            const appsGrid = document.getElementById('appsGrid');
+            if(data.apps && data.apps.length) {
+                appsGrid.innerHTML = data.apps.map(app => `
+                    <div class="card">
+                        <h3>📱 ${app.name}</h3>
+                        <p>版本 ${app.version} | ${app.size}</p>
+                        <p>${app.description || ''}</p>
+                        <a href="downloads/apps/${app.filename}" class="btn" download>下载 APK</a>
+                    </div>
+                `).join('');
+            } else {
+                appsGrid.innerHTML = '<div class="card">暂无 App，敬请期待。</div>';
+            }
+            // 配乐预留：根据 music_enabled 决定是否显示区块（当前 false 完全不显示）
+            if(data.music_enabled === true) {
+                const musicSection = document.querySelector('.music-section');
+                if(musicSection) musicSection.style.display = 'block';
+                // 可继续渲染音乐列表
+            }
+        } catch(e) {
+            document.getElementById('appsGrid').innerHTML = '<div class="card">加载失败，请稍后重试。</div>';
+        }
+    }
+    loadDownloads();
+</script>
+</body>
+</html>
