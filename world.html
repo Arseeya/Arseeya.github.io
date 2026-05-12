@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界观 · Arseeya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
+            color: #eee;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .navbar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .navbar a {
+            color: #ddd;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.05);
+        }
+        .navbar a:hover {
+            background: #e94560;
+        }
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: none;
+            border: 1px solid #e94560;
+            color: #eee;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #e94560;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            backdrop-filter: blur(4px);
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            font-size: 0.8rem;
+        }
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <a href="index.html">首页</a>
+        <a href="reader.html">阅读器</a>
+        <a href="world.html">世界观</a>
+        <a href="download.html">下载</a>
+    </div>
+    <h1 style="text-align:center;">🌊 潮汐世界观百科</h1>
+    <div class="tabs">
+        <button class="tab-btn active" data-cat="char">人物</button>
+        <button class="tab-btn" data-cat="place">地点</button>
+        <button class="tab-btn" data-cat="event">事件</button>
+    </div>
+    <div id="contentGrid" class="grid"></div>
+    <footer>© Arseeya. All Rights Reserved</footer>
+</div>
+
+<script>
+    const data = {
+        char: [
+            { name: "Arseeya", desc: "潮汐的记录者，梦境旅人。在海浪与记忆之间书写故事。" },
+            { name: "潮汐守护者", desc: "远古的守望，维持潮汐与现实的平衡。" }
+        ],
+        place: [
+            { name: "听潮镇", desc: "海边的小镇，永远能听见浪声。" },
+            { name: "梦境海岸", desc: "现实与梦境的交界处，潮水会带来记忆。" }
+        ],
+        event: [
+            { name: "潮汐觉醒", desc: "第一次潮汐之力显现的时刻。" },
+            { name: "记忆回溯", desc: "通过海浪找回遗失的过往。" }
+        ]
+    };
+    let currentCat = 'char';
+    function render() {
+        const grid = document.getElementById('contentGrid');
+        const items = data[currentCat];
+        grid.innerHTML = items.map(item => `
+            <div class="card">
+                <h3>${item.name}</h3>
+                <p>${item.desc}</p>
+            </div>
+        `).join('');
+    }
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCat = btn.getAttribute('data-cat');
+            render();
+        });
+    });
+    render();
+</script>
+</body>
+</html>
