@@ -150,6 +150,11 @@
             padding-top: 1.5rem;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
@@ -186,7 +191,7 @@
 </div>
 
 <script>
-    // 获取书名 - 从当前路径最后一级目录名提取
+    // 获取书名
     let bookName = '';
     const pathParts = window.location.pathname.split('/').filter(p => p);
     if (pathParts.length >= 2) {
@@ -202,6 +207,13 @@
     const listView = document.getElementById('listView');
     const readingView = document.getElementById('readingView');
     const chapterListDiv = document.getElementById('chapterList');
+
+    // 使用 jsdelivr CDN 构建文件 URL（更稳定）
+    function getCdnUrl(filePath) {
+        // filePath 是 GitHub API 返回的路径，如 "novels/听潮事记/第一章.txt"
+        // 转换为 jsdelivr URL
+        return `https://cdn.jsdelivr.net/gh/Arseeya/arseeya.github.io/${filePath}`;
+    }
 
     function saveProgress(idx) {
         localStorage.setItem(`reading_${bookName}`, JSON.stringify({ idx, fontSize }));
@@ -222,9 +234,17 @@
         if (idx < 0 || idx >= chapters.length) return;
         currentIndex = idx;
         const ch = chapters[idx];
+        
+        // 显示加载中
+        document.getElementById('chapterTitle').innerHTML = '加载中...';
+        document.getElementById('chapterContent').innerHTML = '<div class="loading">📡 正在读取章节...</div>';
+        
         try {
-            const res = await fetch(ch.url);
-            if (!res.ok) throw new Error();
+            // 使用 jsdelivr CDN
+            const cdnUrl = getCdnUrl(ch.path);
+            console.log('加载:', cdnUrl);
+            const res = await fetch(cdnUrl);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = await res.text();
             const lines = text.split('\n');
             const title = lines[0].trim() || ch.name;
@@ -242,8 +262,9 @@
             document.getElementById('nextBtn').disabled = (idx >= chapters.length - 1);
             saveProgress(idx);
         } catch(e) {
+            console.error(e);
             document.getElementById('chapterTitle').innerHTML = '加载失败';
-            document.getElementById('chapterContent').innerHTML = '无法读取章节内容，请重试。';
+            document.getElementById('chapterContent').innerHTML = `<div class="error-box">⚠️ 无法读取章节内容<br><small>${e.message}</small><br><button onclick="loadChapter(${idx})" style="margin-top:1rem; background:#e94560; border:none; color:white; padding:0.5rem 1rem; border-radius:2rem;">重试</button></div>`;
         }
     }
 
@@ -277,7 +298,7 @@
             
             chapters = txtFiles.map(f => ({
                 name: f.name.replace('.txt', ''),
-                url: f.download_url
+                path: f.path  // 保存完整路径用于 CDN
             }));
             
             chapterListDiv.innerHTML = chapters.map((ch, i) => `
@@ -306,6 +327,7 @@
         }
     }
 
+    // 绑定事件
     document.getElementById('backToListBtn').addEventListener('click', showList);
     document.getElementById('prevBtn').addEventListener('click', () => { if (currentIndex > 0) loadChapter(currentIndex - 1); });
     document.getElementById('nextBtn').addEventListener('click', () => { if (currentIndex < chapters.length - 1) loadChapter(currentIndex + 1); });
@@ -313,6 +335,7 @@
     document.getElementById('fontPlus').addEventListener('click', () => { fontSize = Math.min(28, fontSize + 2); document.getElementById('contentView').style.fontSize = fontSize + 'px'; if (currentIndex >= 0) saveProgress(currentIndex); });
     document.getElementById('refreshBtn').addEventListener('click', fetchChapters);
 
+    // 启动
     fetchChapters();
 </script>
 </body>
