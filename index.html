@@ -149,6 +149,41 @@
             transform: translateY(-4px);
         }
 
+        /* 设定图容器 - 正方形自适应 */
+        .setting-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .setting-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .setting-img:hover {
+            transform: scale(1.02);
+        }
+
+        /* 桌面端稍大 */
+        @media (min-width: 768px) {
+            .setting-container {
+                max-width: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .setting-container {
+                max-width: 300px;
+            }
+        }
+
         .btn {
             display: inline-block;
             background: #e94560;
@@ -280,7 +315,9 @@
             </div>
             <div class="card">
                 <h2>设定图</h2>
-                <img src="setting.jpg" alt="Arseeya 设定图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                <div class="setting-container">
+                    <img class="setting-img" src="setting.jpg" alt="Arseeya 设定图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                </div>
             </div>
         </div>
 
@@ -327,12 +364,14 @@
     </div>
 
     <script>
+        // 移动端菜单
         const toggle = document.getElementById('menuToggle');
         const nav = document.getElementById('navLinks');
         if(toggle) {
             toggle.addEventListener('click', () => nav.classList.toggle('show'));
         }
 
+        // 智能邮件链接函数
         function sendEmail(email) {
             const userAgent = navigator.userAgent.toLowerCase();
             let mailtoUrl = `mailto:${email}`;
