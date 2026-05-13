@@ -184,7 +184,6 @@
             min-width: 200px;
         }
 
-        /* 作品区域 */
         .works-section {
             margin-bottom: 3rem;
         }
@@ -203,7 +202,6 @@
             min-width: 200px;
         }
 
-        /* 百科区域 - 增加上边距，与作品区域拉开距离 */
         .world-section {
             background: rgba(255,255,255,0.03);
             border-radius: 1.5rem;
@@ -260,7 +258,7 @@
             <button class="menu-toggle" id="menuToggle">☰</button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">首页</a></li>
-                <li><a href="reader.html?book=听潮事记">作品</a></li>
+                <li><a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a></li>
                 <li><a href="world.html">百科</a></li>
                 <li><a href="download.html">下载</a></li>
             </ul>
@@ -293,17 +291,17 @@
                 <div class="work-card">
                     <h3>听潮事记</h3>
                     <p>记忆的潮汐起落之间，那些被毁灭的故事。</p>
-                    <a href="reader.html?book=听潮事记" class="btn">开始阅读 →</a>
+                    <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/" class="btn" target="_blank">开始阅读 →</a>
                 </div>
                 <div class="work-card">
                     <h3>听潮事记 · 番外集</h3>
                     <p>潮水未止，余音不绝。</p>
-                    <a href="reader.html?book=听潮事记番外集" class="btn">开始阅读 →</a>
+                    <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0%E7%95%AA%E5%A4%96%E9%9B%86/" class="btn" target="_blank">开始阅读 →</a>
                 </div>
             </div>
         </div>
 
-        <!-- 百科区域 - 与作品区域已有明显间距（margin-top: 2rem） -->
+        <!-- 百科区域 -->
         <div class="world-section">
             <h2>归终百科</h2>
             <p style="margin: 0.5rem 0;">人物 · 地点 · 知识 —— 深入世界</p>
@@ -329,14 +327,12 @@
     </div>
 
     <script>
-        // 移动端菜单
         const toggle = document.getElementById('menuToggle');
         const nav = document.getElementById('navLinks');
         if(toggle) {
             toggle.addEventListener('click', () => nav.classList.toggle('show'));
         }
 
-        // 智能邮件链接函数
         function sendEmail(email) {
             const userAgent = navigator.userAgent.toLowerCase();
             let mailtoUrl = `mailto:${email}`;
