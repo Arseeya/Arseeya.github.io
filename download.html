@@ -97,9 +97,8 @@
             background: rgba(233,69,96,0.2);
             border: 1px solid #e94560;
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 2rem;
             text-align: center;
-            margin-top: 1rem;
         }
         @media (max-width: 640px) {
             .grid {
@@ -130,7 +129,7 @@
         const grid = document.getElementById('appsGrid');
         try {
             const res = await fetch('download.json');
-            if (!res.ok) throw new Error('无法加载下载列表');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             
             if (!data.apps || data.apps.length === 0) {
@@ -138,16 +137,12 @@
                 return;
             }
             
-            // 构建完整的下载 URL（基于当前页面路径）
+            // 获取当前页面的基础 URL
             const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
             
             grid.innerHTML = data.apps.map(app => {
-                // 确保 download_url 正确
-                let downloadUrl = app.download_url;
-                if (!downloadUrl) {
-                    // 如果没有配置完整 URL，使用相对路径
-                    downloadUrl = `downloads/apps/${app.filename}`;
-                }
+                // 下载链接：直接指向 downloads/apps/ 下的文件
+                const downloadUrl = `${baseUrl}downloads/apps/${encodeURIComponent(app.filename)}`;
                 return `
                     <div class="card">
                         <h3>📱 ${app.name}</h3>
@@ -159,7 +154,7 @@
             }).join('');
         } catch(e) {
             console.error(e);
-            grid.innerHTML = `<div class="error-msg">⚠️ 加载失败：${e.message}<br><button onclick="location.reload()" style="margin-top:0.5rem; background:#e94560; border:none; color:white; padding:0.3rem 1rem; border-radius:1rem; cursor:pointer;">重试</button></div>`;
+            grid.innerHTML = `<div class="error-msg">⚠️ 加载失败：${e.message}<br><br><button onclick="location.reload()" style="background:#e94560; border:none; color:white; padding:0.5rem 1.2rem; border-radius:2rem; cursor:pointer;">重试</button></div>`;
         }
     }
     
