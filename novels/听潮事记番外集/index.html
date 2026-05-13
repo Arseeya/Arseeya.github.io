@@ -53,6 +53,19 @@
             background-clip: text;
             color: transparent;
         }
+        .refresh-btn {
+            background: #333;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .refresh-btn:hover {
+            background: #555;
+        }
         
         /* 章节列表视图 */
         .chapter-list-view {
@@ -82,6 +95,29 @@
         .chapter-item p {
             font-size: 0.85rem;
             color: #aaa;
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid #e94560;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .error-message p {
+            margin-bottom: 1rem;
+            color: #e94560;
+        }
+        .retry-btn {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
         
         /* 阅读视图 */
@@ -175,7 +211,7 @@
     <div class="top-bar">
         <a href="https://arseeya.github.io" class="back-home">← 返回首页</a>
         <span class="book-title" id="bookTitle">加载中...</span>
-        <div style="width: 80px;"></div> <!-- 占位保持平衡 -->
+        <button class="refresh-btn" id="refreshBtn">⟳ 刷新</button>
     </div>
 
     <!-- 章节列表视图 -->
@@ -206,13 +242,21 @@
 </div>
 
 <script>
-    // 获取当前文件夹路径
-    const currentPath = window.location.pathname;
-    const folderPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+    // 获取当前文件夹路径并解码（修复乱码）
+    let currentPath = window.location.pathname;
+    // 解码 URL 编码的中文
+    let decodedPath = decodeURIComponent(currentPath);
+    const folderPath = decodedPath.substring(0, decodedPath.lastIndexOf('/') + 1);
     
-    // 从路径中提取书名
+    // 从解码后的路径中提取书名
     const pathParts = folderPath.split('/').filter(p => p);
-    const bookName = pathParts[pathParts.length - 1] || '未知';
+    let bookName = pathParts[pathParts.length - 1] || '未知';
+    // 如果还是乱码，尝试再次解码
+    if (bookName.includes('%')) {
+        try {
+            bookName = decodeURIComponent(bookName);
+        } catch(e) {}
+    }
     document.getElementById('bookTitle').innerHTML = `📖 ${bookName}`;
     document.title = `${bookName} · Arseeya`;
 
@@ -245,6 +289,22 @@
             }
         } catch(e) {}
         return -1;
+    }
+    
+    // 显示错误信息
+    function showError(message, showRetry = true) {
+        chapterListDiv.innerHTML = `
+            <div class="error-message">
+                <p>⚠️ ${message}</p>
+                ${showRetry ? '<button class="retry-btn" id="errorRetryBtn">⟳ 重试</button>' : ''}
+            </div>
+        `;
+        if (showRetry) {
+            const retryBtn = document.getElementById('errorRetryBtn');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', () => fetchAndRenderChapters());
+            }
+        }
     }
     
     // 加载章节内容
@@ -298,19 +358,32 @@
     function showChapterListView() {
         chapterListView.style.display = 'block';
         readingView.style.display = 'none';
-        // 重新渲染章节列表（高亮已读章节可选）
     }
     
     // 渲染章节列表
     async function fetchAndRenderChapters() {
-        const apiUrl = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents${folderPath}`;
+        // 显示加载中
+        chapterListDiv.innerHTML = '<div class="chapter-item">📡 正在加载章节列表...</div>';
+        
+        // 使用解码后的路径构建 API URL
+        // 注意：GitHub API 需要原始 URL 编码的路径，不能传解码后的
+        const originalPath = window.location.pathname;
+        const originalFolderPath = originalPath.substring(0, originalPath.lastIndexOf('/') + 1);
+        const apiUrl = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents${originalFolderPath}`;
         
         try {
             const res = await fetch(apiUrl);
-            if (!res.ok) throw new Error(`API 返回 ${res.status}`);
+            if (!res.ok) {
+                if (res.status === 403) {
+                    throw new Error('API 请求频率超限，请稍后刷新重试');
+                }
+                throw new Error(`API 返回 ${res.status}`);
+            }
             const files = await res.json();
             
+            // 过滤出 .txt 文件，排除 .gitkeep
             const txtFiles = files.filter(f => f.name.endsWith('.txt') && f.name !== '.gitkeep');
+            // 按文件名排序（中文自然排序）
             txtFiles.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
             
             chapters = txtFiles.map(file => ({
@@ -319,7 +392,7 @@
             }));
             
             if (chapters.length === 0) {
-                chapterListDiv.innerHTML = '<div class="chapter-item">暂无章节文件</div>';
+                showError('暂无章节文件，请在 novels 文件夹中上传 .txt 文件', false);
                 return;
             }
             
@@ -341,7 +414,6 @@
             // 检查是否有保存的进度
             const savedIndex = loadProgress();
             if (savedIndex >= 0 && savedIndex < chapters.length) {
-                // 可选：弹窗询问是否继续
                 if (confirm('是否继续上次阅读进度？')) {
                     showReadingView(savedIndex);
                 }
@@ -349,12 +421,7 @@
             
         } catch(err) {
             console.error(err);
-            chapterListDiv.innerHTML = `
-                <div class="chapter-item" style="color:#e94560;">
-                    ⚠️ 加载失败：${err.message}<br>
-                    请检查网络或稍后重试。
-                </div>
-            `;
+            showError(err.message || '加载失败，请检查网络连接');
         }
     }
     
@@ -369,12 +436,17 @@
     document.getElementById('fontMinus').addEventListener('click', () => {
         fontSize = Math.max(14, fontSize - 2);
         contentView.style.fontSize = fontSize + 'px';
-        saveProgress(currentIndex);
+        if (currentIndex >= 0) saveProgress(currentIndex);
     });
     document.getElementById('fontPlus').addEventListener('click', () => {
         fontSize = Math.min(28, fontSize + 2);
         contentView.style.fontSize = fontSize + 'px';
-        saveProgress(currentIndex);
+        if (currentIndex >= 0) saveProgress(currentIndex);
+    });
+    
+    // 刷新按钮
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+        fetchAndRenderChapters();
     });
     
     // 启动
