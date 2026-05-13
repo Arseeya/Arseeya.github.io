@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>阅读 · Arseeya</title>
+    <title>章节列表 · Arseeya</title>
     <style>
         * {
             margin: 0;
@@ -21,8 +21,6 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        
-        /* 顶部导航 */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -40,10 +38,6 @@
             border-radius: 2rem;
             text-decoration: none;
             font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .back-home:hover {
-            background: #c5314b;
         }
         .book-title {
             font-size: 1.3rem;
@@ -61,15 +55,6 @@
             font-size: 0.9rem;
             cursor: pointer;
             border: none;
-            transition: 0.2s;
-        }
-        .refresh-btn:hover {
-            background: #555;
-        }
-        
-        /* 章节列表视图 */
-        .chapter-list-view {
-            display: block;
         }
         .chapter-list {
             display: flex;
@@ -92,35 +77,6 @@
             font-size: 1.1rem;
             margin-bottom: 0.3rem;
         }
-        .chapter-item p {
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-        
-        /* 错误提示 */
-        .error-message {
-            background: rgba(233, 69, 96, 0.2);
-            border: 1px solid #e94560;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .error-message p {
-            margin-bottom: 1rem;
-            color: #e94560;
-        }
-        .retry-btn {
-            background: #e94560;
-            border: none;
-            color: white;
-            padding: 0.6rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        /* 阅读视图 */
         .reading-view {
             display: none;
         }
@@ -138,16 +94,7 @@
             padding: 0.5rem 1.2rem;
             border-radius: 2rem;
             cursor: pointer;
-            font-size: 0.9rem;
             border: none;
-            transition: 0.2s;
-        }
-        .back-list:hover {
-            background: #555;
-        }
-        .font-controls {
-            display: flex;
-            gap: 0.8rem;
         }
         .font-controls button {
             background: #e94560;
@@ -156,7 +103,6 @@
             padding: 0.3rem 0.8rem;
             border-radius: 2rem;
             cursor: pointer;
-            font-size: 1rem;
         }
         .content-view {
             background: rgba(0,0,0,0.3);
@@ -168,7 +114,6 @@
         .content-view h2 {
             color: #e94560;
             margin-bottom: 1.5rem;
-            font-size: 1.5rem;
         }
         .nav-buttons {
             display: flex;
@@ -180,22 +125,23 @@
             background: #e94560;
             border: none;
             color: white;
-            padding: 0.6rem 1.2rem;
+            padding: 0.6rem;
             border-radius: 2rem;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
             flex: 1;
-        }
-        .nav-btn:hover:not(:disabled) {
-            background: #c5314b;
         }
         .nav-btn:disabled {
             background: #555;
             cursor: not-allowed;
-            opacity: 0.5;
         }
-        
+        .error-box {
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
         footer {
             margin-top: 3rem;
             text-align: center;
@@ -214,12 +160,10 @@
         <button class="refresh-btn" id="refreshBtn">⟳ 刷新</button>
     </div>
 
-    <!-- 章节列表视图 -->
-    <div id="chapterListView" class="chapter-list-view">
+    <div id="listView">
         <div id="chapterList" class="chapter-list">加载中...</div>
     </div>
 
-    <!-- 阅读视图 -->
     <div id="readingView" class="reading-view">
         <div class="reading-header">
             <button class="back-list" id="backToListBtn">← 返回目录</button>
@@ -242,215 +186,134 @@
 </div>
 
 <script>
-    // 获取当前文件夹路径并解码（修复乱码）
-    let currentPath = window.location.pathname;
-    // 解码 URL 编码的中文
-    let decodedPath = decodeURIComponent(currentPath);
-    const folderPath = decodedPath.substring(0, decodedPath.lastIndexOf('/') + 1);
-    
-    // 从解码后的路径中提取书名
-    const pathParts = folderPath.split('/').filter(p => p);
-    let bookName = pathParts[pathParts.length - 1] || '未知';
-    // 如果还是乱码，尝试再次解码
-    if (bookName.includes('%')) {
-        try {
-            bookName = decodeURIComponent(bookName);
-        } catch(e) {}
+    // 获取书名 - 从当前路径最后一级目录名提取
+    let bookName = '';
+    const pathParts = window.location.pathname.split('/').filter(p => p);
+    if (pathParts.length >= 2) {
+        bookName = pathParts[pathParts.length - 2];
     }
     document.getElementById('bookTitle').innerHTML = `📖 ${bookName}`;
     document.title = `${bookName} · Arseeya`;
 
-    // 状态
-    let chapters = [];        // [{ name, url }]
+    let chapters = [];
     let currentIndex = -1;
-    let currentContent = '';
-    let currentTitle = '';
     let fontSize = 18;
-    
-    // DOM 元素
-    const chapterListView = document.getElementById('chapterListView');
+
+    const listView = document.getElementById('listView');
     const readingView = document.getElementById('readingView');
     const chapterListDiv = document.getElementById('chapterList');
-    const contentView = document.getElementById('contentView');
-    const chapterTitleSpan = document.getElementById('chapterTitle');
-    const chapterContentDiv = document.getElementById('chapterContent');
-    
-    // 保存阅读进度
-    function saveProgress(index) {
-        localStorage.setItem(`reading_progress_${bookName}`, JSON.stringify({ index, fontSize }));
+
+    function saveProgress(idx) {
+        localStorage.setItem(`reading_${bookName}`, JSON.stringify({ idx, fontSize }));
     }
-    
+
     function loadProgress() {
         try {
-            const saved = JSON.parse(localStorage.getItem(`reading_progress_${bookName}`));
-            if (saved && typeof saved.index === 'number') {
+            const saved = JSON.parse(localStorage.getItem(`reading_${bookName}`));
+            if (saved && typeof saved.idx === 'number') {
                 if (saved.fontSize) fontSize = saved.fontSize;
-                return saved.index;
+                return saved.idx;
             }
         } catch(e) {}
         return -1;
     }
-    
-    // 显示错误信息
-    function showError(message, showRetry = true) {
-        chapterListDiv.innerHTML = `
-            <div class="error-message">
-                <p>⚠️ ${message}</p>
-                ${showRetry ? '<button class="retry-btn" id="errorRetryBtn">⟳ 重试</button>' : ''}
-            </div>
-        `;
-        if (showRetry) {
-            const retryBtn = document.getElementById('errorRetryBtn');
-            if (retryBtn) {
-                retryBtn.addEventListener('click', () => fetchAndRenderChapters());
-            }
-        }
-    }
-    
-    // 加载章节内容
-    async function loadChapter(index) {
-        if (index < 0 || index >= chapters.length) return;
-        currentIndex = index;
-        const chapter = chapters[index];
-        
+
+    async function loadChapter(idx) {
+        if (idx < 0 || idx >= chapters.length) return;
+        currentIndex = idx;
+        const ch = chapters[idx];
         try {
-            const res = await fetch(chapter.url);
-            if (!res.ok) throw new Error('加载失败');
+            const res = await fetch(ch.url);
+            if (!res.ok) throw new Error();
             const text = await res.text();
             const lines = text.split('\n');
-            const title = lines[0].trim() || chapter.name;
-            let content = lines.slice(1).join('\n').trim() || '暂无正文内容';
-            
-            // 转义 HTML 防止 XSS
+            const title = lines[0].trim() || ch.name;
+            let content = lines.slice(1).join('\n').trim() || '暂无内容';
             content = content.replace(/[&<>]/g, function(m) {
                 if (m === '&') return '&amp;';
                 if (m === '<') return '&lt;';
                 if (m === '>') return '&gt;';
                 return m;
             }).replace(/\n/g, '<br>');
-            
-            currentTitle = title;
-            currentContent = content;
-            
-            chapterTitleSpan.innerHTML = currentTitle;
-            chapterContentDiv.innerHTML = currentContent;
-            contentView.style.fontSize = fontSize + 'px';
-            
-            // 更新按钮状态
-            document.getElementById('prevBtn').disabled = (currentIndex <= 0);
-            document.getElementById('nextBtn').disabled = (currentIndex >= chapters.length - 1);
-            
-            saveProgress(currentIndex);
+            document.getElementById('chapterTitle').innerHTML = title;
+            document.getElementById('chapterContent').innerHTML = content;
+            document.getElementById('contentView').style.fontSize = fontSize + 'px';
+            document.getElementById('prevBtn').disabled = (idx <= 0);
+            document.getElementById('nextBtn').disabled = (idx >= chapters.length - 1);
+            saveProgress(idx);
         } catch(e) {
-            chapterTitleSpan.innerHTML = '加载失败';
-            chapterContentDiv.innerHTML = '无法读取章节内容，请检查网络或稍后重试。';
+            document.getElementById('chapterTitle').innerHTML = '加载失败';
+            document.getElementById('chapterContent').innerHTML = '无法读取章节内容，请重试。';
         }
     }
-    
-    // 切换到阅读视图
-    function showReadingView(index) {
-        chapterListView.style.display = 'none';
+
+    function showReading(idx) {
+        listView.style.display = 'none';
         readingView.style.display = 'block';
-        loadChapter(index);
+        loadChapter(idx);
     }
-    
-    // 切换到章节列表视图
-    function showChapterListView() {
-        chapterListView.style.display = 'block';
+
+    function showList() {
+        listView.style.display = 'block';
         readingView.style.display = 'none';
     }
-    
-    // 渲染章节列表
-    async function fetchAndRenderChapters() {
-        // 显示加载中
-        chapterListDiv.innerHTML = '<div class="chapter-item">📡 正在加载章节列表...</div>';
-        
-        // 使用解码后的路径构建 API URL
-        // 注意：GitHub API 需要原始 URL 编码的路径，不能传解码后的
-        const originalPath = window.location.pathname;
-        const originalFolderPath = originalPath.substring(0, originalPath.lastIndexOf('/') + 1);
-        const apiUrl = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents${originalFolderPath}`;
+
+    async function fetchChapters() {
+        chapterListDiv.innerHTML = '<div class="chapter-item">📡 加载中...</div>';
+        const folderPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        const apiUrl = `https://api.github.com/repos/Arseeya/arseeya.github.io/contents${folderPath}`;
         
         try {
             const res = await fetch(apiUrl);
-            if (!res.ok) {
-                if (res.status === 403) {
-                    throw new Error('API 请求频率超限，请稍后刷新重试');
-                }
-                throw new Error(`API 返回 ${res.status}`);
-            }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const files = await res.json();
-            
-            // 过滤出 .txt 文件，排除 .gitkeep
             const txtFiles = files.filter(f => f.name.endsWith('.txt') && f.name !== '.gitkeep');
-            // 按文件名排序（中文自然排序）
             txtFiles.sort((a, b) => a.name.localeCompare(b.name, 'zh'));
             
-            chapters = txtFiles.map(file => ({
-                name: file.name.replace('.txt', ''),
-                url: file.download_url
-            }));
-            
-            if (chapters.length === 0) {
-                showError('暂无章节文件，请在 novels 文件夹中上传 .txt 文件', false);
+            if (txtFiles.length === 0) {
+                chapterListDiv.innerHTML = '<div class="error-box">📭 暂无章节文件，请在 novels 文件夹中上传 .txt 文件</div>';
                 return;
             }
             
-            chapterListDiv.innerHTML = chapters.map((ch, idx) => `
-                <div class="chapter-item" data-index="${idx}">
+            chapters = txtFiles.map(f => ({
+                name: f.name.replace('.txt', ''),
+                url: f.download_url
+            }));
+            
+            chapterListDiv.innerHTML = chapters.map((ch, i) => `
+                <div class="chapter-item" data-idx="${i}">
                     <h3>📄 ${ch.name}</h3>
                     <p>点击开始阅读</p>
                 </div>
             `).join('');
             
-            // 绑定点击事件
             document.querySelectorAll('.chapter-item').forEach(el => {
                 el.addEventListener('click', () => {
-                    const idx = parseInt(el.getAttribute('data-index'));
-                    showReadingView(idx);
+                    const idx = parseInt(el.getAttribute('data-idx'));
+                    showReading(idx);
                 });
             });
             
-            // 检查是否有保存的进度
-            const savedIndex = loadProgress();
-            if (savedIndex >= 0 && savedIndex < chapters.length) {
+            const savedIdx = loadProgress();
+            if (savedIdx >= 0 && savedIdx < chapters.length) {
                 if (confirm('是否继续上次阅读进度？')) {
-                    showReadingView(savedIndex);
+                    showReading(savedIdx);
                 }
             }
-            
         } catch(err) {
             console.error(err);
-            showError(err.message || '加载失败，请检查网络连接');
+            chapterListDiv.innerHTML = `<div class="error-box">⚠️ 加载失败：${err.message}<br><button onclick="fetchChapters()" style="margin-top:1rem; background:#e94560; border:none; color:white; padding:0.5rem 1rem; border-radius:2rem;">重试</button></div>`;
         }
     }
-    
-    // 绑定事件
-    document.getElementById('backToListBtn').addEventListener('click', showChapterListView);
-    document.getElementById('prevBtn').addEventListener('click', () => {
-        if (currentIndex > 0) loadChapter(currentIndex - 1);
-    });
-    document.getElementById('nextBtn').addEventListener('click', () => {
-        if (currentIndex < chapters.length - 1) loadChapter(currentIndex + 1);
-    });
-    document.getElementById('fontMinus').addEventListener('click', () => {
-        fontSize = Math.max(14, fontSize - 2);
-        contentView.style.fontSize = fontSize + 'px';
-        if (currentIndex >= 0) saveProgress(currentIndex);
-    });
-    document.getElementById('fontPlus').addEventListener('click', () => {
-        fontSize = Math.min(28, fontSize + 2);
-        contentView.style.fontSize = fontSize + 'px';
-        if (currentIndex >= 0) saveProgress(currentIndex);
-    });
-    
-    // 刷新按钮
-    document.getElementById('refreshBtn').addEventListener('click', () => {
-        fetchAndRenderChapters();
-    });
-    
-    // 启动
-    fetchAndRenderChapters();
+
+    document.getElementById('backToListBtn').addEventListener('click', showList);
+    document.getElementById('prevBtn').addEventListener('click', () => { if (currentIndex > 0) loadChapter(currentIndex - 1); });
+    document.getElementById('nextBtn').addEventListener('click', () => { if (currentIndex < chapters.length - 1) loadChapter(currentIndex + 1); });
+    document.getElementById('fontMinus').addEventListener('click', () => { fontSize = Math.max(14, fontSize - 2); document.getElementById('contentView').style.fontSize = fontSize + 'px'; if (currentIndex >= 0) saveProgress(currentIndex); });
+    document.getElementById('fontPlus').addEventListener('click', () => { fontSize = Math.min(28, fontSize + 2); document.getElementById('contentView').style.fontSize = fontSize + 'px'; if (currentIndex >= 0) saveProgress(currentIndex); });
+    document.getElementById('refreshBtn').addEventListener('click', fetchChapters);
+
+    fetchChapters();
 </script>
 </body>
 </html>
