@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>完整条款 · Arseeya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
+            color: #eee;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .back-home {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .back-home:hover {
+            background: #c5314b;
+        }
+        .terms-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        .last-updated {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .toc {
+            background: rgba(0,0,0,0.2);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .toc h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #e94560;
+        }
+        .toc-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .toc-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            transition: 0.2s;
+        }
+        .toc-links a:hover {
+            background: #e94560;
+            color: white;
+        }
+        .terms-content {
+            line-height: 1.6;
+        }
+        .terms-content h2 {
+            font-size: 1.2rem;
+            color: #e94560;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid #e94560;
+            padding-left: 0.8rem;
+        }
+        .terms-content h3 {
+            font-size: 1rem;
+            color: #ddd;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+            padding-left: 0.5rem;
+        }
+        .terms-content p, .terms-content li {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+        }
+        .terms-content ul, .terms-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .terms-content strong {
+            color: #e94560;
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        @media (max-width: 640px) {
+            .terms-card {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="back-home">← 返回首页</a>
+    <div class="terms-card">
+        <h1>📜 完整网站使用条款、版权声明与法律政策</h1>
+        <div class="last-updated">
+            最后更新日期：2026年5月15日<br>
+            网站所有者/作者：Arseeya（阿尔茜娅） | 网站域名：arseeya.link<br>
+            联系邮箱：arseeya@outlook.com | © Arseeya. All Rights Reserved.
+        </div>
+
+        <div class="toc">
+            <h3>📖 目录</h3>
+            <div class="toc-links">
+                <a href="#sec1">1. 定义</a>
+                <a href="#sec2">2. 知识产权与版权完整声明</a>
+                <a href="#sec3">3. 用户行为规范</a>
+                <a href="#sec4">4. APP使用条款</a>
+                <a href="#sec5">5. 付费项目与约稿条款</a>
+                <a href="#sec6">6. 未成年人保护</a>
+                <a href="#sec7">7. 免责声明与责任限制</a>
+                <a href="#sec8">8. 侵权投诉</a>
+                <a href="#sec9">9. 国际用户特别声明</a>
+                <a href="#sec10">10. 隐私与数据保护</a>
+                <a href="#sec11">11. 管辖法律、仲裁与争议解决</a>
+                <a href="#sec12">12. 条款修改与生效规则</a>
+                <a href="#sec13">13. 可分割性</a>
+                <a href="#sec14">14. 联系信息</a>
+                <a href="#sec15">15. 存档说明</a>
+            </div>
+        </div>
+
+        <div class="terms-content">
+            <h2 id="sec1">1. 定义</h2>
+            <p><strong>“OC” / “阿尔茜娅 / Arseeya”</strong>：指本网站所展示的唯一原创角色，包括其名称、形象、设定、背景故事、关系网、标志物、世界观位置等全部独创性表达。</p>
+            <p><strong>“衍生作品”</strong>：指基于OC创作的插画、漫画、小说、设定图、视频、手工作品等任何形式的新表达。</p>
+            <p><strong>“AI系统”</strong>：指包括但不限于大语言模型、图像生成模型、扩散模型、嵌入向量、微调、LoRA、提示词工程等任何人工智能相关的训练、推理或生成技术。</p>
+            <p><strong>“商业目的”</strong>：包括但不限于直接销售、广告分成、赞助内容、会员专属、众筹回报、虚拟资产交易、NFT铸造、付费课程、平台激励变现、售卖周边等任何直接或间接获取经济利益的行为。</p>
+            <p><strong>“付费项目”</strong>：指作者通过本网站或其他渠道提供的需要用户支付费用方可获取或参与的服务、内容或权益，包括但不限于文章约稿、定制创作、会员订阅、数字商品等。</p>
+            <p><strong>“静态托管”</strong>：指本网站以预先生成的静态文件方式托管于第三方平台，不包含服务器端动态处理、用户账号系统、评论或上传功能。</p>
+            <p><strong>“一线城市”</strong>：指北京市、上海市、广州市、深圳市。</p>
+
+            <h2 id="sec2">2. 知识产权与版权完整声明</h2>
+            <h3>2.1 版权归属</h3>
+            <p>本网站（arseeya.link）及其全部页面、通过本网站提供的APP、所有可访问内容，其完整版权均排他性地归属于 Arseeya（阿尔茜娅），包括：原创角色（OC）、衍生作品、网站本身（静态托管内容）、自行开发的APP。</p>
+            <h3>2.2 绝对禁止行为</h3>
+            <p>未经 Arseeya 事先明确的书面授权，任何人不得：复制、转载、发行、出租、改编、翻译、反向工程、用于商业目的、删除版权标记、将角色输入AI系统、在AI提示词中使用“阿尔茜娅/Arseeya”。</p>
+            <h3>2.3 允许的个人使用</h3>
+            <p>允许非商业社交媒体分享，但必须清晰标注© Arseeya / arseeya.link，不得裁剪水印或丑化。</p>
+            <h3>2.4 二次创作政策</h3>
+            <p>允许非商业二创，建议标注“基于 Arseeya（阿尔茜娅）的 OC 创作”。禁止商业变现和AI输入。作者保留变更政策的权利。</p>
+
+            <h2 id="sec3">3. 用户行为规范</h2>
+            <p>允许搜索引擎正常抓取。禁止批量下载、AI训练爬虫、冒充他人、压力测试、否认版权。</p>
+
+            <h2 id="sec4">4. APP使用条款</h2>
+            <p>授予个人非商业许可。禁止反编译、转售、植入广告、移除版权信息。作者保留停止服务的权利。</p>
+
+            <h2 id="sec5">5. 付费项目与约稿条款</h2>
+            <h3>5.1 一般规定</h3>
+            <p>作者未来可能通过本网站或其他渠道提供付费项目。每项付费项目均有独立的定价、交付标准及服务说明，以该项目发布时的具体说明为准。</p>
+            <h3>5.2 文章约稿特别条款</h3>
+            <p><strong>版权归属：</strong>约稿所产生的文章，其完整著作权归作者 Arseeya 所有。用户获得的是个人、非排他、不可转让的使用许可。</p>
+            <p><strong>用户的权利：</strong>用户有权在非商业范围内自行展示该文章，但须标注“本文由 Arseeya 创作”。用户有权提出修改意见，免费修改次数不超过3次。</p>
+            <p><strong>禁止行为：</strong>用户不得将约稿文章用于任何商业目的；不得声称自己是文章的创作者；不得公开发布修改版。</p>
+            <p><strong>退款政策：</strong>若作者未能按约定完成，用户有权要求退款。作者已提供初稿的退还50%，未提供初稿的全额退还。</p>
+            <h3>5.3 通用条款</h3>
+            <p>所有付费项目的费用一经支付，除本条款另有约定外，不予退还。作者不对不可抗力导致的交付延迟承担责任。</p>
+
+            <h2 id="sec6">6. 未成年人保护</h2>
+            <p>网站内容面向8周岁以上用户。APP面向13周岁以上用户。付费项目仅面向18周岁以上用户。</p>
+
+            <h2 id="sec7">7. 免责声明与责任限制</h2>
+            <p>“现状”提供，不作任何保证。免费服务责任上限100元人民币；付费项目责任上限不超过实际支付金额。</p>
+
+            <h2 id="sec8">8. 侵权投诉</h2>
+            <p>发送通知至 arseeya@outlook.com。5个工作日内受理，15个工作日内完成处理。</p>
+
+            <h2 id="sec9">9. 国际用户特别声明</h2>
+            <p>如果您位于欧洲经济区（EEA）、英国或加州，请注意本网站及APP由位于中国的个人提供，可能无法完全符合GDPR或CCPA的要求。您继续使用即表示您确认已了解并接受此限制。</p>
+
+            <h2 id="sec10">10. 隐私与数据保护（静态托管说明）</h2>
+            <p>无账号、无评论、无追踪cookies。托管服务商可能记录IP用于安全。邮件保留不超过3年。付费项目数据保留不超过5年。</p>
+
+            <h2 id="sec11">11. 管辖法律、仲裁与争议解决</h2>
+            <p><strong>适用法律：</strong>中华人民共和国法律。</p>
+            <p><strong>仲裁：</strong>协商不成的，可向中国国际经济贸易仲裁委员会（CIETAC）申请仲裁。仲裁地为作者住所地所在城市；如作者住所地为非一线城市，则仲裁地为深圳市。</p>
+            <p><strong>诉讼管辖：</strong>双方协商不成的，任何一方可向作者住所地有管辖权的人民法院提起诉讼。</p>
+
+            <h2 id="sec12">12. 条款修改与生效规则</h2>
+            <p>修改后发布，正常情况1日后生效，紧急情况当日生效。继续使用即视为接受。</p>
+
+            <h2 id="sec13">13. 可分割性</h2>
+            <p>部分条款无效不影响其余条款效力。</p>
+
+            <h2 id="sec14">14. 联系信息</h2>
+            <p>唯一官方渠道：arseeya@outlook.com</p>
+
+            <h2 id="sec15">15. 存档说明</h2>
+            <p>历史版本可请求获取。</p>
+
+            <p style="margin-top:1.5rem; padding:0.8rem; background:rgba(0,0,0,0.3); border-radius:0.5rem; text-align:center;"><strong>使用本网站（arseeya.link）、APP或购买付费项目，即表示您已阅读、理解并同意受上述全部条款的约束。如不同意，请立即停止使用。</strong></p>
+            <p style="margin-top:0.8rem; text-align:center; font-size:0.7rem; color:#888;">本版本自2026年5月15日起生效</p>
+        </div>
+    </div>
+    <footer>© Arseeya. All Rights Reserved | <a href="index.html" style="color:#aaa;">返回首页</a> | <a href="index.html" style="color:#aaa;">📜 回到主页</a></footer>
+</div>
+</body>
+</html>
