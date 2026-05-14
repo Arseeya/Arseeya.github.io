@@ -93,6 +93,13 @@
             font-size: 0.8rem;
             color: #aaa;
         }
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #e94560;
+        }
         .error-msg {
             background: rgba(233,69,96,0.2);
             border: 1px solid #e94560;
@@ -121,7 +128,9 @@
 
     <div id="appsGrid" class="grid">加载中...</div>
 
-    <footer>© Arseeya. All Rights Reserved</footer>
+    <footer>
+        © Arseeya. All Rights Reserved | <a href="terms.html">📜 完整条款</a>
+    </footer>
 </div>
 
 <script>
@@ -137,11 +146,9 @@
                 return;
             }
             
-            // 获取当前页面的基础 URL
             const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
             
             grid.innerHTML = data.apps.map(app => {
-                // 下载链接：直接指向 downloads/apps/ 下的文件
                 const downloadUrl = `${baseUrl}downloads/apps/${encodeURIComponent(app.filename)}`;
                 return `
                     <div class="card">
