@@ -25,12 +25,10 @@
             padding: 1rem;
         }
 
-        /* 主内容（默认隐藏） */
         .main-content {
             display: none;
         }
 
-        /* 遮罩层（通用） */
         .overlay {
             position: fixed;
             top: 0;
@@ -57,6 +55,10 @@
             flex-direction: column;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .region-modal {
+            max-width: 450px;
         }
 
         .modal-header {
@@ -151,11 +153,6 @@
             background: rgba(233,69,96,0.2);
         }
 
-        /* 地区弹窗（更小） */
-        .region-modal {
-            max-width: 450px;
-        }
-
         .region-warning {
             background: rgba(233,69,96,0.15);
             border-left: 3px solid #e94560;
@@ -164,7 +161,6 @@
             border-radius: 0.5rem;
         }
 
-        /* 滚动条 */
         .modal-body::-webkit-scrollbar {
             width: 4px;
         }
@@ -438,7 +434,28 @@
     </style>
 </head>
 <body>
-    <!-- 条款弹窗 -->
+    <!-- 地区选择弹窗（最先显示） -->
+    <div id="regionOverlay" class="overlay">
+        <div class="modal region-modal">
+            <div class="modal-header">
+                <h1>📍 地区确认</h1>
+            </div>
+            <div class="modal-body">
+                <p>本网站由位于<strong>中国</strong>的个人运营。</p>
+                <div class="region-warning">
+                    <p>⚠️ <strong>国际用户特别声明</strong></p>
+                    <p>若您位于<strong>欧洲经济区（EEA）、英国或加州</strong>，请注意本网站及APP可能无法完全符合GDPR或CCPA的要求。</p>
+                    <p style="margin-top:0.5rem;">您确认并同意后，方可继续使用本网站。</p>
+                </div>
+                <p style="font-size:0.8rem; color:#aaa; margin-top:0.5rem;">此确认将被记录，用于法律合规目的。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="confirmRegionBtn">✓ 我已了解并确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 条款弹窗（初始隐藏） -->
     <div id="termsOverlay" class="overlay" style="display: none;">
         <div class="modal">
             <div class="modal-header">
@@ -516,28 +533,7 @@
         </div>
     </div>
 
-    <!-- 地区选择弹窗 -->
-    <div id="regionOverlay" class="overlay" style="display: none;">
-        <div class="modal region-modal">
-            <div class="modal-header">
-                <h1>📍 地区确认</h1>
-            </div>
-            <div class="modal-body">
-                <p>本网站由位于<strong>中国</strong>的个人运营。</p>
-                <div class="region-warning">
-                    <p>⚠️ <strong>国际用户特别声明</strong></p>
-                    <p>若您位于<strong>欧洲经济区（EEA）、英国或加州</strong>，请注意本网站及APP可能无法完全符合GDPR或CCPA的要求。</p>
-                    <p style="margin-top:0.5rem;">您确认并同意后，方可继续使用本网站。</p>
-                </div>
-                <p style="font-size:0.8rem; color:#aaa; margin-top:0.5rem;">此确认将被记录，用于法律合规目的。</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="confirmRegionBtn">✓ 我已了解并确认</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 主内容 -->
+    <!-- 主内容（初始隐藏） -->
     <div id="mainContent" class="main-content">
         <div class="container">
             <nav class="navbar">
@@ -614,157 +610,182 @@
     </div>
 
     <script>
-        // ========== 配置 ==========
-        const TERMS_STORAGE_KEY = 'arseeya_terms_version';
-        const REGION_STORAGE_KEY = 'arseeya_region_confirmed';
-        
-        let currentTermsVersion = null;
-        let termsData = null;
+        (function() {
+            // ========== 配置 ==========
+            const TERMS_STORAGE_KEY = 'arseeya_terms_version';
+            const REGION_STORAGE_KEY = 'arseeya_region_confirmed';
+            
+            let currentTermsVersion = null;
 
-        // ========== 显示/隐藏 ==========
-        function showTermsOverlay() {
-            document.getElementById('termsOverlay').style.display = 'flex';
-            document.getElementById('mainContent').style.display = 'none';
-        }
-
-        function showRegionOverlay() {
-            document.getElementById('regionOverlay').style.display = 'flex';
-            document.getElementById('mainContent').style.display = 'none';
-        }
-
-        function hideAllOverlaysAndShowMain() {
-            document.getElementById('termsOverlay').style.display = 'none';
-            document.getElementById('regionOverlay').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-        }
-
-        // ========== 地区确认 ==========
-        function confirmRegion() {
-            localStorage.setItem(REGION_STORAGE_KEY, 'true');
-            // 地区确认后，检查条款
-            checkTermsVersion();
-        }
-
-        // ========== 条款同意/拒绝 ==========
-        function agreeToTerms() {
-            localStorage.setItem(TERMS_STORAGE_KEY, currentTermsVersion);
-            // 条款同意后，直接显示主内容
-            hideAllOverlaysAndShowMain();
-            // 记录日志（可选，控制台输出）
-            console.log(`[Terms] User agreed to terms version ${currentTermsVersion} at ${new Date().toISOString()}`);
-        }
-
-        function disagreeToTerms() {
-            alert('您已拒绝网站使用条款，页面将关闭。');
-            document.body.innerHTML = '<div style="text-align:center; padding:4rem; min-height:100vh; background:#0f0c1f; color:#eee;"><h1>已拒绝条款</h1><p>您可以选择关闭此页面。</p><p style="margin-top:2rem; font-size:0.8rem; color:#aaa;">© Arseeya. All Rights Reserved.</p></div>';
-        }
-
-        // ========== 检查条款版本 ==========
-        async function checkTermsVersion() {
-            try {
-                const response = await fetch('version.json');
-                if (!response.ok) {
-                    console.error('无法加载 version.json');
-                    hideAllOverlaysAndShowMain();
-                    return;
-                }
-                const data = await response.json();
-                termsData = data;
-                currentTermsVersion = data.terms_version;
-                
-                // 更新弹窗中的日期显示
-                if (data.last_updated) {
-                    const termsHeader = document.getElementById('termsVersionInfo');
-                    if (termsHeader) {
-                        termsHeader.innerHTML = `最后更新日期：${data.last_updated} | © Arseeya. All Rights Reserved.`;
-                    }
-                }
-
-                // 获取本地存储的条款版本
-                const savedVersion = localStorage.getItem(TERMS_STORAGE_KEY);
-                
-                if (savedVersion && parseInt(savedVersion) === currentTermsVersion) {
-                    // 条款版本一致，直接显示主内容
-                    hideAllOverlaysAndShowMain();
-                } else {
-                    // 条款版本不一致或首次访问，显示条款弹窗
-                    showTermsOverlay();
-                }
-            } catch (error) {
-                console.error('检查条款版本失败:', error);
-                hideAllOverlaysAndShowMain();
-            }
-        }
-
-        // ========== 检查地区确认 ==========
-        function checkRegion() {
-            const regionConfirmed = localStorage.getItem(REGION_STORAGE_KEY);
-            if (regionConfirmed === 'true') {
-                // 已确认过地区，直接检查条款
-                checkTermsVersion();
-            } else {
-                // 未确认地区，显示地区弹窗
-                showRegionOverlay();
-            }
-        }
-
-        // ========== 绑定按钮事件 ==========
-        function bindButtons() {
+            // ========== 获取 DOM 元素 ==========
+            const regionOverlay = document.getElementById('regionOverlay');
+            const termsOverlay = document.getElementById('termsOverlay');
+            const mainContent = document.getElementById('mainContent');
+            const confirmRegionBtn = document.getElementById('confirmRegionBtn');
             const agreeTermsBtn = document.getElementById('agreeTermsBtn');
             const disagreeTermsBtn = document.getElementById('disagreeTermsBtn');
-            const confirmRegionBtn = document.getElementById('confirmRegionBtn');
-            
-            if (agreeTermsBtn) agreeTermsBtn.addEventListener('click', agreeToTerms);
-            if (disagreeTermsBtn) disagreeTermsBtn.addEventListener('click', disagreeToTerms);
-            if (confirmRegionBtn) confirmRegionBtn.addEventListener('click', confirmRegion);
-        }
 
-        // ========== 主界面交互功能 ==========
-        function initMainPage() {
-            // 移动端菜单
-            const toggle = document.getElementById('menuToggle');
-            const nav = document.getElementById('navLinks');
-            if (toggle) {
-                toggle.addEventListener('click', () => nav.classList.toggle('show'));
+            // ========== 显示/隐藏函数 ==========
+            function showRegionOverlay() {
+                if (regionOverlay) regionOverlay.style.display = 'flex';
+                if (termsOverlay) termsOverlay.style.display = 'none';
+                if (mainContent) mainContent.style.display = 'none';
             }
 
-            // 邮件功能
-            function sendEmail(email) {
-                const userAgent = navigator.userAgent.toLowerCase();
-                let mailtoUrl = `mailto:${email}`;
-                const isAndroid = userAgent.includes('android');
-                if (isAndroid) {
-                    mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
-                }
-                window.location.href = mailtoUrl;
+            function showTermsOverlay() {
+                if (regionOverlay) regionOverlay.style.display = 'none';
+                if (termsOverlay) termsOverlay.style.display = 'flex';
+                if (mainContent) mainContent.style.display = 'none';
             }
 
-            const email1 = document.getElementById('emailLink1');
-            const email2 = document.getElementById('emailLink2');
-            if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
-            if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
+            function showMainContent() {
+                if (regionOverlay) regionOverlay.style.display = 'none';
+                if (termsOverlay) termsOverlay.style.display = 'none';
+                if (mainContent) mainContent.style.display = 'block';
+            }
 
-            // 加载版本信息
-            fetch('version.json')
-                .then(res => res.ok ? res.json() : null)
-                .then(data => {
-                    const div = document.getElementById('updateInfo');
-                    if (data && data.last_updated) {
-                        div.innerHTML = `🕒 最后更新：${data.last_updated} | 网站版本：${data.site_version || '1.0.0'}`;
-                    } else {
-                        div.innerHTML = `🕒 潮汐涌动，故事继续`;
+            // ========== 地区确认 ==========
+            function confirmRegion() {
+                console.log('地区确认按钮被点击');
+                localStorage.setItem(REGION_STORAGE_KEY, 'true');
+                // 地区确认后，检查条款
+                checkTermsVersion();
+            }
+
+            // ========== 条款同意/拒绝 ==========
+            function agreeToTerms() {
+                console.log('同意条款按钮被点击，版本:', currentTermsVersion);
+                localStorage.setItem(TERMS_STORAGE_KEY, currentTermsVersion);
+                showMainContent();
+                // 记录日志（控制台输出，可被服务器日志记录）
+                console.log(`[Terms] User agreed to terms version ${currentTermsVersion} at ${new Date().toISOString()}`);
+            }
+
+            function disagreeToTerms() {
+                alert('您已拒绝网站使用条款，页面将关闭。');
+                document.body.innerHTML = '<div style="text-align:center; padding:4rem; min-height:100vh; background:#0f0c1f; color:#eee;"><h1>已拒绝条款</h1><p>您可以选择关闭此页面。</p><p style="margin-top:2rem; font-size:0.8rem; color:#aaa;">© Arseeya. All Rights Reserved.</p></div>';
+            }
+
+            // ========== 检查条款版本 ==========
+            async function checkTermsVersion() {
+                try {
+                    const response = await fetch('version.json?_=' + Date.now());
+                    if (!response.ok) {
+                        console.error('无法加载 version.json');
+                        showMainContent();
+                        return;
                     }
-                })
-                .catch(() => {
-                    const div = document.getElementById('updateInfo');
-                    if (div) div.innerHTML = `🕒 潮汐涌动，故事继续`;
-                });
-        }
+                    const data = await response.json();
+                    currentTermsVersion = data.terms_version;
+                    
+                    // 更新弹窗中的日期显示
+                    if (data.last_updated) {
+                        const termsHeader = document.getElementById('termsVersionInfo');
+                        if (termsHeader) {
+                            termsHeader.innerHTML = `最后更新日期：${data.last_updated} | © Arseeya. All Rights Reserved.`;
+                        }
+                    }
 
-        // ========== 启动 ==========
-        bindButtons();
-        checkRegion();  // 先检查地区，再检查条款
-        initMainPage();
+                    // 获取本地存储的条款版本
+                    const savedVersion = localStorage.getItem(TERMS_STORAGE_KEY);
+                    
+                    if (savedVersion && parseInt(savedVersion) === currentTermsVersion) {
+                        // 条款版本一致，直接显示主内容
+                        showMainContent();
+                    } else {
+                        // 条款版本不一致或首次访问，显示条款弹窗
+                        showTermsOverlay();
+                    }
+                } catch (error) {
+                    console.error('检查条款版本失败:', error);
+                    showMainContent();
+                }
+            }
+
+            // ========== 检查地区确认 ==========
+            function checkRegion() {
+                const regionConfirmed = localStorage.getItem(REGION_STORAGE_KEY);
+                console.log('地区确认状态:', regionConfirmed);
+                if (regionConfirmed === 'true') {
+                    // 已确认过地区，直接检查条款
+                    checkTermsVersion();
+                } else {
+                    // 未确认地区，显示地区弹窗
+                    showRegionOverlay();
+                }
+            }
+
+            // ========== 绑定按钮事件 ==========
+            function bindButtons() {
+                if (confirmRegionBtn) {
+                    console.log('绑定地区确认按钮');
+                    confirmRegionBtn.addEventListener('click', confirmRegion);
+                } else {
+                    console.error('找不到 confirmRegionBtn');
+                }
+                
+                if (agreeTermsBtn) {
+                    console.log('绑定同意条款按钮');
+                    agreeTermsBtn.addEventListener('click', agreeToTerms);
+                } else {
+                    console.error('找不到 agreeTermsBtn');
+                }
+                
+                if (disagreeTermsBtn) {
+                    console.log('绑定拒绝条款按钮');
+                    disagreeTermsBtn.addEventListener('click', disagreeToTerms);
+                } else {
+                    console.error('找不到 disagreeTermsBtn');
+                }
+            }
+
+            // ========== 主界面交互功能 ==========
+            function initMainPage() {
+                // 移动端菜单
+                const toggle = document.getElementById('menuToggle');
+                const nav = document.getElementById('navLinks');
+                if (toggle) {
+                    toggle.addEventListener('click', () => nav.classList.toggle('show'));
+                }
+
+                // 邮件功能
+                function sendEmail(email) {
+                    const userAgent = navigator.userAgent.toLowerCase();
+                    let mailtoUrl = `mailto:${email}`;
+                    const isAndroid = userAgent.includes('android');
+                    if (isAndroid) {
+                        mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
+                    }
+                    window.location.href = mailtoUrl;
+                }
+
+                const email1 = document.getElementById('emailLink1');
+                const email2 = document.getElementById('emailLink2');
+                if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
+                if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
+
+                // 加载版本信息
+                fetch('version.json?_=' + Date.now())
+                    .then(res => res.ok ? res.json() : null)
+                    .then(data => {
+                        const div = document.getElementById('updateInfo');
+                        if (data && data.last_updated) {
+                            div.innerHTML = `🕒 最后更新：${data.last_updated} | 网站版本：${data.site_version || '1.0.0'}`;
+                        } else {
+                            div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                        }
+                    })
+                    .catch(() => {
+                        const div = document.getElementById('updateInfo');
+                        if (div) div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                    });
+            }
+
+            // ========== 启动 ==========
+            bindButtons();
+            checkRegion();
+            initMainPage();
+        })();
     </script>
 </body>
 </html>
