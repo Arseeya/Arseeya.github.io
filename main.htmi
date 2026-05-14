@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Arseeya · 祂的宠儿</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #eee;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #eee;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #e94560;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            color: #eee;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+        }
+
+        .hero {
+            margin: 1rem 0 2rem;
+            border-radius: 2rem;
+            overflow: hidden;
+            position: relative;
+            min-height: 40vh;
+            background: linear-gradient(145deg, #2a1e3c, #0f0c1f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 1.5rem;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        @media (min-width: 1024px) {
+            .hero {
+                min-height: 60vh;
+            }
+            .hero h1 {
+                font-size: 4rem;
+            }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+
+        .setting-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .setting-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .setting-img:hover {
+            transform: scale(1.02);
+        }
+
+        @media (min-width: 768px) {
+            .setting-container {
+                max-width: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .setting-container {
+                max-width: 300px;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.7rem 1.6rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e94560;
+        }
+
+        .btn:hover {
+            background: #c5314b;
+            transform: scale(1.02);
+        }
+
+        .two-columns {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .two-columns > * {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .works-section {
+            margin-bottom: 3rem;
+        }
+
+        .work-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .work-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .world-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .update-stream {
+            border-left: 3px solid #e94560;
+            padding-left: 1rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #e94560;
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin: 1.5rem 0 1rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">Arseeya</div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="main.html">首页</a></li>
+                <li><a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a></li>
+                <li><a href="world.html">百科</a></li>
+                <li><a href="download.html">下载</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero">
+            <img src="hero.jpg" alt="Arseeya 头图" onerror="this.style.display='none'">
+            <div class="hero-content">
+                <h1>Arseeya</h1>
+                <div class="hero-tagline">我来，我记，我见证。</div>
+            </div>
+        </div>
+
+        <div class="two-columns">
+            <div class="card">
+                <h2>关于 Arseeya</h2>
+                <p>祂的宠儿，记忆的冲浪者。</p>
+                <p>生于生命之奥秘，成于人世之美好。</p>
+            </div>
+            <div class="card">
+                <h2>设定图</h2>
+                <div class="setting-container">
+                    <img class="setting-img" src="setting.jpg" alt="Arseeya 设定图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                </div>
+            </div>
+        </div>
+
+        <div class="works-section">
+            <h2 class="section-title">📖 作品</h2>
+            <div class="work-grid">
+                <div class="work-card">
+                    <h3>听潮事记</h3>
+                    <p>记忆的潮汐起落之间，那些被毁灭的故事。</p>
+                    <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/" class="btn" target="_blank">开始阅读 →</a>
+                </div>
+                <div class="work-card">
+                    <h3>听潮事记 · 番外集</h3>
+                    <p>潮水未止，余音不绝。</p>
+                    <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0%E7%95%AA%E5%A4%96%E9%9B%86/" class="btn" target="_blank">开始阅读 →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="world-section">
+            <h2>归终百科</h2>
+            <p style="margin: 0.5rem 0;">人物 · 地点 · 知识 —— 深入世界</p>
+            <a href="world.html" class="btn btn-outline">探索世界 →</a>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h2>📦 下载中心</h2>
+            <p>Android App 及其它资源</p>
+            <a href="download.html" class="btn">前往下载 →</a>
+        </div>
+
+        <div class="update-stream" id="updateInfo">
+            📅 加载更新信息...
+        </div>
+
+        <footer>
+            <span id="emailLink1" style="cursor:pointer;">📧 arseeya@outlook.com</span> &nbsp;|&nbsp;
+            <span id="emailLink2" style="cursor:pointer;">le.arseeya@gmail.com</span><br>
+            © Arseeya. All Rights Reserved
+        </footer>
+    </div>
+
+    <script>
+        // 移动端菜单
+        const toggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('navLinks');
+        if(toggle) {
+            toggle.addEventListener('click', () => nav.classList.toggle('show'));
+        }
+
+        // 智能邮件链接函数
+        function sendEmail(email) {
+            const userAgent = navigator.userAgent.toLowerCase();
+            let mailtoUrl = `mailto:${email}`;
+            
+            const isOutlookApp = userAgent.includes('outlook') || 
+                                 (navigator.msMaxTouchPoints !== undefined) ||
+                                 window.external && ('msOutlook' in window.external);
+            
+            const isWindows = userAgent.includes('windows');
+            const isAndroid = userAgent.includes('android');
+            const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
+            
+            if (isOutlookApp || (isWindows && email.includes('outlook.com'))) {
+                mailtoUrl = `outlook:${email}`;
+            }
+            
+            if (isAndroid) {
+                mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
+            }
+            
+            if (isIOS) {
+                mailtoUrl = `mailto:${email}`;
+            }
+            
+            window.location.href = mailtoUrl;
+            
+            setTimeout(() => {
+                if (document.hasFocus()) {
+                    const copyFallback = confirm(`无法自动打开邮件客户端。\n是否复制邮箱地址 "${email}" 到剪贴板？`);
+                    if (copyFallback) {
+                        navigator.clipboard.writeText(email).then(() => {
+                            alert('邮箱地址已复制，请手动粘贴到邮件软件中发送。');
+                        }).catch(() => {
+                            alert(`请手动复制邮箱：${email}`);
+                        });
+                    }
+                }
+            }, 500);
+        }
+
+        document.getElementById('emailLink1').addEventListener('click', () => sendEmail('arseeya@outlook.com'));
+        document.getElementById('emailLink2').addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
+
+        fetch('version.json')
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                const div = document.getElementById('updateInfo');
+                if(data && data.last_updated) {
+                    div.innerHTML = `🕒 最后更新：${data.last_updated}`;
+                } else {
+                    div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                }
+            })
+            .catch(() => {
+                document.getElementById('updateInfo').innerHTML = `🕒 潮汐涌动，故事继续`;
+            });
+    </script>
+</body>
+</html>
