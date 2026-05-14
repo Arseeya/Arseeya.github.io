@@ -164,7 +164,7 @@
             border-radius: 4px;
         }
 
-        /* 以下是你原来的主界面样式 */
+        /* 主界面样式 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -426,11 +426,11 @@
 </head>
 <body>
     <!-- 遮罩层（条款弹窗） -->
-    <div id="termsOverlay" class="terms-overlay">
+    <div id="termsOverlay" class="terms-overlay" style="display: none;">
         <div class="terms-modal">
             <div class="terms-header">
                 <h1>📜 网站使用条款</h1>
-                <p>最后更新日期：2026年5月14日 | © Arseeya. All Rights Reserved.</p>
+                <p id="termsVersionInfo">最后更新日期：2026年5月14日 | © Arseeya. All Rights Reserved.</p>
             </div>
             <div class="terms-body">
                 <p style="text-align:center;"><strong>网站所有者/作者：Arseeya（阿尔茜娅）<br>网站域名：arseeya.link<br>联系邮箱：arseeya@outlook.com</strong></p>
@@ -513,9 +513,9 @@
                     <p>生于生命之奥秘，成于人世之美好。</p>
                 </div>
                 <div class="card">
-                    <h2>头图</h2>
+                    <h2>设定图</h2>
                     <div class="setting-container">
-                        <img class="setting-img" src="setting.jpg" alt="Arseeya 头图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                        <img class="setting-img" src="setting.jpg" alt="Arseeya 设定图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     </div>
                 </div>
             </div>
@@ -561,67 +561,133 @@
     </div>
 
     <script>
-        // 检查是否已同意条款
-        const hasAgreed = localStorage.getItem('arseeya_terms_agreed');
+        // 条款版本 key
+        const TERMS_STORAGE_KEY = 'arseeya_terms_version';
 
-        if (hasAgreed === 'true') {
-            // 已同意，直接显示主内容，隐藏遮罩
-            document.getElementById('termsOverlay').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-        } else {
-            // 未同意，显示遮罩
+        // 全局变量存储当前条款版本
+        let currentTermsVersion = null;
+
+        // 显示条款弹窗
+        function showTermsOverlay() {
             document.getElementById('termsOverlay').style.display = 'flex';
             document.getElementById('mainContent').style.display = 'none';
         }
 
-        // 同意按钮
-        document.getElementById('agreeBtn').addEventListener('click', function() {
-            localStorage.setItem('arseeya_terms_agreed', 'true');
+        // 隐藏条款弹窗，显示主内容
+        function hideTermsAndShowMain() {
             document.getElementById('termsOverlay').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
-        });
+        }
 
-        // 不同意按钮
-        document.getElementById('disagreeBtn').addEventListener('click', function() {
+        // 用户同意条款
+        function agreeToTerms() {
+            localStorage.setItem(TERMS_STORAGE_KEY, currentTermsVersion);
+            hideTermsAndShowMain();
+        }
+
+        // 用户拒绝条款
+        function disagreeToTerms() {
             alert('您已拒绝网站使用条款，页面将关闭。');
-            // 清空页面内容
             document.body.innerHTML = '<div style="text-align:center; padding:4rem; min-height:100vh; background:#0f0c1f; color:#eee;"><h1>已拒绝条款</h1><p>您可以选择关闭此页面。</p><p style="margin-top:2rem; font-size:0.8rem; color:#aaa;">© Arseeya. All Rights Reserved.</p></div>';
-        });
-
-        // 以下是你原来的主界面 JS
-        const toggle = document.getElementById('menuToggle');
-        const nav = document.getElementById('navLinks');
-        if(toggle) {
-            toggle.addEventListener('click', () => nav.classList.toggle('show'));
         }
 
-        function sendEmail(email) {
-            const userAgent = navigator.userAgent.toLowerCase();
-            let mailtoUrl = `mailto:${email}`;
-            const isWindows = userAgent.includes('windows');
-            const isAndroid = userAgent.includes('android');
-            const isIOS = userAgent.includes('iphone') || userAgent.includes('ipad');
-            
-            if (isAndroid) {
-                mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
-            }
-            window.location.href = mailtoUrl;
-        }
-
-        const email1 = document.getElementById('emailLink1');
-        const email2 = document.getElementById('emailLink2');
-        if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
-        if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
-
-        fetch('version.json')
-            .then(res => res.ok ? res.json() : null)
-            .then(data => {
-                const div = document.getElementById('updateInfo');
-                if(data && data.last_updated) {
-                    div.innerHTML = `🕒 最后更新：${data.last_updated}`;
+        // 检查条款版本
+        async function checkTermsVersion() {
+            try {
+                const response = await fetch('version.json');
+                if (!response.ok) {
+                    console.error('无法加载 version.json');
+                    // 如果无法加载，默认显示主内容（降级处理）
+                    document.getElementById('mainContent').style.display = 'block';
+                    return;
                 }
-            })
-            .catch(() => {});
+                const data = await response.json();
+                currentTermsVersion = data.terms_version;
+                
+                // 更新弹窗中的日期显示
+                if (data.last_updated) {
+                    const termsHeader = document.getElementById('termsVersionInfo');
+                    if (termsHeader) {
+                        termsHeader.innerHTML = `最后更新日期：${data.last_updated} | © Arseeya. All Rights Reserved.`;
+                    }
+                }
+
+                // 获取本地存储的条款版本
+                const savedVersion = localStorage.getItem(TERMS_STORAGE_KEY);
+                
+                if (savedVersion && parseInt(savedVersion) === currentTermsVersion) {
+                    // 版本一致，直接显示主内容
+                    hideTermsAndShowMain();
+                } else {
+                    // 版本不一致或首次访问，显示条款弹窗
+                    showTermsOverlay();
+                }
+            } catch (error) {
+                console.error('检查条款版本失败:', error);
+                // 出错时默认显示主内容（降级处理）
+                document.getElementById('mainContent').style.display = 'block';
+            }
+        }
+
+        // 绑定按钮事件
+        function bindButtons() {
+            const agreeBtn = document.getElementById('agreeBtn');
+            const disagreeBtn = document.getElementById('disagreeBtn');
+            
+            if (agreeBtn) {
+                agreeBtn.addEventListener('click', agreeToTerms);
+            }
+            if (disagreeBtn) {
+                disagreeBtn.addEventListener('click', disagreeToTerms);
+            }
+        }
+
+        // 主界面交互功能
+        function initMainPage() {
+            // 移动端菜单
+            const toggle = document.getElementById('menuToggle');
+            const nav = document.getElementById('navLinks');
+            if (toggle) {
+                toggle.addEventListener('click', () => nav.classList.toggle('show'));
+            }
+
+            // 邮件功能
+            function sendEmail(email) {
+                const userAgent = navigator.userAgent.toLowerCase();
+                let mailtoUrl = `mailto:${email}`;
+                const isAndroid = userAgent.includes('android');
+                if (isAndroid) {
+                    mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
+                }
+                window.location.href = mailtoUrl;
+            }
+
+            const email1 = document.getElementById('emailLink1');
+            const email2 = document.getElementById('emailLink2');
+            if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
+            if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
+
+            // 加载版本信息
+            fetch('version.json')
+                .then(res => res.ok ? res.json() : null)
+                .then(data => {
+                    const div = document.getElementById('updateInfo');
+                    if (data && data.last_updated) {
+                        div.innerHTML = `🕒 最后更新：${data.last_updated} | 网站版本：${data.site_version || '1.0.0'}`;
+                    } else {
+                        div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                    }
+                })
+                .catch(() => {
+                    const div = document.getElementById('updateInfo');
+                    if (div) div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                });
+        }
+
+        // 启动
+        bindButtons();
+        checkTermsVersion();
+        initMainPage();
     </script>
 </body>
 </html>
