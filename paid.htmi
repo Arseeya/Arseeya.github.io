@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>付费项目 · Arseeya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
+            color: #eee;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .navbar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .navbar a {
+            color: #ddd;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+        .navbar a:hover {
+            background: #e94560;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(4px);
+            transition: transform 0.2s, background 0.2s;
+            text-align: center;
+        }
+        .project-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        .project-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .project-card h3 {
+            font-size: 1.3rem;
+            color: #e94560;
+            margin-bottom: 0.5rem;
+        }
+        .project-card p {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            color: #e94560;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-disabled:hover {
+            background: #555;
+            transform: none;
+        }
+        .btn:hover {
+            background: #c5314b;
+            transform: scale(1.02);
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #e94560;
+        }
+        @media (max-width: 640px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <a href="index.html">首页</a>
+        <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a>
+        <a href="world.html">百科</a>
+        <a href="download.html">下载</a>
+        <a href="paid.html">付费项目</a>
+    </div>
+
+    <h1>💰 付费项目</h1>
+    <div class="subtitle">支持作者 · 获取定制服务</div>
+
+    <div class="projects-grid">
+        <!-- 约稿卡片 -->
+        <div class="project-card">
+            <div class="project-icon">✍️</div>
+            <h3>文章约稿</h3>
+            <p>定制创作 · 专属故事</p>
+            <div class="status-badge">⏳ 暂未开放</div>
+            <div>
+                <button class="btn btn-disabled" disabled>暂未开放</button>
+            </div>
+        </div>
+
+        <!-- 更多付费项目可在此添加 -->
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 1rem; text-align: center;">
+        <p style="font-size: 0.85rem; color: #aaa;">📖 更多付费项目正在筹备中，敬请期待</p>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 0.5rem;">具体规则以《完整网站使用条款》第5条为准</p>
+    </div>
+
+    <footer>
+        © Arseeya. All Rights Reserved | <a href="terms.html">📜 完整条款</a>
+    </footer>
+</div>
+</body>
+</html>
