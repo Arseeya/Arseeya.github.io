@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>文章约稿 · Arseeya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
+            color: #eee;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            background: #c5314b;
+        }
+        .commission-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .coming-soon-icon {
+            font-size: 4rem;
+            margin: 1.5rem 0;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            border-radius: 2rem;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.9rem;
+            color: #e94560;
+            margin-bottom: 1.5rem;
+        }
+        .info-text {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .info-text p {
+            margin-bottom: 0.5rem;
+        }
+        .btn {
+            display: inline-block;
+            background: #555;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .rule-list {
+            text-align: left;
+            margin: 1rem 0;
+            padding-left: 1.2rem;
+        }
+        .rule-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="paid.html" class="back-link">← 返回付费项目</a>
+    
+    <div class="commission-card">
+        <div class="coming-soon-icon">✍️</div>
+        <h1>文章约稿</h1>
+        <div class="status-badge">⏳ 暂未开放</div>
+        
+        <div class="info-text">
+            <p>📖 约稿服务正在筹备中，敬请期待。</p>
+            <p>📝 开放后将提供以下服务：</p>
+            <ul class="rule-list">
+                <li>✓ 定制故事创作</li>
+                <li>✓ 角色设定扩充</li>
+                <li>✓ 世界观描述</li>
+                <li>✓ 3次免费修改</li>
+            </ul>
+            <p>📧 如有紧急需求，可先通过邮件咨询：<strong>arseeya@outlook.com</strong></p>
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: #888;">具体规则以《完整网站使用条款》第5条为准</p>
+        </div>
+        
+        <button class="btn" disabled>暂未开放</button>
+    </div>
+    
+    <footer>© Arseeya. All Rights Reserved | <a href="terms.html" style="color:#aaa;">📜 完整条款</a></footer>
+</div>
+</body>
+</html>
