@@ -30,6 +30,7 @@
             display: none;
         }
 
+        /* 弹窗遮罩层 */
         .overlay {
             position: fixed;
             top: 0;
@@ -60,6 +61,14 @@
 
         .region-modal {
             max-width: 550px;
+        }
+
+        .paid-modal {
+            max-width: 600px;
+        }
+
+        .gate-modal {
+            max-width: 450px;
         }
 
         .modal-header {
@@ -159,12 +168,82 @@
             background: rgba(233,69,96,0.2);
         }
 
+        .btn-disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-disabled:hover {
+            background: #555;
+            transform: none;
+        }
+
         .region-warning {
             background: rgba(233,69,96,0.15);
             border-left: 3px solid #e94560;
             padding: 0.8rem;
             margin: 1rem 0;
             border-radius: 0.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            color: #eee;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #e94560;
+            background: rgba(0,0,0,0.5);
+        }
+        .error-msg {
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #e94560;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        .project-card h3 {
+            color: #e94560;
+            margin: 0.5rem 0;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(233,69,96,0.2);
+            border: 1px solid #e94560;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.75rem;
+            color: #e94560;
         }
 
         .modal-body::-webkit-scrollbar {
@@ -179,6 +258,7 @@
             border-radius: 4px;
         }
 
+        /* 主界面样式 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -205,6 +285,7 @@
             color: #eee;
             text-decoration: none;
             transition: color 0.2s;
+            cursor: pointer;
         }
         .nav-links a:hover {
             color: #e94560;
@@ -234,6 +315,7 @@
             color: #eee;
             text-decoration: none;
             font-size: 0.85rem;
+            cursor: pointer;
         }
         .dropdown-menu a:hover {
             background: rgba(233,69,96,0.3);
@@ -459,7 +541,7 @@
                     <p>If you are located in the EEA, UK, or California:</p>
                     <ul>
                         <li>Please be aware that this site may not fully comply with GDPR/CCPA.</li>
-                        <li>By continuing to use this site, you confirm that you have read and understood the International User Statement (Section 10 of the full terms).</li>
+                        <li>By continuing to use this site, you confirm that you have read and understood the International User Statement (Section 9 of the full terms).</li>
                     </ul>
                 </div>
                 <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
@@ -468,7 +550,7 @@
                     <p>若您位于欧盟、英国或加州：</p>
                     <ul>
                         <li>请注意本网站可能无法完全符合GDPR/CCPA的要求。</li>
-                        <li>继续使用本网站即表示您确认已阅读并理解国际用户特别声明（完整条款第10条）。</li>
+                        <li>继续使用本网站即表示您确认已阅读并理解国际用户声明（完整条款第9条）。</li>
                     </ul>
                 </div>
                 <div class="region-warning" style="margin-top:1rem;">
@@ -501,6 +583,59 @@
         </div>
     </div>
 
+    <!-- 付费项目弹窗 -->
+    <div id="paidOverlay" class="overlay" style="display: none;">
+        <div class="modal paid-modal">
+            <div class="modal-header">
+                <h1>💰 付费项目</h1>
+                <p>支持作者 · 获取定制服务</p>
+            </div>
+            <div class="modal-body">
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div style="font-size: 2rem;">✍️</div>
+                        <h3>文章约稿</h3>
+                        <p>定制创作 · 专属故事</p>
+                        <div class="status-badge">⏳ 暂未开放</div>
+                        <button class="btn-primary btn-disabled" style="margin-top:0.5rem; padding:0.3rem 1rem; font-size:0.8rem;" disabled>暂未开放</button>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(0,0,0,0.2); border-radius: 0.8rem; text-align: center;">
+                    <p style="font-size: 0.8rem; color: #aaa;">📖 更多付费项目正在筹备中，敬请期待</p>
+                    <p style="font-size: 0.75rem; color: #888; margin-top: 0.3rem;">具体规则以《完整网站使用条款》第5条为准</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closePaidBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 受保护入口弹窗 -->
+    <div id="gateOverlay" class="overlay" style="display: none;">
+        <div class="modal gate-modal">
+            <div class="modal-header">
+                <h1>🔐 权限验证</h1>
+                <p>请输入访问凭证</p>
+            </div>
+            <div class="modal-body">
+                <div id="gateErrorMsg" class="error-msg" style="display: none;"></div>
+                <div class="input-group">
+                    <label>📋 界面代码</label>
+                    <input type="text" id="pageCode" placeholder="请输入" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>🔑 密码</label>
+                    <input type="password" id="password" placeholder="请输入" autocomplete="off">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="gateSubmitBtn">✓ 验证</button>
+                <button class="btn-secondary" id="closeGateBtn">取消</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 主内容 -->
     <div id="mainContent" class="main-content">
         <div class="container">
@@ -512,13 +647,13 @@
                     <li><a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a></li>
                     <li><a href="world.html">百科</a></li>
                     <li><a href="download.html">下载</a></li>
-                    <li><a href="paid.html">💰 付费项目</a></li>
+                    <li><a href="javascript:void(0)" id="paidBtn">💰 付费项目</a></li>
                     <li class="dropdown">
                         <a href="javascript:void(0)">⚙️ 其他及设置</a>
                         <div class="dropdown-menu">
                             <a href="terms.html">📜 查看完整条款</a>
                             <a href="javascript:void(0)" id="showTermsAgain">🔁 重新同意条款</a>
-                            <a href="gate.html">🔒 受保护入口</a>
+                            <a href="javascript:void(0)" id="gateBtn">🔒 受保护入口</a>
                         </div>
                     </li>
                 </ul>
@@ -593,37 +728,83 @@
             
             let currentTermsVersion = null;
 
+            // 受保护页面映射
+            const ACCESS_MAP = {
+                "xhyz": {
+                    password: "2020458624xhy",
+                    target: "xhyz.html"
+                }
+            };
+
+            // DOM 元素
             const regionOverlay = document.getElementById('regionOverlay');
             const termsOverlay = document.getElementById('termsOverlay');
+            const paidOverlay = document.getElementById('paidOverlay');
+            const gateOverlay = document.getElementById('gateOverlay');
             const mainContent = document.getElementById('mainContent');
+            
             const confirmRegionBtn = document.getElementById('confirmRegionBtn');
             const agreeTermsBtn = document.getElementById('agreeTermsBtn');
             const disagreeTermsBtn = document.getElementById('disagreeTermsBtn');
             const showTermsAgain = document.getElementById('showTermsAgain');
+            const paidBtn = document.getElementById('paidBtn');
+            const closePaidBtn = document.getElementById('closePaidBtn');
+            const gateBtn = document.getElementById('gateBtn');
+            const closeGateBtn = document.getElementById('closeGateBtn');
+            const gateSubmitBtn = document.getElementById('gateSubmitBtn');
 
+            // 显示/隐藏弹窗函数
             function showRegionOverlay() {
                 if (regionOverlay) regionOverlay.style.display = 'flex';
                 if (termsOverlay) termsOverlay.style.display = 'none';
+                if (paidOverlay) paidOverlay.style.display = 'none';
+                if (gateOverlay) gateOverlay.style.display = 'none';
                 if (mainContent) mainContent.style.display = 'none';
             }
 
             function showTermsOverlay() {
                 if (regionOverlay) regionOverlay.style.display = 'none';
                 if (termsOverlay) termsOverlay.style.display = 'flex';
+                if (paidOverlay) paidOverlay.style.display = 'none';
+                if (gateOverlay) gateOverlay.style.display = 'none';
                 if (mainContent) mainContent.style.display = 'none';
+            }
+
+            function showPaidOverlay() {
+                if (regionOverlay) regionOverlay.style.display = 'none';
+                if (termsOverlay) termsOverlay.style.display = 'none';
+                if (paidOverlay) paidOverlay.style.display = 'flex';
+                if (gateOverlay) gateOverlay.style.display = 'none';
+                if (mainContent) mainContent.style.display = 'none';
+            }
+
+            function showGateOverlay() {
+                if (regionOverlay) regionOverlay.style.display = 'none';
+                if (termsOverlay) termsOverlay.style.display = 'none';
+                if (paidOverlay) paidOverlay.style.display = 'none';
+                if (gateOverlay) gateOverlay.style.display = 'flex';
+                if (mainContent) mainContent.style.display = 'none';
+                // 清空输入框和错误信息
+                document.getElementById('pageCode').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('gateErrorMsg').style.display = 'none';
             }
 
             function showMainContent() {
                 if (regionOverlay) regionOverlay.style.display = 'none';
                 if (termsOverlay) termsOverlay.style.display = 'none';
+                if (paidOverlay) paidOverlay.style.display = 'none';
+                if (gateOverlay) gateOverlay.style.display = 'none';
                 if (mainContent) mainContent.style.display = 'block';
             }
 
+            // 地区确认
             function confirmRegion() {
                 localStorage.setItem(REGION_STORAGE_KEY, 'true');
                 checkTermsVersion();
             }
 
+            // 条款同意/拒绝
             function agreeToTerms() {
                 localStorage.setItem(TERMS_STORAGE_KEY, currentTermsVersion);
                 showMainContent();
@@ -639,6 +820,35 @@
                 location.reload();
             }
 
+            // 受保护入口验证
+            function showGateError(message) {
+                const errorDiv = document.getElementById('gateErrorMsg');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+
+            function verifyAndRedirect() {
+                const pageCode = document.getElementById('pageCode').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!pageCode || !password) {
+                    showGateError('请填写界面代码和密码');
+                    return;
+                }
+
+                const entry = ACCESS_MAP[pageCode];
+                if (!entry || password !== entry.password) {
+                    showGateError('界面代码或密码错误');
+                    return;
+                }
+
+                window.location.href = entry.target;
+            }
+
+            // 检查条款版本
             async function checkTermsVersion() {
                 try {
                     const response = await fetch('version.json?_=' + Date.now());
@@ -668,6 +878,7 @@
                 }
             }
 
+            // 检查地区
             function checkRegion() {
                 const regionConfirmed = localStorage.getItem(REGION_STORAGE_KEY);
                 if (regionConfirmed === 'true') {
@@ -677,13 +888,34 @@
                 }
             }
 
+            // 绑定按钮事件
             function bindButtons() {
                 if (confirmRegionBtn) confirmRegionBtn.addEventListener('click', confirmRegion);
                 if (agreeTermsBtn) agreeTermsBtn.addEventListener('click', agreeToTerms);
                 if (disagreeTermsBtn) disagreeTermsBtn.addEventListener('click', disagreeToTerms);
                 if (showTermsAgain) showTermsAgain.addEventListener('click', resetTerms);
+                if (paidBtn) paidBtn.addEventListener('click', showPaidOverlay);
+                if (closePaidBtn) closePaidBtn.addEventListener('click', showMainContent);
+                if (gateBtn) gateBtn.addEventListener('click', showGateOverlay);
+                if (closeGateBtn) closeGateBtn.addEventListener('click', showMainContent);
+                if (gateSubmitBtn) gateSubmitBtn.addEventListener('click', verifyAndRedirect);
+                
+                // 密码框回车
+                const passwordInput = document.getElementById('password');
+                if (passwordInput) {
+                    passwordInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') verifyAndRedirect();
+                    });
+                }
+                const pageCodeInput = document.getElementById('pageCode');
+                if (pageCodeInput) {
+                    pageCodeInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') document.getElementById('password').focus();
+                    });
+                }
             }
 
+            // 主界面交互
             function initMainPage() {
                 const toggle = document.getElementById('menuToggle');
                 const nav = document.getElementById('navLinks');
@@ -696,36 +928,4 @@
                     let mailtoUrl = `mailto:${email}`;
                     const isAndroid = userAgent.includes('android');
                     if (isAndroid) {
-                        mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
-                    }
-                    window.location.href = mailtoUrl;
-                }
-
-                const email1 = document.getElementById('emailLink1');
-                const email2 = document.getElementById('emailLink2');
-                if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
-                if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
-
-                fetch('version.json?_=' + Date.now())
-                    .then(res => res.ok ? res.json() : null)
-                    .then(data => {
-                        const div = document.getElementById('updateInfo');
-                        if (data && data.last_updated) {
-                            div.innerHTML = `🕒 最后更新：${data.last_updated} | 网站版本：${data.site_version || '1.0.0'}`;
-                        } else {
-                            div.innerHTML = `🕒 潮汐涌动，故事继续`;
-                        }
-                    })
-                    .catch(() => {
-                        const div = document.getElementById('updateInfo');
-                        if (div) div.innerHTML = `🕒 潮汐涌动，故事继续`;
-                    });
-            }
-
-            bindButtons();
-            checkRegion();
-            initMainPage();
-        })();
-    </script>
-</body>
-</html>
+     
