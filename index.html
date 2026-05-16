@@ -915,7 +915,7 @@
                 }
             }
 
-            // 主界面交互
+             // 主界面交互
             function initMainPage() {
                 const toggle = document.getElementById('menuToggle');
                 const nav = document.getElementById('navLinks');
@@ -928,4 +928,36 @@
                     let mailtoUrl = `mailto:${email}`;
                     const isAndroid = userAgent.includes('android');
                     if (isAndroid) {
-     
+                        mailtoUrl = `intent://mailto/${email}#Intent;scheme=mailto;package=com.google.android.gm;end`;
+                    }
+                    window.location.href = mailtoUrl;
+                }
+
+                const email1 = document.getElementById('emailLink1');
+                const email2 = document.getElementById('emailLink2');
+                if (email1) email1.addEventListener('click', () => sendEmail('arseeya@outlook.com'));
+                if (email2) email2.addEventListener('click', () => sendEmail('le.arseeya@gmail.com'));
+
+                fetch('version.json?_=' + Date.now())
+                    .then(res => res.ok ? res.json() : null)
+                    .then(data => {
+                        const div = document.getElementById('updateInfo');
+                        if (data && data.last_updated) {
+                            div.innerHTML = `🕒 最后更新：${data.last_updated} | 网站版本：${data.site_version || '1.0.0'}`;
+                        } else {
+                            div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                        }
+                    })
+                    .catch(() => {
+                        const div = document.getElementById('updateInfo');
+                        if (div) div.innerHTML = `🕒 潮汐涌动，故事继续`;
+                    });
+            }
+
+            bindButtons();
+            checkRegion();
+            initMainPage();
+        })();
+    </script>
+</body>
+</html>
