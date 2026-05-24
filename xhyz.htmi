@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>熊海云档案</title>
+    <title>熊海云 · 好友档案</title>
     <style>
         * {
             margin: 0;
@@ -53,7 +53,6 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            object-fit: cover;
             background: linear-gradient(135deg, #e94560, #667eea);
             padding: 3px;
         }
@@ -158,65 +157,65 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <a href="index.html" class="back-home">← 返回首页</a>
-
-    <div class="profile-card">
-        <div class="profile-header">
-            <div class="avatar">
-                <img src="xhyz.jpg" alt="熊海云" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2275%22%20y%3D%2285%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E📷%3C%2Ftext%3E%3C%2Fsvg%3E'">
+    <div class="container">
+        <a href="index.html" class="back-home">← 返回首页</a>
+        
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">
+                    <img src="xhyz.jpg" alt="熊海云" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2275%22%20y%3D%2285%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E📷%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                </div>
+                <div class="info">
+                    <h1>🐻 熊海云</h1>
+                    <p>男 · 2008年生人</p>
+                    <p><span class="badge">好友档案</span></p>
+                </div>
             </div>
-            <div class="info">
-                <h1>🐻 熊海云</h1>
-                <p>男 · 2008年生人</p>
-                <p><span class="badge">好友档案</span></p>
+            
+            <div class="section-title">📝 关于他</div>
+            <div class="intro-text">
+                <p>熊海云，2008年生，作者 Arseeya 的好友。</p>
+                <p style="margin-top:0.5rem;">🌟 此页面纯粹做着好玩，记录友谊～</p>
+            </div>
+            
+            <div class="section-title">📄 文档资料</div>
+            <div id="pdfList" class="pdf-list">
+                <div style="text-align:center; color:#aaa; padding:1rem;">暂无 PDF 文件</div>
             </div>
         </div>
-
-        <div class="section-title">📝 关于他</div>
-        <div class="intro-text">
-            <p>熊海云，2008年生，作者 Arseeya 的好友。</p>
-            <p style="margin-top:0.5rem;">🌟 此页面纯粹做着好玩，记录友谊～</p>
-        </div>
-
-        <div class="section-title">📄 文档资料</div>
-        <div id="pdfList" class="pdf-list">
-            <div style="text-align:center; color:#aaa;">加载中...</div>
-        </div>
+        
+        <footer>© Arseeya. All Rights Reserved | 好友档案 · 做着好玩</footer>
     </div>
 
-    <footer>© Arseeya. All Rights Reserved | 好友档案 · 做着好玩</footer>
-</div>
-
-<script>
-    // PDF 文件列表（存放在 downloads/pdf/ 目录下）
-    // 你可以在这里添加任意多个 PDF 文件
-    const pdfFiles = [
-        { name: "关于我校高二（6）班熊海云同学基本情况的通报", file: "xhy.pdf", size: "约 2260 KB" },
-        // 添加更多 PDF：
-        // { name: "文档名称", file: "文件名.pdf", size: "约 X MB" }
-    ];
-
-    function renderPdfList() {
-        const container = document.getElementById('pdfList');
-        if (!pdfFiles.length) {
-            container.innerHTML = '<div style="text-align:center; padding:2rem; color:#888;">📭 暂无 PDF 文件</div>';
-            return;
+    <script>
+        // ========== 页面访问密码（供 gate 验证使用）==========
+        var PAGE_ACCESS_PASSWORD = "2020458624xhy";
+        
+        // PDF 文件列表
+        const pdfFiles = [
+            // { name: "文档名称", file: "文件名.pdf", size: "约 X MB" }
+        ];
+        
+        function renderPdfList() {
+            const container = document.getElementById('pdfList');
+            if (!pdfFiles.length) {
+                container.innerHTML = '<div style="text-align:center; padding:2rem; color:#888;">📭 暂无 PDF 文件</div>';
+                return;
+            }
+            
+            container.innerHTML = pdfFiles.map(pdf => `
+                <a href="downloads/pdf/${pdf.file}" class="pdf-item" target="_blank">
+                    <div class="pdf-icon">📄</div>
+                    <div class="pdf-info">
+                        <div class="pdf-name">${pdf.name}</div>
+                        <div class="pdf-size">${pdf.size}</div>
+                    </div>
+                    <div class="open-btn">打开 →</div>
+                </a>
+            `).join('');
         }
-
-        container.innerHTML = pdfFiles.map(pdf => `
-            <a href="downloads/pdf/${pdf.file}" class="pdf-item" target="_blank">
-                <div class="pdf-icon">📄</div>
-                <div class="pdf-info">
-                    <div class="pdf-name">${pdf.name}</div>
-                    <div class="pdf-size">${pdf.size}</div>
-                </div>
-                <div class="open-btn">打开 →</div>
-            </a>
-        `).join('');
-    }
-
-    renderPdfList();
-</script>
+        
+        renderPdfList();
+    </script>
 </body>
 </html>
