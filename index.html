@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="msvalidate.01" content="0F05C22E94A12DA54129DE57441736D8" />
+    
+    <!-- Microsoft Clarity 分析代码 -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wrdvpcbjq1");
+    </script>
+    
     <title>Arseeya · 祂的宠儿</title>
     <style>
         * {
@@ -30,7 +40,6 @@
             display: none;
         }
 
-        /* 弹窗遮罩层 */
         .overlay {
             position: fixed;
             top: 0;
@@ -152,6 +161,13 @@
             transform: scale(1.02);
         }
 
+        .btn-primary:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
         .btn-secondary {
             background: transparent;
             border: 1px solid #e94560;
@@ -220,6 +236,12 @@
             font-size: 0.85rem;
             color: #e94560;
         }
+        .loading-msg {
+            text-align: center;
+            padding: 0.5rem;
+            color: #e94560;
+            font-size: 0.85rem;
+        }
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -258,7 +280,6 @@
             border-radius: 4px;
         }
 
-        /* 主界面样式 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -628,6 +649,7 @@
                     <label>🔑 密码</label>
                     <input type="password" id="password" placeholder="请输入" autocomplete="off">
                 </div>
+                <div id="loadingIndicator" class="loading-msg" style="display: none;">⏳ 验证中，请稍候...</div>
             </div>
             <div class="modal-footer">
                 <button class="btn-primary" id="gateSubmitBtn">✓ 验证</button>
@@ -728,14 +750,6 @@
             
             let currentTermsVersion = null;
 
-            // 受保护页面映射
-            const ACCESS_MAP = {
-                "xhyz": {
-                    password: "2020458624xhy",
-                    target: "xhyz.html"
-                }
-            };
-
             // DOM 元素
             const regionOverlay = document.getElementById('regionOverlay');
             const termsOverlay = document.getElementById('termsOverlay');
@@ -751,7 +765,7 @@
             const closePaidBtn = document.getElementById('closePaidBtn');
             const gateBtn = document.getElementById('gateBtn');
             const closeGateBtn = document.getElementById('closeGateBtn');
-            const gateSubmitBtn = document.getElementById('gateSubmitBtn');
+            let gateSubmitBtn = document.getElementById('gateSubmitBtn');
 
             // 显示/隐藏弹窗函数
             function showRegionOverlay() {
@@ -785,9 +799,12 @@
                 if (gateOverlay) gateOverlay.style.display = 'flex';
                 if (mainContent) mainContent.style.display = 'none';
                 // 清空输入框和错误信息
-                document.getElementById('pageCode').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('gateErrorMsg').style.display = 'none';
+                const pageCodeInput = document.getElementById('pageCode');
+                const passwordInput = document.getElementById('password');
+                if (pageCodeInput) pageCodeInput.value = '';
+                if (passwordInput) passwordInput.value = '';
+                const errorDiv = document.getElementById('gateErrorMsg');
+                if (errorDiv) errorDiv.style.display = 'none';
             }
 
             function showMainContent() {
@@ -820,32 +837,106 @@
                 location.reload();
             }
 
-            // 受保护入口验证
-            function showGateError(message) {
-                const errorDiv = document.getElementById('gateErrorMsg');
-                errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
-                setTimeout(() => {
-                    errorDiv.style.display = 'none';
-                }, 3000);
+            // ========== 受保护入口验证逻辑 ==========
+            let gateConfigCache = null;
+
+            async function loadGateConfig() {
+                if (gateConfigCache) return gateConfigCache;
+                try {
+                    const response = await fetch('gate.json?_=' + Date.now());
+                    if (!response.ok) throw new Error('无法加载配置');
+                    gateConfigCache = await response.json();
+                    return gateConfigCache;
+                } catch (e) {
+                    console.error('加载 gate.json 失败:', e);
+                    return null;
+                }
             }
 
-            function verifyAndRedirect() {
+            async function fetchPagePassword(targetUrl) {
+                try {
+                    const url = targetUrl.includes('?') ? targetUrl + '&_=' + Date.now() : targetUrl + '?_=' + Date.now();
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('无法加载目标页面');
+                    const htmlText = await response.text();
+                    
+                    // 从 HTML 中提取密码变量
+                    const match = htmlText.match(/var\s+PAGE_ACCESS_PASSWORD\s*=\s*["']([^"']+)["']/);
+                    if (match && match[1]) {
+                        return match[1];
+                    }
+                    return null;
+                } catch (e) {
+                    console.error('读取页面密码失败:', e);
+                    return null;
+                }
+            }
+
+            async function verifyAndRedirect() {
                 const pageCode = document.getElementById('pageCode').value.trim();
-                const password = document.getElementById('password').value.trim();
+                const userPassword = document.getElementById('password').value.trim();
+                const errorDiv = document.getElementById('gateErrorMsg');
+                const loadingDiv = document.getElementById('loadingIndicator');
+                const submitBtn = gateSubmitBtn;
 
-                if (!pageCode || !password) {
-                    showGateError('请填写界面代码和密码');
+                if (!pageCode || !userPassword) {
+                    errorDiv.textContent = '请填写界面代码和密码';
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
                     return;
                 }
 
-                const entry = ACCESS_MAP[pageCode];
-                if (!entry || password !== entry.password) {
-                    showGateError('界面代码或密码错误');
-                    return;
-                }
+                // 显示加载状态
+                if (loadingDiv) loadingDiv.style.display = 'block';
+                if (submitBtn) submitBtn.disabled = true;
 
-                window.location.href = entry.target;
+                try {
+                    // 步骤 A：加载 gate.json，查找界面代码对应的目标页面
+                    const gateConfig = await loadGateConfig();
+                    if (!gateConfig || !gateConfig[pageCode]) {
+                        errorDiv.textContent = '界面代码不存在';
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                        if (loadingDiv) loadingDiv.style.display = 'none';
+                        if (submitBtn) submitBtn.disabled = false;
+                        return;
+                    }
+
+                    const targetUrl = gateConfig[pageCode].target;
+                    
+                    // 步骤 B：读取目标页面中的密码
+                    const correctPassword = await fetchPagePassword(targetUrl);
+                    
+                    if (!correctPassword) {
+                        errorDiv.textContent = '无法验证密码，请联系管理员';
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                        if (loadingDiv) loadingDiv.style.display = 'none';
+                        if (submitBtn) submitBtn.disabled = false;
+                        return;
+                    }
+
+                     // 步骤 C：验证密码
+                    if (userPassword !== correctPassword) {
+                        errorDiv.textContent = '密码错误，请重新输入';
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                        if (loadingDiv) loadingDiv.style.display = 'none';
+                        if (submitBtn) submitBtn.disabled = false;
+                        return;
+                    }
+
+                    // 验证通过，跳转
+                    window.location.href = targetUrl;
+                    
+                } catch (err) {
+                    console.error(err);
+                    errorDiv.textContent = '验证过程出错，请重试';
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                    if (loadingDiv) loadingDiv.style.display = 'none';
+                    if (submitBtn) submitBtn.disabled = false;
+                }
             }
 
             // 检查条款版本
@@ -898,7 +989,14 @@
                 if (closePaidBtn) closePaidBtn.addEventListener('click', showMainContent);
                 if (gateBtn) gateBtn.addEventListener('click', showGateOverlay);
                 if (closeGateBtn) closeGateBtn.addEventListener('click', showMainContent);
-                if (gateSubmitBtn) gateSubmitBtn.addEventListener('click', verifyAndRedirect);
+                
+                // 重新绑定验证按钮（确保事件绑定正确）
+                if (gateSubmitBtn) {
+                    const newSubmitBtn = gateSubmitBtn.cloneNode(true);
+                    gateSubmitBtn.parentNode.replaceChild(newSubmitBtn, gateSubmitBtn);
+                    gateSubmitBtn = newSubmitBtn;
+                    gateSubmitBtn.addEventListener('click', verifyAndRedirect);
+                }
                 
                 // 密码框回车
                 const passwordInput = document.getElementById('password');
@@ -910,12 +1008,15 @@
                 const pageCodeInput = document.getElementById('pageCode');
                 if (pageCodeInput) {
                     pageCodeInput.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') document.getElementById('password').focus();
+                        if (e.key === 'Enter') {
+                            const pwdInput = document.getElementById('password');
+                            if (pwdInput) pwdInput.focus();
+                        }
                     });
                 }
             }
 
-             // 主界面交互
+            // 主界面交互
             function initMainPage() {
                 const toggle = document.getElementById('menuToggle');
                 const nav = document.getElementById('navLinks');
