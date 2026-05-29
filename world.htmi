@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>归终百科 · Arseeya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
+            color: #eee;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .navbar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .navbar a {
+            color: #ddd;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+        .navbar a:hover {
+            background: #e94560;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e94560, #667eea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .category-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 2rem 1rem;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .category-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+        }
+        .category-card h2 {
+            font-size: 1.3rem;
+            color: #e94560;
+            margin-bottom: 0.3rem;
+        }
+        .category-card p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #e94560;
+        }
+        @media (max-width: 640px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <a href="index.html">首页</a>
+        <a href="/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a>
+        <a href="world.html">百科</a>
+        <a href="download.html">下载</a>
+        <a href="paid.html">付费项目</a>
+    </div>
+
+    <h1>📜 归终百科</h1>
+    <div class="subtitle">记录世界的每一片潮汐</div>
+
+    <div class="category-grid">
+        <a href="world_characters.html" class="category-card">
+            <div class="category-icon">🌊</div>
+            <h2>人物</h2>
+            <p>角色档案 · 待完善</p>
+        </a>
+        <a href="world_history.html" class="category-card">
+            <div class="category-icon">📖</div>
+            <h2>历史</h2>
+            <p>时间线 · 待完善</p>
+        </a>
+        <a href="world_locations.html" class="category-card">
+            <div class="category-icon">📍</div>
+            <h2>地点</h2>
+            <p>地域介绍 · 待完善</p>
+        </a>
+        <a href="world_knowledge.html" class="category-card">
+            <div class="category-icon">💡</div>
+            <h2>知识</h2>
+            <p>世界观设定 · 待完善</p>
+        </a>
+    </div>
+
+    <footer>
+        © Arseeya. All Rights Reserved | <a href="terms.html">📜 完整条款</a>
+    </footer>
+</div>
+</body>
+</html>
