@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>站点维护中 | arseeya.link</title>
-    <!-- 使用简洁但现代的风格，完全自包含，无需外部资源 -->
+    <title>站点维护中 | arseeya.link · 预计6月10日恢复</title>
+    <!-- 纯静态优雅维护页面，包含精确倒计时至2026/06/10 12:00:00，联系方式已更新 -->
     <style>
         * {
             margin: 0;
@@ -13,124 +13,129 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            background: linear-gradient(145deg, #f0f4fa 0%, #e6edf4 100%);
             font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            color: #1a2634;
+            color: #0a1c2f;
         }
 
-        /* 主卡片容器 */
         .maintenance-card {
-            max-width: 720px;
+            max-width: 760px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(0px);
             border-radius: 2.5rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.02);
             overflow: hidden;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,240,0.7);
         }
 
-        /* 装饰顶部条 */
         .status-bar {
             height: 8px;
-            background: linear-gradient(90deg, #f59e0b, #eab308, #f97316, #ef4444);
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316, #f59e0b);
             width: 100%;
         }
 
-        /* 内部内容区 */
         .content {
-            padding: 2.5rem 2.2rem 3rem 2.2rem;
+            padding: 2.6rem 2.4rem 3rem 2.4rem;
         }
 
-        /* 图标区域 */
         .icon-area {
             display: flex;
             justify-content: center;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
         }
 
         .gear-icon {
-            background: #fff1e5;
-            width: 80px;
-            height: 80px;
+            background: #eef2ff;
+            width: 84px;
+            height: 84px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 15px -8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 18px -10px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s;
         }
 
         .gear-icon svg {
             width: 48px;
             height: 48px;
-            stroke: #ea580c;
-            stroke-width: 1.5;
+            stroke: #2563eb;
+            stroke-width: 1.6;
             fill: none;
         }
 
         h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
+            font-size: 2.3rem;
+            font-weight: 800;
             text-align: center;
             letter-spacing: -0.01em;
-            background: linear-gradient(135deg, #1f2937, #2d3e50);
+            background: linear-gradient(135deg, #1e2a3e, #0f3b5c);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .domain {
             text-align: center;
-            font-family: monospace;
+            font-family: 'SF Mono', 'JetBrains Mono', monospace;
             font-size: 1rem;
             background: #eef2ff;
             display: inline-block;
             width: auto;
-            margin: 0 auto 1.5rem auto;
-            padding: 0.3rem 1rem;
+            margin: 0 auto 1.2rem auto;
+            padding: 0.3rem 1.2rem;
             border-radius: 60px;
-            color: #2563eb;
+            color: #1e40af;
             font-weight: 500;
-            letter-spacing: 0.3px;
-            backdrop-filter: blur(2px);
+            letter-spacing: 0.2px;
         }
 
         .desc {
             text-align: center;
             font-size: 1.08rem;
             line-height: 1.5;
-            color: #334155;
-            margin: 1rem 0 1.2rem 0;
+            color: #2c3e50;
+            margin: 0.8rem 0 1rem 0;
             font-weight: 450;
         }
 
         .notice-box {
-            background: #fef9e3;
-            border-left: 5px solid #f59e0b;
+            background: #fffbeb;
+            border-left: 6px solid #f59e0b;
             border-radius: 1.2rem;
-            padding: 1.2rem 1.4rem;
-            margin: 1.8rem 0 2rem 0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            padding: 1.1rem 1.4rem;
+            margin: 1.5rem 0 1.8rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
         .notice-box p {
             font-size: 0.95rem;
-            color: #854d0e;
+            color: #b45309;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .notice-box strong {
-            font-weight: 600;
+            font-weight: 700;
+            color: #9a3412;
+        }
+
+        .countdown-container {
+            background: #f8fafc;
+            border-radius: 2rem;
+            padding: 1.2rem 0.8rem;
+            margin: 1.2rem 0 1rem 0;
+            box-shadow: inset 0 1px 2px #ffffff80, 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .clock-row {
@@ -138,48 +143,90 @@
             justify-content: center;
             gap: 1.8rem;
             flex-wrap: wrap;
-            margin: 2rem 0 1.8rem 0;
+            margin: 0.5rem 0 0.6rem;
         }
 
         .time-block {
-            background: #f1f5f9;
-            border-radius: 1.5rem;
-            padding: 0.6rem 1rem;
-            min-width: 80px;
+            background: #ffffff;
+            border-radius: 1.8rem;
+            padding: 0.7rem 1.2rem;
+            min-width: 90px;
             text-align: center;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 3px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(148, 163, 184, 0.1);
+            transition: transform 0.1s ease;
         }
 
         .time-number {
-            font-size: 2.1rem;
+            font-size: 2.4rem;
             font-weight: 800;
             font-family: 'JetBrains Mono', 'SF Mono', monospace;
             color: #0f172a;
             line-height: 1.2;
+            letter-spacing: 2px;
         }
 
         .time-label {
             font-size: 0.7rem;
             text-transform: uppercase;
             font-weight: 600;
-            letter-spacing: 1px;
-            color: #475569;
+            letter-spacing: 1.5px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+
+        .restore-date {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #e6f0ff;
+            display: inline-block;
+            width: auto;
+            margin: 0.5rem auto 0;
+            padding: 0.25rem 1rem;
+            border-radius: 32px;
+            color: #075985;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 40px;
+            height: 8px;
+            width: 100%;
+            margin: 1.2rem 0 0.6rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316);
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            color: #2c3e66;
+            margin-top: 0.4rem;
         }
 
         .contact {
             text-align: center;
             margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #cbd5e1;
-            font-size: 0.85rem;
-            color: #4b5563;
+            padding-top: 1.2rem;
+            border-top: 1px solid #e2edf7;
+            font-size: 0.9rem;
+            color: #2c3e50;
         }
 
         .contact a {
-            color: #3b82f6;
+            color: #2563eb;
             text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px dotted #90aeff;
+            font-weight: 600;
+            border-bottom: 1px dashed #90b4ff;
         }
 
         .contact a:hover {
@@ -188,74 +235,43 @@
         }
 
         .small-note {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-align: center;
             margin-top: 1rem;
-            color: #6c757d;
+            color: #5b6e8c;
         }
 
-        button {
-            background: none;
-            border: none;
+        .footer-grace {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #7c8ba0;
+            margin-top: 1rem;
         }
 
-        /* 进度条模拟 */
-        .progress-container {
-            background: #e2e8f0;
-            border-radius: 40px;
-            height: 8px;
-            width: 100%;
-            margin: 1rem 0 0.8rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #f97316, #eab308);
-            width: 68%;
-            height: 100%;
-            border-radius: 40px;
-            animation: subtlePulse 2.2s infinite ease;
-        }
-
-        @keyframes subtlePulse {
-            0% { opacity: 0.8; width: 68%;}
-            50% { opacity: 1; width: 72%;}
-            100% { opacity: 0.8; width: 68%;}
-        }
-
-        .status-text {
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-            color: #475569;
-        }
-
-        @media (max-width: 500px) {
+        @media (max-width: 550px) {
             .content {
-                padding: 1.8rem;
+                padding: 1.6rem;
             }
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.7rem;
             }
             .time-number {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
+            }
+            .time-block {
+                min-width: 70px;
+                padding: 0.4rem 0.6rem;
             }
             .clock-row {
                 gap: 0.8rem;
             }
-            .time-block {
-                min-width: 65px;
-                padding: 0.4rem 0.8rem;
-            }
         }
 
-        /* 小彩蛋精致感 */
-        .footer-grace {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            margin-top: 1.2rem;
+        .highlight {
+            font-weight: 700;
+            background: #fff0db;
+            border-radius: 20px;
+            padding: 0.1rem 0.5rem;
         }
     </style>
 </head>
@@ -266,7 +282,6 @@
     <div class="content">
         <div class="icon-area">
             <div class="gear-icon">
-                <!-- 简洁工具/齿轮 SVG ，表示维护状态 -->
                 <svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
@@ -280,243 +295,287 @@
             </div>
         </div>
         
-        <h1>暂时停止服务</h1>
+        <h1>网站暂时停止服务</h1>
         <div style="text-align: center;">
             <span class="domain">arseeya.link</span>
         </div>
         
         <p class="desc">
-            我们正在对系统进行计划内的升级与优化，<br>以提供更稳定、更流畅的体验。
+            为了提供更优质的服务体验，我们正在对系统进行架构升级与数据优化。<br>
+            网站将暂停访问，敬请期待焕新归来。
         </p>
         
-        <!-- 通知附加消息 -->
+        <!-- 重要通知与精确恢复时间 -->
         <div class="notice-box">
             <p>
-                📢 <strong>维护窗口：</strong> 预计 2~4 小时内恢复访问，具体进度请关注后续通知。感谢您的耐心与理解！
+                🕒 <strong>预计恢复时间：</strong> 2026年6月10日 12:00 (GMT+8) <br>
+                🔧 维护期间所有数据安全保留，请放心。感谢您的耐心！
             </p>
         </div>
         
-        <!-- 动态倒计时占位：展示下次预计恢复 (使用静态演示但未来更新风格，代表优雅占位) 实际可显示大概剩余时间 由于无法知道确切时间，做一个估计倒计时 基于当前时间+2h45m演示 让访客感受到预期-->
-        <div class="clock-row" id="countdownArea">
-            <div class="time-block">
-                <div class="time-number" id="hours">--</div>
-                <div class="time-label">小时</div>
+        <!-- 倒计时核心区 动态指向 2026-06-10 12:00:00 -->
+        <div class="countdown-container">
+            <div class="clock-row" id="countdownArea">
+                <div class="time-block">
+                    <div class="time-number" id="days">00</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="time-block">
+                    <div class="time-number" id="hours">00</div>
+                    <div class="time-label">小时</div>
+                </div>
+                <div class="time-block">
+                    <div class="time-number" id="minutes">00</div>
+                    <div class="time-label">分钟</div>
+                </div>
+                <div class="time-block">
+                    <div class="time-number" id="seconds">00</div>
+                    <div class="time-label">秒</div>
+                </div>
             </div>
-            <div class="time-block">
-                <div class="time-number" id="minutes">--</div>
-                <div class="time-label">分钟</div>
-            </div>
-            <div class="time-block">
-                <div class="time-number" id="seconds">--</div>
-                <div class="time-label">秒</div>
+            <div style="text-align: center; margin-top: 8px;">
+                <span class="restore-date">📅 距离 2026年6月10日 12:00 恢复还有</span>
             </div>
         </div>
         
-        <!-- 进度指示条 模拟维护进度 -->
+        <!-- 维护进度条 基于时间比例 -->
         <div class="progress-container">
-            <div class="progress-fill"></div>
+            <div class="progress-fill" id="progressFill"></div>
         </div>
         <div class="status-text">
-            <span>⚙️ 后端升级中</span>
-            <span>预计完成度 ≈ 68%</span>
+            <span id="statusMsg">🔧 正在执行重要升级</span>
+            <span id="progressPercent">完成进度 0%</span>
         </div>
         
         <div class="contact">
-            📧 如有紧急事宜，请联系 <a href="mailto:support@arseeya.link">support@arseeya.link</a><br>
-            或关注官方渠道获取最新动态。
+            📧 如有紧急事宜，请联系官方邮箱 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
+            我们会在恢复后第一时间回复您。
         </div>
         <div class="small-note">
-            arseeya.link · 服务暂时不可用，我们会尽快归来 🚀
+            arseeya.link · 维护期间服务不可用，带来不便请谅解 ✨
         </div>
         <div class="footer-grace">
-            &copy; arseeya 技术团队
+            &copy; arseeya 技术团队 | 期待与您再次相遇
         </div>
     </div>
 </div>
 
 <script>
     (function() {
-        // 设定一个维护结束的目标时间：当前时间 + 2小时 45分钟 ～ 模拟一个合理期待倒计时
-        // 为了让不同访客看到相对一致的“剩余维护时间”，但又不需要后端，这里采用基于访客当前时间 + 2小时45分钟作为维护完成预估。
-        // 但注意: 如果页面刷新, 会重新从当前时间 + 2h45m 开始倒计时。作为静态占位完全合理友好。
-        // 也可以增加 localstorage 来保持一致性，但无伤大雅。这是纯前端模拟友好提醒。
-        // 同时将预计恢复时间显示于页面的倒计时区域中。
+        // 设定固定的恢复目标: 2026年6月10日 12:00:00  (本地时间以浏览器时区为准，但为了保证用户视角统一，使用UTC+8？使用本地时间解析 "2026-06-10T12:00:00" 根据浏览器本地时区)
+        // 为了让全球用户都能看到对应其本地时区下的倒计时距离“北京时间 2026-06-10 12:00”剩余时间，我们构造一个基于UTC+8的绝对时刻，然后倒计时显示剩余时间。
+        // 更科学：直接构造 Date.UTC 然后计算差值，确保任何时区都指向同一个物理时刻（北京时间2026-06-10 12:00:00对应 UTC+8 偏移）。
+        // 北京时间是 UTC+8，所以目标绝对时间戳 = Date.UTC(2026,5,10,4,0,0) 因为 UTC 时间比北京时间晚8小时，北京时间12:00 = UTC 04:00。
+        // 月份参数: 5 表示六月 (0索引)
+        const TARGET_YEAR = 2026;
+        const TARGET_MONTH = 5;    // 六月
+        const TARGET_DAY = 10;
+        const TARGET_HOUR_UTC = 4;  // 北京时间12:00 => UTC+0 04:00
+        const TARGET_MINUTE = 0;
+        const TARGET_SECOND = 0;
         
-        let targetTime = null;
+        let targetTimestamp = Date.UTC(TARGET_YEAR, TARGET_MONTH, TARGET_DAY, TARGET_HOUR_UTC, TARGET_MINUTE, TARGET_SECOND);
+        // 确保目标时间有效，如果用户系统时间错误或过去，可兜底提醒
+        const nowTimestamp = Date.now();
         
-        function initTargetTime() {
-            // 检查本地存储是否有保存的维护目标结束时间 (如果用户刷新，继续沿用之前的结束点，更真实)
-            const stored = localStorage.getItem('arseeya_maintain_until');
-            const now = Date.now();
-            if (stored && !isNaN(parseInt(stored))) {
-                const parsed = parseInt(stored);
-                if (parsed > now) {
-                    targetTime = parsed;
-                } else {
-                    // 过期则重新设定
-                    targetTime = now + (2 * 60 * 60 * 1000) + (45 * 60 * 1000); // 2小时45分
-                    localStorage.setItem('arseeya_maintain_until', targetTime);
-                }
-            } else {
-                targetTime = now + (2 * 60 * 60 * 1000) + (45 * 60 * 1000);
-                localStorage.setItem('arseeya_maintain_until', targetTime);
-            }
+        // 针对维护总时长计算进度： 从维护开始时间预估？（为了让进度条有意义，我们设定维护开始时间：假设从2026年6月1日0:00开始维护，但也可以根据当前时间与目标时间的比例来计算完成度）
+        // 更友好: 设定维护窗口开始时间为 2026年6月1日 00:00 (北京时间)，到6月10日12:00结束，总共时长 9天12小时 = 228小时 = 820800000 毫秒。
+        // 若当前时间早于开始时间则进度0%，晚于结束则100% . 因为实际情况维护已在进行，所以日期符合常识。
+        const MAINT_START_UTC = Date.UTC(2026, 5, 1, 0, 0, 0);   // 2026年6月1日 00:00 UTC = 北京时间 08:00，但为了统一用UTC，无所谓，比例一样。
+        const MAINT_END_UTC = targetTimestamp;
+        const totalMaintainDuration = MAINT_END_UTC - MAINT_START_UTC;
+        
+        // DOM 元素
+        const daysSpan = document.getElementById('days');
+        const hoursSpan = document.getElementById('hours');
+        const minutesSpan = document.getElementById('minutes');
+        const secondsSpan = document.getElementById('seconds');
+        const progressFill = document.getElementById('progressFill');
+        const statusMsgSpan = document.getElementById('statusMsg');
+        const progressPercentSpan = document.getElementById('progressPercent');
+        
+        // 辅助函数，补零
+        function padZero(num) {
+            return num < 10 ? '0' + num : '' + num;
         }
         
-        function updateCountdown() {
-            if (!targetTime) {
-                initTargetTime();
-            }
+        // 更新倒计时UI 和 进度条
+        function updateCountdownAndProgress() {
             const now = Date.now();
-            const distance = targetTime - now;
+            const remainingMs = targetTimestamp - now;
             
-            const hoursElem = document.getElementById('hours');
-            const minutesElem = document.getElementById('minutes');
-            const secondsElem = document.getElementById('seconds');
-            
-            if (distance <= 0) {
-                // 倒计时结束, 可以显示“即将恢复”或者显示0并动态刷新文本
-                hoursElem.innerText = '00';
-                minutesElem.innerText = '00';
-                secondsElem.innerText = '00';
-                // 可选：将进度条改成接近100%并展示不同的消息
-                const progressFill = document.querySelector('.progress-fill');
-                if (progressFill) {
-                    progressFill.style.width = '96%';
-                    progressFill.style.background = "linear-gradient(90deg, #22c55e, #16a34a)";
-                }
-                const statusSpan = document.querySelector('.status-text span:first-child');
-                if (statusSpan) statusSpan.innerHTML = '✅ 服务即将上线';
-                // 不用继续更新或清除倒计时消息，显示0即可
+            // 处理倒计时结束状态
+            if (remainingMs <= 0) {
+                // 维护已过预期时间，显示恢复中/ 已恢复
+                daysSpan.innerText = '00';
+                hoursSpan.innerText = '00';
+                minutesSpan.innerText = '00';
+                secondsSpan.innerText = '00';
+                if (progressFill) progressFill.style.width = '100%';
+                if (progressPercentSpan) progressPercentSpan.innerText = '完成进度 100%';
+                if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 服务即将恢复 / 已恢复，感谢等待';
+                // 可选额外显示提示，但不需要重复修改
                 return;
             }
             
-            const hours = Math.floor(distance / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // 计算剩余天数、小时、分钟、秒 (基于毫秒)
+            const totalRemainingSeconds = Math.floor(remainingMs / 1000);
+            const days = Math.floor(totalRemainingSeconds / 86400);
+            const hours = Math.floor((totalRemainingSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalRemainingSeconds % 3600) / 60);
+            const seconds = totalRemainingSeconds % 60;
             
-            hoursElem.innerText = hours < 10 ? '0' + hours : '' + hours;
-            minutesElem.innerText = minutes < 10 ? '0' + minutes : '' + minutes;
-            secondsElem.innerText = seconds < 10 ? '0' + seconds : '' + seconds;
+            daysSpan.innerText = padZero(days);
+            hoursSpan.innerText = padZero(hours);
+            minutesSpan.innerText = padZero(minutes);
+            secondsSpan.innerText = padZero(seconds);
             
-            // 动态进度条根据消耗的时间比例显示 (维护窗口总长2h45m = 9900秒)
-            const totalMaintainMs = 2 * 3600 * 1000 + 45 * 60 * 1000; // 9900000 ms
-            const elapsed = totalMaintainMs - distance;
-            let percent = (elapsed / totalMaintainMs) * 100;
-            percent = Math.min(99, Math.max(5, percent));
-            const progressFillElem = document.querySelector('.progress-fill');
-            if (progressFillElem) {
-                progressFillElem.style.width = percent + '%';
-                // 根据百分比改变颜色风格微调
-                if (percent > 70) {
-                    progressFillElem.style.background = "linear-gradient(90deg, #fbbf24, #f59e0b)";
+            // ========== 动态进度条 ==========
+            // 当前时间相对于维护阶段的进度 (如果当前早于维护开始，进度为0；如果晚于结束，上面已处理)
+            let progressPercent = 0;
+            if (now <= MAINT_START_UTC) {
+                progressPercent = 0;
+            } else if (now >= MAINT_END_UTC) {
+                progressPercent = 100;
+            } else {
+                const elapsed = now - MAINT_START_UTC;
+                progressPercent = (elapsed / totalMaintainDuration) * 100;
+                progressPercent = Math.min(99.9, Math.max(0, progressPercent));
+            }
+            
+            const fillPercent = Math.min(100, Math.max(0, progressPercent));
+            if (progressFill) {
+                progressFill.style.width = fillPercent + '%';
+                // 动态微调颜色装饰
+                if (fillPercent > 75) {
+                    progressFill.style.background = "linear-gradient(90deg, #22c55e, #16a34a)";
+                } else if (fillPercent > 40) {
+                    progressFill.style.background = "linear-gradient(90deg, #f97316, #eab308)";
                 } else {
-                    progressFillElem.style.background = "linear-gradient(90deg, #f97316, #eab308)";
+                    progressFill.style.background = "linear-gradient(90deg, #3b82f6, #8b5cf6)";
                 }
             }
-            // 更新状态文本描述
-            const statusTextSpan = document.querySelector('.status-text span:first-child');
-            if (statusTextSpan) {
-                if (percent < 30) statusTextSpan.innerHTML = '🔧 环境配置中';
-                else if (percent < 65) statusTextSpan.innerHTML = '⚙️ 数据优化 & 后端升级';
-                else statusTextSpan.innerHTML = '🚀 最后冲刺，即将完成';
+            
+            // 显示进度百分比整数
+            const percentInt = Math.floor(fillPercent);
+            if (progressPercentSpan) {
+                progressPercentSpan.innerText = `完成进度 ${percentInt}%`;
             }
-            const percentSpan = document.querySelector('.status-text span:last-child');
-            if (percentSpan) {
-                percentSpan.innerHTML = `预计完成度 ≈ ${Math.floor(percent)}%`;
+            
+            // 根据进度百分比优化提示信息
+            if (statusMsgSpan) {
+                if (percentInt < 15) {
+                    statusMsgSpan.innerHTML = '⚙️ 环境部署与数据备份中';
+                } else if (percentInt < 35) {
+                    statusMsgSpan.innerHTML = '🔄 数据库升级与架构优化';
+                } else if (percentInt < 65) {
+                    statusMsgSpan.innerHTML = '🚀 性能调优 & 新功能集成';
+                } else if (percentInt < 90) {
+                    statusMsgSpan.innerHTML = '🧪 最终测试与安全校验';
+                } else {
+                    statusMsgSpan.innerHTML = '✨ 服务即将上线，敬请期待';
+                }
             }
         }
         
-        // 同时添加一个刷新域名的优雅显示以及可手动重置（可选，无干扰）
-        function additionalPolish() {
-            // 让域名字体更明显，不需要额外操作
-            // 如果倒计时归零之后，可重置本地存储? 不自动重置，避免马上重置再次延长。保持用户感知。
-            // 但页面会展示归零状态；若管理员真的维护完成，可以手动清除localstorage或修改但不需要，只是前端友好占位。
-            // 添加监听 visibility 保证后台tab运行时更新不频繁但不碍事
+        // 附加的页面 title 动态显示倒计时概要
+        function updateTitleWithCountdown() {
+            if (!daysSpan || !hoursSpan || !minutesSpan) return;
+            const remainingMs = targetTimestamp - Date.now();
+            if (remainingMs <= 0) {
+                document.title = "✨ arseeya.link 即将开放 ✨";
+                return;
+            }
+            const totalSec = Math.floor(remainingMs / 1000);
+            const days = Math.floor(totalSec / 86400);
+            const hours = Math.floor((totalSec % 86400) / 3600);
+            const minutes = Math.floor((totalSec % 3600) / 60);
+            if (days > 0) {
+                document.title = `[维护] ${days}d ${hours}h 后恢复 | arseeya.link`;
+            } else {
+                document.title = `[维护] ${hours}h ${minutes}m 后恢复 | arseeya.link`;
+            }
         }
         
-        // 为了更精确的倒计时，每隔1秒刷新一次
-        let interval = null;
-        function startTimer() {
-            if (interval) clearInterval(interval);
-            updateCountdown();
-            interval = setInterval(updateCountdown, 1000);
+        // 确保目标时间有效且未发生错误：如果目标时间已经过去很久(异常情况)显示积极文案，但正常2026年未来时间。
+        function validateAndWarn() {
+            const now = Date.now();
+            if (targetTimestamp <= now) {
+                // 如果当前时间已经超过2026/6/10 12:00，说明用户可能系统时间有误或已经超期，但展示友好接近完成.
+                // 不会影响体验
+                if (progressFill) progressFill.style.width = '99%';
+                if (progressPercentSpan) progressPercentSpan.innerText = '恢复准备中';
+                if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 服务正在重启，很快开放';
+            }
         }
         
-        // 额外注意如果维护倒计时结束后，显示不同的信息，还可以增加一个刷新提示
-        function observeRestore() {
-            // 根据目标时间是否过期展示不同的详细卡片文案
+        // 添加一个手动刷新确保存储目标不因刷新改变：无需localstorage，完全基于固定绝对时间戳。
+        // 同时处理时区正确性验证：targetTimestamp基于UTC确保了全球同一时刻。
+        // 如果因为用户设备时间严重错误，页面倒计时会不准确，但官网维护页面通常信任客户端时间；同时进度条基于时间差不会产生负面。
+        // 可额外增加一个微小效果每60秒刷新一次云端时间同步？无需复杂。
+        
+        let intervalId = null;
+        function startIntervals() {
+            if (intervalId) clearInterval(intervalId);
+            updateCountdownAndProgress();
+            intervalId = setInterval(() => {
+                updateCountdownAndProgress();
+                updateTitleWithCountdown();
+            }, 1000);
+        }
+        
+        // 初始化执行所有
+        function init() {
+            validateAndWarn();
+            startIntervals();
+            updateTitleWithCountdown();
+            // 给齿轮增加微交互
+            const gearWrapper = document.querySelector('.gear-icon');
+            if (gearWrapper) {
+                gearWrapper.addEventListener('mouseenter', () => {
+                    const svgIcon = gearWrapper.querySelector('svg');
+                    if (svgIcon) svgIcon.style.transform = 'rotate(8deg) scale(1.02)';
+                });
+                gearWrapper.addEventListener('mouseleave', () => {
+                    const svgIcon = gearWrapper.querySelector('svg');
+                    if (svgIcon) svgIcon.style.transform = 'rotate(0deg) scale(1)';
+                });
+            }
+            
+            // 联系邮箱保护增强：额外显示提示防爬，但无伤大雅
+            const mailLink = document.querySelector('a[href^="mailto:arseeya@outlook.com"]');
+            if (mailLink) {
+                mailLink.addEventListener('click', (e) => {
+                    console.log('邮件联系支持');
+                });
+            }
+        }
+        
+        // 增加最终保障: 若维护已经结束或者剩余时间极低(小于0) 特殊样式优化
+        function finalTouch() {
             setInterval(() => {
-                if (targetTime && Date.now() >= targetTime) {
-                    const descElem = document.querySelector('.desc');
-                    if (descElem && !descElem.innerHTML.includes('即将恢复')) {
-                        descElem.innerHTML = '维护即将完成，服务正在做最后的启动检查。<br>感谢您耐心等候，马上回来！';
-                        const noticeBox = document.querySelector('.notice-box p');
-                        if (noticeBox && !noticeBox.innerHTML.includes('即将恢复服务')) {
-                            noticeBox.innerHTML = '🎉 <strong>维护接近尾声：</strong> 服务正在重启中，预计几分钟内可恢复访问。';
-                        }
-                        const clockTitle = document.querySelector('.clock-row');
-                        if (clockTitle) {
-                            // 可以添加一点小装饰
-                        }
-                        // 避免重复修改
+                const now = Date.now();
+                if (now >= targetTimestamp) {
+                    const noticeDiv = document.querySelector('.notice-box p');
+                    if (noticeDiv && !noticeDiv.innerHTML.includes('即将开放')) {
+                        noticeDiv.innerHTML = '✅ <strong>维护已完成！</strong> 服务正在上线中，刷新页面或稍后访问即可。感谢您的耐心！';
                     }
-                    const progressFill = document.querySelector('.progress-fill');
-                    if (progressFill && progressFill.style.width !== '100%') {
-                        progressFill.style.width = '99%';
-                        progressFill.style.background = "linear-gradient(90deg, #22c55e, #15803d)";
-                    }
+                    const restoreBadge = document.querySelector('.restore-date');
+                    if (restoreBadge) restoreBadge.innerHTML = '🎉 服务恢复进行时 · 感谢等待 🎉';
                 }
             }, 2000);
         }
         
-        // 初次执行
-        initTargetTime();
-        startTimer();
-        observeRestore();
+        init();
+        finalTouch();
         
-        // 可选的: 当用户点击域名字样或者联系邮件无侵入行为，无需操作
-        // 额外增加title动态显示倒计时
-        function updateTitleTimer() {
-            if (!targetTime) return;
-            const distance = targetTime - Date.now();
-            if (distance <= 0) {
-                document.title = "✨ arseeya.link 即将恢复 ✨";
-                return;
-            }
-            const hours = Math.floor(distance / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.title = `[维护中] ${hours}h ${minutes}m - arseeya.link`;
+        // 额外增加一个情况页面显示当前时间辅助，但无需求，保留优雅。
+        // 确保联系方式完全正确 arseeya@outlook.com
+        // 对于占位进度如果因为用户机器时间早于维护开始，进度从0开始，合理。
+        // 预检查维护起始时间是否定义有效
+        if (isNaN(totalMaintainDuration) || totalMaintainDuration <= 0) {
+            // 保险：如果没有有效时间窗口，就基于相对比例模拟，但这里目标时间已明确定义且大于开始，忽略
         }
-        setInterval(updateTitleTimer, 1000);
-        updateTitleTimer();
-        
-        // 优雅降级处理，如果localstorage不可用则不影响体验
-        try {
-            if (!localStorage.getItem('arseeya_maintain_until')) {
-                // 已调用过init无妨
-            }
-        } catch(e) {
-            // 忽略隐私模式，只是没有本地持久时间，仍然从当前时间开始倒计时
-            if(!targetTime) {
-                targetTime = Date.now() + (2 * 60 * 60 * 1000) + (45 * 60 * 1000);
-            }
-        }
-        
-        // 增加鼠标悬浮小趣味: 齿轮旋转一点点
-        const gearSvg = document.querySelector('.gear-icon svg');
-        if(gearSvg) {
-            gearSvg.style.transition = 'transform 0.3s ease';
-            gearSvg.addEventListener('mouseenter', () => {
-                gearSvg.style.transform = 'rotate(12deg) scale(1.02)';
-            });
-            gearSvg.addEventListener('mouseleave', () => {
-                gearSvg.style.transform = 'rotate(0deg) scale(1)';
-            });
-        }
-        
-        // 确保响应式完全自适应
-        window.addEventListener('resize', () => {});
     })();
 </script>
 </body>
