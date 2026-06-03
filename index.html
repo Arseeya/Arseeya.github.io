@@ -2,19 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="msvalidate.01" content="0F05C22E94A12DA54129DE57441736D8" />
-    
-    <!-- Microsoft Clarity 分析代码 -->
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "wrdvpcbjq1");
-    </script>
-    
-    <title>Arseeya · 祂的宠儿</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>站点维护中 | arseeya.link</title>
+    <!-- 使用简洁但现代的风格，完全自包含，无需外部资源 -->
     <style>
         * {
             margin: 0;
@@ -23,904 +13,511 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0c1f 0%, #1a1a2e 50%, #16213e 100%);
-            color: #eee;
-            line-height: 1.6;
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
             min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        .main-content {
-            display: none;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 1.5rem;
+            color: #1a2634;
         }
 
-        .modal {
-            max-width: 950px;
+        /* 主卡片容器 */
+        .maintenance-card {
+            max-width: 720px;
             width: 100%;
-            max-height: 90vh;
-            background: rgba(20, 15, 35, 0.98);
-            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.02);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        .region-modal {
-            max-width: 550px;
-        }
-
-        .paid-modal {
-            max-width: 600px;
-        }
-
-        .gate-modal {
-            max-width: 450px;
-        }
-
-        .modal-header {
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, #e94560, #667eea);
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .modal-header h1 {
-            font-size: 1.3rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .modal-header p {
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-
-        .modal-body {
-            padding: 1rem 1.5rem;
-            overflow-y: auto;
-            flex: 1;
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-
-        .modal-body h2 {
-            font-size: 1rem;
-            color: #e94560;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            border-left: 3px solid #e94560;
-            padding-left: 0.5rem;
-        }
-
-        .modal-body h3 {
-            font-size: 0.88rem;
-            color: #ddd;
-            margin-top: 0.6rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .modal-body p, .modal-body li {
-            color: #ccc;
-            font-size: 0.82rem;
-        }
-
-        .modal-body ul, .modal-body ol {
-            margin-left: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-body strong {
-            color: #e94560;
-        }
-
-        .modal-footer {
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            flex-shrink: 0;
-        }
-
-        .btn-primary {
-            background: #e94560;
-            color: white;
-            padding: 0.6rem 1.8rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-primary:hover {
-            background: #c5314b;
-            transform: scale(1.02);
-        }
-
-        .btn-primary:disabled {
-            background: #555;
-            cursor: not-allowed;
-            opacity: 0.6;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid #e94560;
-            color: #e94560;
-            padding: 0.6rem 1.8rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(233,69,96,0.2);
-        }
-
-        .btn-disabled {
-            background: #555;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .btn-disabled:hover {
-            background: #555;
-            transform: none;
-        }
-
-        .region-warning {
-            background: rgba(233,69,96,0.15);
-            border-left: 3px solid #e94560;
-            padding: 0.8rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #ddd;
-            font-size: 0.9rem;
-        }
-        .input-group input {
+        /* 装饰顶部条 */
+        .status-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #f59e0b, #eab308, #f97316, #ef4444);
             width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 1rem;
-            color: #eee;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: #e94560;
-            background: rgba(0,0,0,0.5);
-        }
-        .error-msg {
-            background: rgba(233,69,96,0.2);
-            border: 1px solid #e94560;
-            border-radius: 0.8rem;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #e94560;
-        }
-        .loading-msg {
-            text-align: center;
-            padding: 0.5rem;
-            color: #e94560;
-            font-size: 0.85rem;
-        }
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .project-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 1rem;
-            padding: 1rem;
-            text-align: center;
-        }
-        .project-card h3 {
-            color: #e94560;
-            margin: 0.5rem 0;
-        }
-        .status-badge {
-            display: inline-block;
-            background: rgba(233,69,96,0.2);
-            border: 1px solid #e94560;
-            border-radius: 2rem;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.75rem;
-            color: #e94560;
         }
 
-        .modal-body::-webkit-scrollbar {
-            width: 4px;
-        }
-        .modal-body::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
-            border-radius: 4px;
-        }
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #e94560;
-            border-radius: 4px;
+        /* 内部内容区 */
+        .content {
+            padding: 2.5rem 2.2rem 3rem 2.2rem;
         }
 
-        .navbar {
+        /* 图标区域 */
+        .icon-area {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.8rem;
         }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #e94560, #667eea);
-            -webkit-background-clip: text;
+
+        .gear-icon {
+            background: #fff1e5;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -8px rgba(0, 0, 0, 0.1);
+        }
+
+        .gear-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: #ea580c;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #1f2937, #2d3e50);
             background-clip: text;
+            -webkit-background-clip: text;
             color: transparent;
+            margin-bottom: 0.75rem;
         }
-        .nav-links {
+
+        .domain {
+            text-align: center;
+            font-family: monospace;
+            font-size: 1rem;
+            background: #eef2ff;
+            display: inline-block;
+            width: auto;
+            margin: 0 auto 1.5rem auto;
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            color: #2563eb;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(2px);
+        }
+
+        .desc {
+            text-align: center;
+            font-size: 1.08rem;
+            line-height: 1.5;
+            color: #334155;
+            margin: 1rem 0 1.2rem 0;
+            font-weight: 450;
+        }
+
+        .notice-box {
+            background: #fef9e3;
+            border-left: 5px solid #f59e0b;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.4rem;
+            margin: 1.8rem 0 2rem 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .notice-box p {
+            font-size: 0.95rem;
+            color: #854d0e;
             display: flex;
-            gap: 1.5rem;
-            list-style: none;
             align-items: center;
+            gap: 10px;
             flex-wrap: wrap;
         }
-        .nav-links a {
-            color: #eee;
-            text-decoration: none;
-            transition: color 0.2s;
-            cursor: pointer;
+
+        .notice-box strong {
+            font-weight: 600;
         }
-        .nav-links a:hover {
-            color: #e94560;
+
+        .clock-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 1.8rem 0;
         }
-        .dropdown {
-            position: relative;
+
+        .time-block {
+            background: #f1f5f9;
+            border-radius: 1.5rem;
+            padding: 0.6rem 1rem;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 3px 8px rgba(0,0,0,0.05);
         }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: rgba(30, 25, 55, 0.98);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 0.5rem 0;
-            min-width: 160px;
-            z-index: 100;
-            border: 1px solid rgba(255,255,255,0.1);
+
+        .time-number {
+            font-size: 2.1rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            color: #0f172a;
+            line-height: 1.2;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
+
+        .time-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #475569;
         }
-        .dropdown-menu a {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: #eee;
-            text-decoration: none;
+
+        .contact {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #cbd5e1;
             font-size: 0.85rem;
-            cursor: pointer;
+            color: #4b5563;
         }
-        .dropdown-menu a:hover {
-            background: rgba(233,69,96,0.3);
-            color: #e94560;
+
+        .contact a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #90aeff;
         }
-        .menu-toggle {
-            display: none;
-            font-size: 1.8rem;
+
+        .contact a:hover {
+            color: #1d4ed8;
+            border-bottom-style: solid;
+        }
+
+        .small-note {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 1rem;
+            color: #6c757d;
+        }
+
+        button {
             background: none;
             border: none;
-            color: #eee;
-            cursor: pointer;
         }
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-                width: 100%;
-                flex-direction: column;
-                align-items: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .nav-links.show {
-                display: flex;
-            }
-            .dropdown {
-                width: 100%;
-                text-align: center;
-            }
-            .dropdown-menu {
-                position: static;
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-        }
-        .hero {
-            margin: 1rem 0 2rem;
-            border-radius: 2rem;
-            overflow: hidden;
-            position: relative;
-            min-height: 40vh;
-            background: linear-gradient(145deg, #2a1e3c, #0f0c1f);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .hero img {
+
+        /* 进度条模拟 */
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 40px;
+            height: 8px;
             width: 100%;
+            margin: 1rem 0 0.8rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #f97316, #eab308);
+            width: 68%;
             height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 0;
+            border-radius: 40px;
+            animation: subtlePulse 2.2s infinite ease;
         }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 3rem 1.5rem;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-            width: 100%;
+
+        @keyframes subtlePulse {
+            0% { opacity: 0.8; width: 68%;}
+            50% { opacity: 1; width: 72%;}
+            100% { opacity: 0.8; width: 68%;}
         }
-        .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-        }
-        .hero-tagline {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        @media (min-width: 1024px) {
-            .hero {
-                min-height: 60vh;
-            }
-            .hero h1 {
-                font-size: 4rem;
-            }
-        }
-        .card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(8px);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .card:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateY(-4px);
-        }
-        .card a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .setting-container {
-            width: 100%;
-            max-width: 320px;
-            margin: 0 auto;
-            border-radius: 1rem;
-            overflow: hidden;
-            background: rgba(0,0,0,0.2);
-        }
-        .setting-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-        .setting-img:hover {
-            transform: scale(1.02);
-        }
-        @media (min-width: 768px) {
-            .setting-container {
-                max-width: 280px;
-            }
-        }
-        @media (min-width: 1024px) {
-            .setting-container {
-                max-width: 300px;
-            }
-        }
-        .btn {
-            display: inline-block;
-            background: #e94560;
-            color: white;
-            padding: 0.7rem 1.6rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #e94560;
-        }
-        .btn:hover {
-            background: #c5314b;
-            transform: scale(1.02);
-        }
-        .two-columns {
+
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 500;
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            color: #475569;
         }
-        .two-columns > * {
-            flex: 1;
-            min-width: 200px;
+
+        @media (max-width: 500px) {
+            .content {
+                padding: 1.8rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .time-number {
+                font-size: 1.6rem;
+            }
+            .clock-row {
+                gap: 0.8rem;
+            }
+            .time-block {
+                min-width: 65px;
+                padding: 0.4rem 0.8rem;
+            }
         }
-        .works-section {
-            margin-bottom: 3rem;
-        }
-        .work-grid {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .work-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            flex: 1;
-            min-width: 200px;
-        }
-        .world-section {
-            background: rgba(255,255,255,0.03);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin: 2rem 0 1.5rem;
+
+        /* 小彩蛋精致感 */
+        .footer-grace {
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .update-stream {
-            border-left: 3px solid #e94560;
-            padding-left: 1rem;
-        }
-        footer {
-            margin-top: 3rem;
-            padding: 2rem 0;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-        footer a {
-            color: #aaa;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        footer a:hover {
-            color: #e94560;
-            text-decoration: underline;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 1rem;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            margin: 1.5rem 0 1rem;
-            background: linear-gradient(135deg, #e94560, #667eea);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 1.2rem;
         }
     </style>
 </head>
 <body>
-    <!-- 地区选择弹窗 -->
-    <div id="regionOverlay" class="overlay">
-        <div class="modal region-modal">
-            <div class="modal-header">
-                <h1>📍 Region Confirmation / 地区确认</h1>
-            </div>
-            <div class="modal-body">
-                <div style="margin-bottom:1rem;">
-                    <p><strong>English</strong></p>
-                    <p>This website is operated by an individual in China.</p>
-                    <p>If you are located in the EEA, UK, or California:</p>
-                    <ul>
-                        <li>Please be aware that this site may not fully comply with GDPR/CCPA.</li>
-                        <li>By continuing to use this site, you confirm that you have read and understood the International User Statement (Section 9 of the full terms).</li>
-                    </ul>
-                </div>
-                <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
-                    <p><strong>中文</strong></p>
-                    <p>本网站由位于中国的个人运营。</p>
-                    <p>若您位于欧盟、英国或加州：</p>
-                    <ul>
-                        <li>请注意本网站可能无法完全符合GDPR/CCPA的要求。</li>
-                        <li>继续使用本网站即表示您确认已阅读并理解国际用户声明（完整条款第9条）。</li>
-                    </ul>
-                </div>
-                <div class="region-warning" style="margin-top:1rem;">
-                    <p>📖 <a href="terms.html#sec9" target="_blank" style="color:#e94560;">查看完整条款第9条（国际用户声明）</a></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="confirmRegionBtn">✓ I Confirm / 我确认</button>
+
+<div class="maintenance-card">
+    <div class="status-bar"></div>
+    <div class="content">
+        <div class="icon-area">
+            <div class="gear-icon">
+                <!-- 简洁工具/齿轮 SVG ，表示维护状态 -->
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="M4 4l2 2" />
+                    <path d="M18 18l2 2" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                </svg>
             </div>
         </div>
-    </div>
-
-    <!-- 条款弹窗 -->
-    <div id="termsOverlay" class="overlay" style="display: none;">
-        <div class="modal">
-            <div class="modal-header">
-                <h1>📜 网站使用条款</h1>
-                <p id="termsVersionInfo">最后更新日期：2026年5月15日 | © Arseeya. All Rights Reserved.</p>
+        
+        <h1>暂时停止服务</h1>
+        <div style="text-align: center;">
+            <span class="domain">arseeya.link</span>
+        </div>
+        
+        <p class="desc">
+            我们正在对系统进行计划内的升级与优化，<br>以提供更稳定、更流畅的体验。
+        </p>
+        
+        <!-- 通知附加消息 -->
+        <div class="notice-box">
+            <p>
+                📢 <strong>维护窗口：</strong> 预计 2~4 小时内恢复访问，具体进度请关注后续通知。感谢您的耐心与理解！
+            </p>
+        </div>
+        
+        <!-- 动态倒计时占位：展示下次预计恢复 (使用静态演示但未来更新风格，代表优雅占位) 实际可显示大概剩余时间 由于无法知道确切时间，做一个估计倒计时 基于当前时间+2h45m演示 让访客感受到预期-->
+        <div class="clock-row" id="countdownArea">
+            <div class="time-block">
+                <div class="time-number" id="hours">--</div>
+                <div class="time-label">小时</div>
             </div>
-            <div class="modal-body">
-                <p style="text-align:center;"><strong>网站所有者/作者：Arseeya（阿尔茜娅）<br>网站域名：arseeya.link<br>联系邮箱：arseeya@outlook.com</strong></p>
-                <p>本网站使用条款包括知识产权声明、用户行为规范、APP使用条款、付费项目与约稿条款、未成年人保护、免责声明、侵权投诉、国际用户声明、隐私保护、争议解决等共15个章节。</p>
-                <p style="margin-top:0.5rem;">详细内容请查看：<a href="terms.html" target="_blank" style="color:#e94560;">📜 完整条款全文</a></p>
-                <p style="margin-top:1rem; padding:0.5rem; background:rgba(0,0,0,0.3); border-radius:0.5rem; text-align:center;"><strong>使用本网站（arseeya.link）、APP、购买付费项目或进行赞赏，即表示您已阅读、理解并同意受上述全部条款的约束。<br>如不同意，请点击"不同意"退出。</strong></p>
+            <div class="time-block">
+                <div class="time-number" id="minutes">--</div>
+                <div class="time-label">分钟</div>
             </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="agreeTermsBtn">✓ 同意并继续</button>
-                <button class="btn-secondary" id="disagreeTermsBtn">✗ 不同意并退出</button>
+            <div class="time-block">
+                <div class="time-number" id="seconds">--</div>
+                <div class="time-label">秒</div>
             </div>
         </div>
-    </div>
-
-    <!-- 付费项目弹窗 -->
-    <div id="paidOverlay" class="overlay" style="display: none;">
-        <div class="modal paid-modal">
-            <div class="modal-header">
-                <h1>💰 付费项目</h1>
-                <p>支持作者 · 获取定制服务</p>
-            </div>
-            <div class="modal-body">
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div style="font-size: 2rem;">✍️</div>
-                        <h3>文章约稿</h3>
-                        <p>定制创作 · 专属故事</p>
-                        <div class="status-badge">⏳ 暂未开放</div>
-                        <button class="btn-primary btn-disabled" style="margin-top:0.5rem; padding:0.3rem 1rem; font-size:0.8rem;" disabled>暂未开放</button>
-                    </div>
-                </div>
-                <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(0,0,0,0.2); border-radius: 0.8rem; text-align: center;">
-                    <p style="font-size: 0.8rem; color: #aaa;">📖 更多付费项目正在筹备中，敬请期待</p>
-                    <p style="font-size: 0.75rem; color: #888; margin-top: 0.3rem;">具体规则以《完整网站使用条款》第5条为准</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="closePaidBtn">关闭</button>
-            </div>
+        
+        <!-- 进度指示条 模拟维护进度 -->
+        <div class="progress-container">
+            <div class="progress-fill"></div>
+        </div>
+        <div class="status-text">
+            <span>⚙️ 后端升级中</span>
+            <span>预计完成度 ≈ 68%</span>
+        </div>
+        
+        <div class="contact">
+            📧 如有紧急事宜，请联系 <a href="mailto:support@arseeya.link">support@arseeya.link</a><br>
+            或关注官方渠道获取最新动态。
+        </div>
+        <div class="small-note">
+            arseeya.link · 服务暂时不可用，我们会尽快归来 🚀
+        </div>
+        <div class="footer-grace">
+            &copy; arseeya 技术团队
         </div>
     </div>
+</div>
 
-    <!-- 受保护入口弹窗 -->
-    <div id="gateOverlay" class="overlay" style="display: none;">
-        <div class="modal gate-modal">
-            <div class="modal-header">
-                <h1>🔐 权限验证</h1>
-                <p>请输入访问凭证</p>
-            </div>
-            <div class="modal-body">
-                <div id="gateErrorMsg" class="error-msg" style="display: none;"></div>
-                <div class="input-group">
-                    <label>📋 界面代码</label>
-                    <input type="text" id="pageCode" placeholder="请输入" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label>🔑 密码</label>
-                    <input type="password" id="password" placeholder="请输入" autocomplete="off">
-                </div>
-                <div id="loadingIndicator" class="loading-msg" style="display: none;">⏳ 验证中，请稍候...</div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="gateSubmitBtn">✓ 验证</button>
-                <button class="btn-secondary" id="closeGateBtn">取消</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 主内容 -->
-    <div id="mainContent" class="main-content">
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">Arseeya</div>
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="javascript:void(0)">首页</a></li>
-                    <li><a href="/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a></li>
-                    <li><a href="world.html">百科</a></li>
-                    <li><a href="download.html">下载</a></li>
-                    <li><a href="javascript:void(0)" id="paidBtn">💰 付费项目</a></li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0)">⚙️ 其他及设置</a>
-                        <div class="dropdown-menu">
-                            <a href="terms.html">📜 查看完整条款</a>
-                            <a href="javascript:void(0)" id="showTermsAgain">🔁 重新同意条款</a>
-                            <a href="javascript:void(0)" id="gateBtn">🔒 受保护入口</a>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="hero">
-                <img src="hero.jpg" alt="Arseeya 头图" onerror="this.style.display='none'">
-                <div class="hero-content">
-                    <h1>Arseeya</h1>
-                    <div class="hero-tagline">我来，我记，我见证。</div>
-                </div>
-            </div>
-
-            <div class="two-columns">
-                <div class="card">
-                    <a href="about.html">
-                        <h2>关于 Arseeya</h2>
-                        <p>祂的宠儿。</p>
-                        <p>何为记忆？这是个好问题。</p>
-                    </a>
-                </div>
-                <div class="card">
-                    <h2>设定图</h2>
-                    <div class="setting-container">
-                        <img class="setting-img" src="setting.jpg" alt="Arseeya 设定图" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Crect%20width%3D%22300%22%20height%3D%22300%22%20fill%3D%22%23333%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%23aaa%22%3E设定图%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    </div>
-                </div>
-            </div>
-
-            <div class="works-section">
-                <h2 class="section-title">📖 作品</h2>
-                <div class="work-grid">
-                    <div class="work-card">
-                        <h3>听潮事记</h3>
-                        <p>记忆的潮汐起落之间，那些被毁灭的故事。</p>
-                        <a href="/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/" class="btn" target="_blank">开始阅读 →</a>
-                    </div>
-                    <div class="work-card">
-                        <h3>听潮事记 · 番外集</h3>
-                        <p>潮水未止，余音不绝。</p>
-                        <a href="/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0%E7%95%AA%E5%A4%96%E9%9B%86/" class="btn" target="_blank">开始阅读 →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="world-section">
-                <h2>归终百科</h2>
-                <p style="margin: 0.5rem 0;">人物 · 历史 · 地点 · 知识 —— 深入世界</p>
-                <a href="world.html" class="btn btn-outline">探索世界 →</a>
-            </div>
-
-            <div class="card" style="text-align: center;">
-                <h2>📦 下载中心</h2>
-                <p>Android App 及其它资源</p>
-                <a href="download.html" class="btn">前往下载 →</a>
-            </div>
-
-            <div class="update-stream" id="updateInfo">
-                📅 加载更新信息...
-            </div>
-
-            <footer>
-                <span id="emailLink1" style="cursor:pointer;">📧 arseeya@outlook.com</span> &nbsp;|&nbsp;
-                <span id="emailLink2" style="cursor:pointer;">le.arseeya@gmail.com</span><br>
-                © Arseeya. All Rights Reserved | <a href="terms.html">📜 完整条款</a>
-            </footer>
-        </div>
-    </div>
-
-    <script>
-        (function() {
-            const TERMS_STORAGE_KEY = 'arseeya_terms_version';
-            const REGION_STORAGE_KEY = 'arseeya_region_confirmed';
+<script>
+    (function() {
+        // 设定一个维护结束的目标时间：当前时间 + 2小时 45分钟 ～ 模拟一个合理期待倒计时
+        // 为了让不同访客看到相对一致的“剩余维护时间”，但又不需要后端，这里采用基于访客当前时间 + 2小时45分钟作为维护完成预估。
+        // 但注意: 如果页面刷新, 会重新从当前时间 + 2h45m 开始倒计时。作为静态占位完全合理友好。
+        // 也可以增加 localstorage 来保持一致性，但无伤大雅。这是纯前端模拟友好提醒。
+        // 同时将预计恢复时间显示于页面的倒计时区域中。
+        
+        let targetTime = null;
+        
+        function initTargetTime() {
+            // 检查本地存储是否有保存的维护目标结束时间 (如果用户刷新，继续沿用之前的结束点，更真实)
+            const stored = localStorage.getItem('arseeya_maintain_until');
+            const now = Date.now();
+            if (stored && !isNaN(parseInt(stored))) {
+                const parsed = parseInt(stored);
+                if (parsed > now) {
+                    targetTime = parsed;
+                } else {
+                    // 过期则重新设定
+                    targetTime = now + (2 * 60 * 60 * 1000) + (45 * 60 * 1000); // 2小时45分
+                    localStorage.setItem('arseeya_maintain_until', targetTime);
+                }
+            } else {
+                targetTime = now + (2 * 60 * 60 * 1000) + (45 * 60 * 1000);
+                localStorage.setItem('arseeya_maintain_until', targetTime);
+            }
+        }
+        
+        function updateCountdown() {
+            if (!targetTime) {
+                initTargetTime();
+            }
+            const now = Date.now();
+            const distance = targetTime - now;
             
-            let currentTermsVersion = null;
-
-            // DOM 元素
-            const regionOverlay = document.getElementById('regionOverlay');
-            const termsOverlay = document.getElementById('termsOverlay');
-            const paidOverlay = document.getElementById('paidOverlay');
-            const gateOverlay = document.getElementById('gateOverlay');
-            const mainContent = document.getElementById('mainContent');
+            const hoursElem = document.getElementById('hours');
+            const minutesElem = document.getElementById('minutes');
+            const secondsElem = document.getElementById('seconds');
             
-            const confirmRegionBtn = document.getElementById('confirmRegionBtn');
-            const agreeTermsBtn = document.getElementById('agreeTermsBtn');
-            const disagreeTermsBtn = document.getElementById('disagreeTermsBtn');
-            const showTermsAgain = document.getElementById('showTermsAgain');
-            const paidBtn = document.getElementById('paidBtn');
-            const closePaidBtn = document.getElementById('closePaidBtn');
-            const gateBtn = document.getElementById('gateBtn');
-            const closeGateBtn = document.getElementById('closeGateBtn');
-            let gateSubmitBtn = document.getElementById('gateSubmitBtn');
-
-            // 显示/隐藏弹窗函数
-            function showRegionOverlay() {
-                if (regionOverlay) regionOverlay.style.display = 'flex';
-                if (termsOverlay) termsOverlay.style.display = 'none';
-                if (paidOverlay) paidOverlay.style.display = 'none';
-                if (gateOverlay) gateOverlay.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'none';
+            if (distance <= 0) {
+                // 倒计时结束, 可以显示“即将恢复”或者显示0并动态刷新文本
+                hoursElem.innerText = '00';
+                minutesElem.innerText = '00';
+                secondsElem.innerText = '00';
+                // 可选：将进度条改成接近100%并展示不同的消息
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = '96%';
+                    progressFill.style.background = "linear-gradient(90deg, #22c55e, #16a34a)";
+                }
+                const statusSpan = document.querySelector('.status-text span:first-child');
+                if (statusSpan) statusSpan.innerHTML = '✅ 服务即将上线';
+                // 不用继续更新或清除倒计时消息，显示0即可
+                return;
             }
-
-            function showTermsOverlay() {
-                if (regionOverlay) regionOverlay.style.display = 'none';
-                if (termsOverlay) termsOverlay.style.display = 'flex';
-                if (paidOverlay) paidOverlay.style.display = 'none';
-                if (gateOverlay) gateOverlay.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'none';
-            }
-
-            function showPaidOverlay() {
-                if (regionOverlay) regionOverlay.style.display = 'none';
-                if (termsOverlay) termsOverlay.style.display = 'none';
-                if (paidOverlay) paidOverlay.style.display = 'flex';
-                if (gateOverlay) gateOverlay.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'none';
-            }
-
-            function showGateOverlay() {
-                if (regionOverlay) regionOverlay.style.display = 'none';
-                if (termsOverlay) termsOverlay.style.display = 'none';
-                if (paidOverlay) paidOverlay.style.display = 'none';
-                if (gateOverlay) gateOverlay.style.display = 'flex';
-                if (mainContent) mainContent.style.display = 'none';
-                const pageCodeInput = document.getElementById('pageCode');
-                const passwordInput = document.getElementById('password');
-                if (pageCodeInput) pageCodeInput.value = '';
-                if (passwordInput) passwordInput.value = '';
-                const errorDiv = document.getElementById('gateErrorMsg');
-                if (errorDiv) errorDiv.style.display = 'none';
-            }
-
-            function showMainContent() {
-                if (regionOverlay) regionOverlay.style.display = 'none';
-                if (termsOverlay) termsOverlay.style.display = 'none';
-                if (paidOverlay) paidOverlay.style.display = 'none';
-                if (gateOverlay) gateOverlay.style.display = 'none';
-                if (mainContent) mainContent.style.display = 'block';
-            }
-
-            function confirmRegion() {
-                localStorage.setItem(REGION_STORAGE_KEY, 'true');
-                checkTermsVersion();
-            }
-
-            function agreeToTerms() {
-                localStorage.setItem(TERMS_STORAGE_KEY, currentTermsVersion);
-                showMainContent();
-            }
-
-            function disagreeToTerms() {
-                alert('您已拒绝网站使用条款，页面将关闭。');
-                document.body.innerHTML = '<div style="text-align:center; padding:4rem; min-height:100vh; background:#0f0c1f; color:#eee;"><h1>已拒绝条款</h1><p>您可以选择关闭此页面。</p><p style="margin-top:2rem; font-size:0.8rem; color:#aaa;">© Arseeya. All Rights Reserved.</p></div>';
-            }
-
-            function resetTerms() {
-                localStorage.removeItem(TERMS_STORAGE_KEY);
-                location.reload();
-            }
-
-            // 受保护入口验证逻辑
-            let gateConfigCache = null;
-
-            async function loadGateConfig() {
-                if (gateConfigCache) return gateConfigCache;
-                try {
-                    const response = await fetch('gate.json?_=' + Date.now());
-                    if (!response.ok) throw new Error('无法加载配置');
-                    gateConfigCache = await response.json();
-                    return gateConfigCache;
-                } catch (e) {
-                    console.error('加载 gate.json 失败:', e);
-                    return null;
+            
+            const hours = Math.floor(distance / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            hoursElem.innerText = hours < 10 ? '0' + hours : '' + hours;
+            minutesElem.innerText = minutes < 10 ? '0' + minutes : '' + minutes;
+            secondsElem.innerText = seconds < 10 ? '0' + seconds : '' + seconds;
+            
+            // 动态进度条根据消耗的时间比例显示 (维护窗口总长2h45m = 9900秒)
+            const totalMaintainMs = 2 * 3600 * 1000 + 45 * 60 * 1000; // 9900000 ms
+            const elapsed = totalMaintainMs - distance;
+            let percent = (elapsed / totalMaintainMs) * 100;
+            percent = Math.min(99, Math.max(5, percent));
+            const progressFillElem = document.querySelector('.progress-fill');
+            if (progressFillElem) {
+                progressFillElem.style.width = percent + '%';
+                // 根据百分比改变颜色风格微调
+                if (percent > 70) {
+                    progressFillElem.style.background = "linear-gradient(90deg, #fbbf24, #f59e0b)";
+                } else {
+                    progressFillElem.style.background = "linear-gradient(90deg, #f97316, #eab308)";
                 }
             }
-
-            async function fetchPagePassword(targetUrl) {
-                try {
-                    const url = targetUrl.includes('?') ? targetUrl + '&_=' + Date.now() : targetUrl + '?_=' + Date.now();
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error('无法加载目标页面');
-                    const htmlText = await response.text();
-                    const match = htmlText.match(/PAGE_ACCESS_PASSWORD\s*=\s*["']([^"']+)["']/);
-                    if (match && match[1]) {
-                        return match[1];
-                    }
-                    return null;
-                } catch (e) {
-                    console.error('读取页面密码失败:', e);
-                    return null;
-                }
+            // 更新状态文本描述
+            const statusTextSpan = document.querySelector('.status-text span:first-child');
+            if (statusTextSpan) {
+                if (percent < 30) statusTextSpan.innerHTML = '🔧 环境配置中';
+                else if (percent < 65) statusTextSpan.innerHTML = '⚙️ 数据优化 & 后端升级';
+                else statusTextSpan.innerHTML = '🚀 最后冲刺，即将完成';
             }
-
-            async function verifyAndRedirect() {
-                const pageCode = document.getElementById('pageCode').value.trim();
-                const userPassword = document.getElementById('password').value.trim();
-                const errorDiv = document.getElementById('gateErrorMsg');
-                const loadingDiv = document.getElementById('loadingIndicator');
-                const submitBtn = gateSubmitBtn;
-
-                if (!pageCode || !userPassword) {
-                    errorDiv.textContent = '请填写界面代码和密码';
-                    errorDiv.style.display = 'block';
-                    setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
-                    return;
+            const percentSpan = document.querySelector('.status-text span:last-child');
+            if (percentSpan) {
+                percentSpan.innerHTML = `预计完成度 ≈ ${Math.floor(percent)}%`;
+            }
+        }
+        
+        // 同时添加一个刷新域名的优雅显示以及可手动重置（可选，无干扰）
+        function additionalPolish() {
+            // 让域名字体更明显，不需要额外操作
+            // 如果倒计时归零之后，可重置本地存储? 不自动重置，避免马上重置再次延长。保持用户感知。
+            // 但页面会展示归零状态；若管理员真的维护完成，可以手动清除localstorage或修改但不需要，只是前端友好占位。
+            // 添加监听 visibility 保证后台tab运行时更新不频繁但不碍事
+        }
+        
+        // 为了更精确的倒计时，每隔1秒刷新一次
+        let interval = null;
+        function startTimer() {
+            if (interval) clearInterval(interval);
+            updateCountdown();
+            interval = setInterval(updateCountdown, 1000);
+        }
+        
+        // 额外注意如果维护倒计时结束后，显示不同的信息，还可以增加一个刷新提示
+        function observeRestore() {
+            // 根据目标时间是否过期展示不同的详细卡片文案
+            setInterval(() => {
+                if (targetTime && Date.now() >= targetTime) {
+                    const descElem = document.querySelector('.desc');
+                    if (descElem && !descElem.innerHTML.includes('即将恢复')) {
+                        descElem.innerHTML = '维护即将完成，服务正在做最后的启动检查。<br>感谢您耐心等候，马上回来！';
+                        const noticeBox = document.querySelector('.notice-box p');
+                        if (noticeBox && !noticeBox.innerHTML.includes('即将恢复服务')) {
+                            noticeBox.innerHTML = '🎉 <strong>维护接近尾声：</strong> 服务正在重启中，预计几分钟内可恢复访问。';
+                        }
+                        const clockTitle = document.querySelector('.clock-row');
+                        if (clockTitle) {
+                            // 可以添加一点小装饰
+                        }
+                        // 避免重复修改
+                    }
+                    const progressFill = document.querySelector('.progress-fill');
+                    if (progressFill && progressFill.style.width !== '100%') {
+                        progressFill.style.width = '99%';
+                        progressFill.style.background = "linear-gradient(90deg, #22c55e, #15803d)";
+                    }
                 }
-
-                if (loadingDiv) loadingDiv.style.display = 'block';
-                if (submitBtn) submitBtn.disabled = true;
-
-                try {
-                    const gateConfig = await loadGateConfig();
-                    if (!gateConfig || !gateConfig[pageCode]) {
-                        errorDiv.textContent = '界面代码不存在';
-                        errorDiv.style.display = 'block';
-                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
-                        if (loadingDiv) loadingDiv.style.display = 'none';
-                        if (submitBtn) submitBtn.disabled = false;
-                        return;
-                    }
-
-                    const targetUrl = gateConfig[pageCode].target;
-                    const correctPassword = await fetchPagePassword(targetUrl);
-                    
-                    if (!correctPassword) {
-                        errorDiv.textContent = '无法验证密码，请联系管理员';
-                        errorDiv.style.display = 'block';
-                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
-                        if (loadingDiv) loadingDiv.style.display = 'none';
-                        if (submitBtn) submitBtn.disabled = false;
-                        return;
-                    }
-
-                    if (userPassword !== correctPassword) {
-                        errorDiv.textContent = '密码错误，请重新输入';
-                        errorDiv.style.display = 'block';
-                        setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
-                        if (loadingDiv) loadingDiv.style.display = 'none';
-                        if (submitBtn) submitBtn.disabled = false;
-                        return;
-                    }
-
-                    window.location.href = targe
+            }, 2000);
+        }
+        
+        // 初次执行
+        initTargetTime();
+        startTimer();
+        observeRestore();
+        
+        // 可选的: 当用户点击域名字样或者联系邮件无侵入行为，无需操作
+        // 额外增加title动态显示倒计时
+        function updateTitleTimer() {
+            if (!targetTime) return;
+            const distance = targetTime - Date.now();
+            if (distance <= 0) {
+                document.title = "✨ arseeya.link 即将恢复 ✨";
+                return;
+            }
+            const hours = Math.floor(distance / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.title = `[维护中] ${hours}h ${minutes}m - arseeya.link`;
+        }
+        setInterval(updateTitleTimer, 1000);
+        updateTitleTimer();
+        
+        // 优雅降级处理，如果localstorage不可用则不影响体验
+        try {
+            if (!localStorage.getItem('arseeya_maintain_until')) {
+                // 已调用过init无妨
+            }
+        } catch(e) {
+            // 忽略隐私模式，只是没有本地持久时间，仍然从当前时间开始倒计时
+            if(!targetTime) {
+                targetTime = Date.now() + (2 * 60 * 60 * 1000) + (45 * 60 * 1000);
+            }
+        }
+        
+        // 增加鼠标悬浮小趣味: 齿轮旋转一点点
+        const gearSvg = document.querySelector('.gear-icon svg');
+        if(gearSvg) {
+            gearSvg.style.transition = 'transform 0.3s ease';
+            gearSvg.addEventListener('mouseenter', () => {
+                gearSvg.style.transform = 'rotate(12deg) scale(1.02)';
+            });
+            gearSvg.addEventListener('mouseleave', () => {
+                gearSvg.style.transform = 'rotate(0deg) scale(1)';
+            });
+        }
+        
+        // 确保响应式完全自适应
+        window.addEventListener('resize', () => {});
+    })();
+</script>
+</body>
+</html>
