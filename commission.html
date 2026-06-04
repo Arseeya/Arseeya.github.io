@@ -23,7 +23,6 @@
             padding: 1.5rem;
         }
 
-        /* 主容器 - 去掉毛玻璃，改用纯色半透明背景，提高对比度 */
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -33,7 +32,6 @@
             border: 1px solid rgba(233, 69, 96, 0.3);
         }
 
-        /* 导航 */
         .nav {
             display: flex;
             justify-content: space-between;
@@ -65,7 +63,6 @@
             font-size: 0.9rem;
         }
 
-        /* 状态提示 */
         .status-badge {
             display: inline-block;
             background: #ffb428;
@@ -100,18 +97,53 @@
             letter-spacing: 2px;
             color: #e94560;
         }
+        
+        /* 邮箱容器 - 自动换行 + 响应式字体 */
+        .email-wrapper {
+            margin: 0.8rem 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
         .email-large {
-            font-size: 2.2rem;
             font-weight: bold;
             color: #ffffff;
             background: #e94560;
             display: inline-block;
             padding: 0.3rem 1.5rem;
             border-radius: 3rem;
-            margin: 0.8rem 0;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(233,69,96,0.4);
+            /* 基准字体大小 */
+            font-size: 2.2rem;
+            /* 允许收缩 */
+            white-space: nowrap;
         }
+        
+        /* 响应式：当屏幕宽度小于600px时，邮箱字体自动缩小 */
+        @media (max-width: 600px) {
+            .email-large {
+                font-size: 5vw;  /* 相对于视口宽度的5% */
+                padding: 0.3rem 1rem;
+            }
+        }
+        /* 极端小屏幕（宽度小于400px）进一步保护 */
+        @media (max-width: 400px) {
+            .email-large {
+                font-size: 4.5vw;
+                letter-spacing: 0;
+            }
+            .email-wrapper {
+                white-space: normal;
+                word-break: break-all;
+            }
+            .email-large {
+                white-space: normal;
+                word-break: break-all;
+                line-height: 1.4;
+            }
+        }
+        
         .copy-btn {
             background: rgba(255,255,255,0.15);
             border: 1px solid #e94560;
@@ -144,7 +176,6 @@
             transform: scale(1.02);
         }
 
-        /* 价目表 - 卡片式更清晰 */
         .price-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -171,7 +202,6 @@
             color: #aaa;
         }
 
-        /* FAQ 折叠 */
         .faq-item {
             background: rgba(0,0,0,0.3);
             border-radius: 0.8rem;
@@ -198,7 +228,6 @@
             display: block;
         }
 
-        /* 邮件模板 */
         .template-box {
             background: #0a0814;
             border-radius: 1rem;
@@ -217,9 +246,6 @@
             border-left: 3px solid #e94560;
             padding-left: 0.8rem;
         }
-        h3 {
-            margin: 1rem 0 0.5rem;
-        }
         footer {
             text-align: center;
             margin-top: 2rem;
@@ -228,7 +254,6 @@
             font-size: 0.8rem;
         }
         @media (max-width: 700px) {
-            .email-large { font-size: 1.2rem; padding: 0.2rem 1rem; }
             body { padding: 0.8rem; }
             .container { padding: 1rem; }
         }
@@ -237,7 +262,6 @@
 <body>
 
 <div class="container">
-    <!-- 导航 -->
     <div class="nav">
         <div class="nav-links">
             <a href="/index.html">首页</a>
@@ -249,16 +273,18 @@
         <a href="/index.html" class="back-home">← 返回首页</a>
     </div>
 
-    <!-- 标题 -->
     <h1 style="font-size: 1.8rem;">📝 文章约稿 <span class="status-badge">🔄 筹备中</span></h1>
     <div class="info-box">
         💡 当前状态：约稿服务正在筹备，价目表与流程仅供参考。如需提前咨询，可直接邮件联系。
     </div>
 
-    <!-- ========== 核心联系区（高对比度） ========== -->
+    <!-- ========== 核心联系区（响应式邮箱） ========== -->
     <div class="contact-card">
         <div class="contact-label">✉️ 约稿联系邮箱</div>
-        <div class="email-large" id="contactEmail">le.arseeya@outlook.com</div>
+        <!-- 邮箱容器：自动换行/滚动，字体自适应 -->
+        <div class="email-wrapper">
+            <span class="email-large" id="contactEmail">le.arseeya@outlook.com</span>
+        </div>
         <div>
             <button class="copy-btn" onclick="copyEmail()">📋 复制邮箱</button>
         </div>
@@ -268,12 +294,12 @@
         <p style="margin-top: 0.8rem; font-size: 0.85rem;">📌 点击上方按钮直接打开邮件客户端，或复制邮箱后手动发送</p>
     </div>
 
-    <!-- 邮件模板示例（实用） -->
     <h2>📋 邮件模板（复制后填写）</h2>
     <div class="template-box" id="templateText">
 主题：文章约稿咨询 - [您的称呼]
 
 正文：
+
 您好，
 
 我想咨询文章约稿，具体需求如下：
@@ -289,7 +315,6 @@
     </div>
     <button class="copy-btn" onclick="copyTemplate()">📋 复制模板</button>
 
-    <!-- 约稿流程 -->
     <h2>📋 约稿流程</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1rem; margin-bottom: 1.5rem;">
         <div style="background:rgba(255,255,255,0.05); padding:1rem; border-radius:1rem;">1️⃣ 邮件沟通需求</div>
@@ -299,7 +324,6 @@
         <div style="background:rgba(255,255,255,0.05); padding:1rem; border-radius:1rem;">5️⃣ 交付尾款，获取作品</div>
     </div>
 
-    <!-- 价目表（卡片式） -->
     <h2>💰 参考价目表</h2>
     <div class="price-grid">
         <div class="price-card"><h3>📄 短篇随笔</h3><div>1000~3000字</div><div class="price">¥100 ~ 250</div><div class="price-note">3-5个工作日</div></div>
@@ -310,7 +334,6 @@
     </div>
     <p style="font-size:0.8rem;">※ 实际价格根据复杂度浮动，同人/OC创作有优惠。</p>
 
-    <!-- 须知摘要 -->
     <h2>📜 约稿须知</h2>
     <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
         <li>📌 版权归作者 Arseeya 所有，您获得个人非商业使用权</li>
@@ -320,7 +343,6 @@
     </ul>
     <p>📖 详见 <a href="/terms.html#5.2" style="color:#e94560;" target="_blank">《完整条款》第5.2条</a></p>
 
-    <!-- FAQ -->
     <h2>❓ 常见问题</h2>
     <div class="faq-item"><div class="faq-question" onclick="toggleFAQ(this)">▶ 可以约稿哪些题材？</div><div class="faq-answer">同人、原创、OC相关、现实向等均可。敏感/违法内容不接受。</div></div>
     <div class="faq-item"><div class="faq-question" onclick="toggleFAQ(this)">▶ 交付后还能修改吗？</div><div class="faq-answer">免费修改3次（限小范围调整）。大范围重写需额外协商。</div></div>
@@ -333,7 +355,6 @@
 </div>
 
 <script>
-    // 复制邮箱
     function copyEmail() {
         const email = "le.arseeya@outlook.com";
         navigator.clipboard.writeText(email).then(() => {
@@ -343,7 +364,6 @@
         });
     }
 
-    // 复制模板
     function copyTemplate() {
         const template = document.getElementById("templateText").innerText;
         navigator.clipboard.writeText(template).then(() => {
@@ -351,11 +371,9 @@
         });
     }
 
-    // FAQ 折叠
     function toggleFAQ(el) {
         const answer = el.nextElementSibling;
         const isOpen = answer.classList.contains("show");
-        // 关闭所有
         document.querySelectorAll(".faq-answer").forEach(a => a.classList.remove("show"));
         document.querySelectorAll(".faq-question").forEach(q => q.classList.remove("open"));
         if (!isOpen) {
