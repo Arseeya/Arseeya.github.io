@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>阅读器 · Arseeya</title>
+    <meta name="description" content="Arseeya 小说阅读器——统一阅读体验。">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 8, 20, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover {
+            color: #e94560;
+        }
+        .chapter-nav {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .chapter-nav button {
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid #e94560;
+            color: #e94560;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        .chapter-nav button:hover {
+            background: #e94560;
+            color: white;
+        }
+        .font-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.4);
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+        }
+        .font-control span {
+            font-size: 0.8rem;
+        }
+        #fontSlider {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        /* 主布局：侧边栏 + 内容 */
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* 侧边栏（桌面） */
+        .sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.4);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            overflow-y: auto;
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+        }
+        .sidebar h3 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .chapter-list {
+            list-style: none;
+        }
+        .chapter-list li {
+            margin-bottom: 0.5rem;
+        }
+        .chapter-list a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .chapter-list a:hover, .chapter-list a.active {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+        }
+
+        /* 内容区 */
+        .content-area {
+            flex: 1;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .chapter-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #e94560;
+            border-left: 4px solid #e94560;
+            padding-left: 1rem;
+        }
+        .chapter-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .chapter-content p {
+            margin-bottom: 1.2rem;
+        }
+        .loading, .error {
+            text-align: center;
+            padding: 3rem;
+            color: #aaa;
+        }
+
+        /* 移动端：侧边栏隐藏，用底部按钮调出 */
+        .mobile-chapter-btn {
+            display: none;
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 3rem;
+            padding: 0.7rem 1.2rem;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .mobile-sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80%;
+            max-width: 280px;
+            height: 100%;
+            background: #0f0c1f;
+            z-index: 300;
+            padding: 1.5rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            border-right: 1px solid #e94560;
+        }
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 250;
+        }
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: #e94560;
+            font-size: 1.5rem;
+            float: right;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .mobile-chapter-btn { display: flex; align-items: center; gap: 0.5rem; }
+            .content-area { padding: 1rem; }
+            .chapter-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="nav-links">
+        <a href="/index.html">🏠 首页</a>
+        <a href="/world.html">🌍 百科</a>
+        <a href="/download.html">⬇️ 下载</a>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <div class="chapter-nav">
+            <button id="prevBtn">◀ 上一章</button>
+            <button id="nextBtn">下一章 ▶</button>
+        </div>
+        <div class="font-control">
+            <span>A−</span>
+            <input type="range" id="fontSlider" min="0.8" max="1.5" step="0.02" value="1">
+            <span>A+</span>
+        </div>
+    </div>
+</div>
+
+<div class="main-layout">
+    <!-- 桌面侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <h3 id="bookTitle">加载中...</h3>
+        <ul class="chapter-list" id="chapterList"></ul>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="content-area" id="contentArea">
+        <div class="loading">📖 加载中...</div>
+    </div>
+</div>
+
+<!-- 移动端控件 -->
+<button class="mobile-chapter-btn" id="mobileMenuBtn">📑 目录</button>
+<div class="overlay" id="overlay"></div>
+<div class="mobile-sidebar" id="mobileSidebar">
+    <button class="close-sidebar" id="closeSidebar">✕</button>
+    <h3 id="mobileBookTitle">加载中...</h3>
+    <ul class="chapter-list" id="mobileChapterList"></ul>
+</div>
+
+<script>
+    // ---------- 全局变量 ----------
+    let catalog = null;           // 全量目录
+    let currentBook = null;      // 当前书名
+    let currentChapterId = null;  // 当前章节id
+    let chaptersList = [];        // 当前书的章节列表 [{id, title, file}]
+
+    // DOM 元素
+    const contentArea = document.getElementById('contentArea');
+    const chapterListEl = document.getElementById('chapterList');
+    const mobileChapterListEl = document.getElementById('mobileChapterList');
+    const bookTitleEl = document.getElementById('bookTitle');
+    const mobileBookTitleEl = document.getElementById('mobileBookTitle');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fontSlider = document.getElementById('fontSlider');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('overlay');
+    const closeSidebar = document.getElementById('closeSidebar');
+
+    // ---------- 辅助函数 ----------
+    function showLoading() {
+        contentArea.innerHTML = '<div class="loading">📖 加载章节内容...</div>';
+    }
+
+    function showError(msg) {
+        contentArea.innerHTML = `<div class="error">❌ ${msg}</div>`;
+    }
+
+    // 获取 URL 参数
+    function getUrlParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // 保存阅读进度
+    function saveProgress(book, chapterId, scrollPercent) {
+        localStorage.setItem(`reader_book`, book);
+        localStorage.setItem(`reader_chapter`, chapterId);
+        if (scrollPercent !== undefined) {
+            localStorage.setItem(`reader_scroll_${book}_${chapterId}`, scrollPercent);
+        }
+    }
+
+    // 恢复阅读进度
+    function getSavedProgress() {
+        return {
+            book: localStorage.getItem(`reader_book`),
+            chapter: localStorage.getItem(`reader_chapter`)
+        };
+    }
+
+    // 加载章节内容
+    async function loadChapter(book, chapterId) {
+        if (!catalog || !catalog[book]) {
+            showError('无法找到书籍');
+            return;
+        }
+        const chapter = catalog[book].chapters.find(ch => ch.id == chapterId);
+        if (!chapter) {
+            showError('章节不存在');
+            return;
+        }
+
+        showLoading();
+        // 更新高亮
+        updateActiveChapter(chapterId);
+        
+        // 更新 URL 但不刷新页面
+        const newUrl = `${window.location.pathname}?book=${encodeURIComponent(book)}&chapter=${chapterId}`;
+        window.history.pushState({ book, chapterId }, '', newUrl);
+        
+        // 读取 txt 文件
+        const txtPath = `/novels/${book}/${chapter.file}`;
+        try {
+            const response = await fetch(txtPath);
+            if (!response.ok) throw new Error('文件不存在');
+            const text = await response.text();
+            renderContent(chapter.title, text);
+            // 恢复滚动位置
+            const savedScroll = localStorage.getItem(`reader_scroll_${book}_${chapterId}`);
+            if (savedScroll) {
+                setTimeout(() => {
+                    window.scrollTo(0, parseFloat(savedScroll) * document.body.scrollHeight);
+                }, 100);
+            }
+            // 保存进度
+            saveProgress(book, chapterId);
+        } catch (err) {
+            showError(`加载失败：${chapter.file} 可能不存在`);
+        }
+    }
+
+    // 渲染内容（自动识别第一行为标题，或使用传入标题）
+    function renderContent(title, rawText) {
+        let lines = rawText.split(/\r?\n/);
+        // 如果第一行非空且不是常见正文开头，可视为标题（可选逻辑）
+        let contentHtml = '';
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (line === '') {
+                contentHtml += '<br>';
+            } else {
+                contentHtml += `<p>${escapeHtml(line)}</p>`;
+            }
+        }
+        const finalHtml = `
+            <h1 class="chapter-title">${escapeHtml(title)}</h1>
+            <div class="chapter-content">${contentHtml}</div>
+        `;
+        contentArea.innerHTML = finalHtml;
+        // 滚动监听保存进度
+        attachScrollListener();
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    let scrollTimeout;
+    function attachScrollListener() {
+        window.removeEventListener('scroll', scrollHandler);
+        window.addEventListener('scroll', scrollHandler);
+    }
+    function scrollHandler() {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            if (currentBook && currentChapterId) {
+                localStorage.setItem(`reader_scroll_${currentBook}_${currentChapterId}`, scrollPercent);
+            }
+        }, 500);
+    }
+
+    // 更新侧边栏激活状态
+    function updateActiveChapter(chapterId) {
+        document.querySelectorAll('.chapter-list a').forEach(link => {
+            if (link.dataset.id == chapterId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // 生成侧边栏
+    function buildSidebar(book) {
+        const info = catalog[book];
+        if (!info) return;
+        bookTitleEl.innerText = info.title;
+        mobileBookTitleEl.innerText = info.title;
+        const html = info.chapters.map(ch => 
+            `<li><a href="#" data-id="${ch.id}" data-book="${book}" class="chapter-link">${escapeHtml(ch.title)}</a></li>`
+        ).join('');
+        chapterListEl.innerHTML = html;
+        mobileChapterListEl.innerHTML = html;
+        
+        // 绑定点击事件
+        document.querySelectorAll('.chapter-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const newBook = link.dataset.book;
+                const newId = parseInt(link.dataset.id);
+                if (newBook === currentBook && newId === currentChapterId) return;
+                currentBook = newBook;
+                currentChapterId = newId;
+                loadChapter(currentBook, currentChapterId);
+                if (mobileSidebar.classList.contains('open')) closeMobileMenu();
+            });
+        });
+    }
+
+    // 切换章节（上一章/下一章）
+    function switchChapter(delta) {
+        if (!currentBook || !chaptersList.length) return;
+        const currentIndex = chaptersList.findIndex(ch => ch.id == currentChapterId);
+        let newIndex = currentIndex + delta;
+        if (newIndex < 0) {
+            alert('已是第一章');
+            return;
+        }
+        if (newIndex >= chaptersList.length) {
+            alert('已是最后一章');
+            return;
+        }
+        const newChapter = chaptersList[newIndex];
+        currentChapterId = newChapter.id;
+        loadChapter(currentBook, currentChapterId);
+    }
+
+    // 初始化：加载 catalog.json，然后解析URL或恢复进度
+    async function init() {
+        try {
+            const res = await fetch('/novels/catalog.json');
+            if (!res.ok) throw new Error('catalog.json 加载失败');
+            catalog = await res.json();
+            
+            // 获取 URL 参数
+            let bookParam = getUrlParam('book');
+            let chapterParam = getUrlParam('chapter');
+            
+            if (bookParam && chapterParam) {
+                currentBook = decodeURIComponent(bookParam);
+                currentChapterId = parseInt(chapterParam);
+                if (!catalog[currentBook]) {
+                    throw new Error('书籍不存在');
+                }
+                chaptersList = catalog[currentBook].chapters;
+                buildSidebar(currentBook);
+                await loadChapter(currentBook, currentChapterId);
+            } else {
+                // 尝试恢复进度
+                const saved = getSavedProgress();
+                if (saved.book && catalog[saved.book] && saved.chapter) {
+                    currentBook = saved.book;
+                    currentChapterId = parseInt(saved.chapter);
+                    chaptersList = catalog[currentBook].chapters;
+                    buildSidebar(currentBook);
+                    await loadChapter(currentBook, currentChapterId);
+                } else {
+                    // 默认第一本书的第一章
+                    const firstBook = Object.keys(catalog)[0];
+                    if (firstBook) {
+                        currentBook = firstBook;
+                        chaptersList = catalog[firstBook].chapters;
+                        currentChapterId = chaptersList[0]?.id;
+                        buildSidebar(currentBook);
+                        if (currentChapterId) await loadChapter(currentBook, currentChapterId);
+                        else showError('没有章节');
+                    } else {
+                        showError('没有找到书籍');
+                    }
+                }
+            }
+            
+            // 绑定上一章下一章
+            prevBtn.onclick = () => switchChapter(-1);
+            nextBtn.onclick = () => switchChapter(1);
+            
+            // 字体大小
+            const savedFont = localStorage.getItem('reader_font_size');
+            if (savedFont) {
+                fontSlider.value = savedFont;
+                document.querySelector('.chapter-content')?.style.setProperty('font-size', savedFont + 'rem', 'important');
+            }
+            fontSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                localStorage.setItem('reader_font_size', val);
+                const contentDiv = document.querySelector('.chapter-content');
+                if (contentDiv) contentDiv.style.fontSize = val + 'rem';
+            });
+            
+        } catch (err) {
+            console.error(err);
+            showError('初始化失败：' + err.message);
+        }
+    }
+    
+    function closeMobileMenu() {
+        mobileSidebar.classList.remove('open');
+        overlay.style.display = 'none';
+    }
+    function openMobileMenu() {
+        mobileSidebar.classList.add('open');
+        overlay.style.display = 'block';
+    }
+    mobileMenuBtn.onclick = openMobileMenu;
+    overlay.onclick = closeMobileMenu;
+    closeSidebar.onclick = closeMobileMenu;
+    
+    // 监听前进后退
+    window.addEventListener('popstate', (event) => {
+        if (event.state) {
+            currentBook = event.state.book;
+            currentChapterId = event.state.chapterId;
+            chaptersList = catalog[currentBook]?.chapters || [];
+            buildSidebar(currentBook);
+            loadChapter(currentBook, currentChapterId);
+        } else {
+            location.reload();
+        }
+    });
+    
+    init();
+</script>
+</body>
+</html>
