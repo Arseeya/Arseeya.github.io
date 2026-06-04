@@ -4,132 +4,454 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>文章约稿 · Arseeya</title>
+    <meta name="description" content="Arseeya 文章约稿服务——定制属于你的故事。同人、原创皆可，详细价目与须知。">
+    <meta name="keywords" content="约稿, 文章约稿, 定制创作, Arseeya, 阿尔茜娅">
+    <meta name="author" content="Arseeya">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="文章约稿 · Arseeya">
+    <meta property="og:description" content="定制属于你的故事。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arseeya.link/commission.html">
+    <meta property="og:image" content="https://arseeya.link/hero.jpg">
+
+    <!-- 字体与基础样式 -->
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
-            color: #eee;
+            background: linear-gradient(135deg, #0f0c1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 1rem;
+            padding: 2rem 1.5rem;
         }
-        .container {
-            max-width: 800px;
+
+        /* 毛玻璃容器 */
+        .glass-container {
+            max-width: 1200px;
             margin: 0 auto;
-        }
-        .back-link {
-            display: inline-block;
-            background: #e94560;
-            color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-        .back-link:hover {
-            background: #c5314b;
-        }
-        .commission-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 2rem;
             padding: 2rem;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #e94560, #667eea);
+
+        /* 导航栏 */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #e94560;
+        }
+
+        .back-home {
+            background: rgba(233, 69, 96, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(233, 69, 96, 0.4);
+            transition: all 0.2s;
+        }
+
+        .back-home:hover {
+            background: #e94560;
+            color: white !important;
+        }
+
+        /* 标题区 */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #fff, #e94560);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-        }
-        .coming-soon-icon {
-            font-size: 4rem;
-            margin: 1.5rem 0;
-        }
-        .status-badge {
-            display: inline-block;
-            background: rgba(233,69,96,0.2);
-            border: 1px solid #e94560;
-            border-radius: 2rem;
-            padding: 0.3rem 1.2rem;
-            font-size: 0.9rem;
-            color: #e94560;
-            margin-bottom: 1.5rem;
-        }
-        .info-text {
-            color: #ccc;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-        .info-text p {
             margin-bottom: 0.5rem;
         }
+
+        .hero p {
+            color: #a0a0b0;
+            font-size: 1.1rem;
+        }
+
+        /* 章节卡片通用样式 */
+        .section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s;
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #e94560;
+            border-left: 3px solid #e94560;
+            padding-left: 1rem;
+        }
+
+        /* 流程卡片网格 */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #e94560;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* 价目表 */
+        .pricing-table {
+            overflow-x: auto;
+        }
+
+        .pricing-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pricing-table th {
+            color: #e94560;
+            font-weight: 600;
+        }
+
+        .price {
+            color: #e94560;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* 须知列表 */
+        .notice-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .notice-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .notice-list li::before {
+            content: "📌";
+            position: absolute;
+            left: 0;
+            color: #e94560;
+        }
+
+        /* 联系邮箱区域 */
+        .contact-box {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.15), rgba(102, 126, 234, 0.15));
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .email {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #fff, #e94560);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0.5rem 0;
+        }
+
         .btn {
             display: inline-block;
-            background: #555;
+            background: #e94560;
             color: white;
             padding: 0.8rem 2rem;
             border-radius: 2rem;
             text-decoration: none;
-            font-size: 1rem;
-            cursor: not-allowed;
-            opacity: 0.6;
+            font-weight: bold;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-top: 0.5rem;
         }
-        footer {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #666;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+
+        .btn:hover {
+            background: #c72a4a;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
         }
-        .rule-list {
-            text-align: left;
-            margin: 1rem 0;
-            padding-left: 1.2rem;
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e94560;
+            color: #e94560;
         }
-        .rule-list li {
-            margin-bottom: 0.5rem;
+
+        .btn-outline:hover {
+            background: #e94560;
+            color: white;
+        }
+
+        /* 状态徽章 */
+        .status-badge {
+            display: inline-block;
+            background: rgba(255, 180, 40, 0.2);
+            border: 1px solid #ffb428;
+            color: #ffb428;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
             font-size: 0.85rem;
-            color: #ccc;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        footer a {
+            color: #e94560;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .glass-container {
+                padding: 1.2rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .email {
+                font-size: 1.2rem;
+                word-break: break-all;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <a href="paid.html" class="back-link">← 返回付费项目</a>
-    
-    <div class="commission-card">
-        <div class="coming-soon-icon">✍️</div>
-        <h1>文章约稿</h1>
-        <div class="status-badge">⏳ 暂未开放</div>
-        
-        <div class="info-text">
-            <p>📖 约稿服务正在筹备中，敬请期待。</p>
-            <p>📝 开放后将提供以下服务：</p>
-            <ul class="rule-list">
-                <li>✓ 定制故事创作</li>
-                <li>✓ 角色设定扩充</li>
-                <li>✓ 世界观描述</li>
-                <li>✓ 3次免费修改</li>
-            </ul>
-            <p>📧 如有紧急需求，可先通过邮件咨询：<strong>arseeya@outlook.com</strong></p>
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: #888;">具体规则以《完整网站使用条款》第5条为准</p>
+
+<div class="glass-container">
+    <!-- 导航栏 -->
+    <div class="nav-bar">
+        <div class="nav-links">
+            <a href="/index.html">首页</a>
+            <a href="/novels/听潮事记/">作品</a>
+            <a href="/world.html">百科</a>
+            <a href="/download.html">下载</a>
+            <a href="/commission.html" style="color:#e94560;">📝 约稿</a>
         </div>
-        
-        <button class="btn" disabled>暂未开放</button>
+        <a href="/index.html" class="back-home">← 返回首页</a>
     </div>
-    
-    <footer>© Arseeya. All Rights Reserved | <a href="terms.html" style="color:#aaa;">📜 完整条款</a></footer>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>📝 文章约稿 <span class="status-badge">🔄 准备中</span></h1>
+        <p>定制属于你的故事 — 同人、原创皆可，让文字成为独特的礼物</p>
+    </div>
+
+    <!-- 温馨提示（未开放时显示） -->
+    <div style="background: rgba(255, 180, 40, 0.1); border-left: 4px solid #ffb428; padding: 1rem; border-radius: 1rem; margin-bottom: 2rem;">
+        💡 <strong>当前状态：</strong> 约稿服务正在筹备中，价目表与流程仅供参考。正式开放后将以本页面公告为准。如需提前咨询，可发送邮件至下方邮箱。
+    </div>
+
+    <!-- 约稿流程 -->
+    <div class="section">
+        <h2>📋 约稿流程</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>沟通需求</h3>
+                <p>发送邮件说明题材、字数、风格、用途等需求</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>确认报价</h3>
+                <p>根据需求评估价格与交付时间，双方确认</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>支付定金</h3>
+                <p>支付50%定金后开始创作</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>交付修改</h3>
+                <p>交付初稿，可免费修改3次，满意后付尾款</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 价目表 -->
+    <div class="section">
+        <h2>💰 参考价目表</h2>
+        <div class="pricing-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>字数范围</th>
+                        <th>参考价格</th>
+                        <th>预计交付</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>短篇 · 随笔</td>
+                        <td>1000~3000字</td>
+                        <td class="price">¥100 ~ 250</td>
+                        <td>3-5个工作日</td>
+                    </tr>
+                    <tr>
+                        <td>短篇 · 故事</td>
+                        <td>3000~8000字</td>
+                        <td class="price">¥250 ~ 600</td>
+                        <td>5-10个工作日</td>
+                    </tr>
+                    <tr>
+                        <td>中篇 · 小说</td>
+                        <td>8000~20000字</td>
+                        <td class="price">¥600 ~ 1400</td>
+                        <td>10-20个工作日</td>
+                    </tr>
+                    <tr>
+                        <td>角色设定/小传</td>
+                        <td>500~2000字</td>
+                        <td class="price">¥80 ~ 200</td>
+                        <td>2-4个工作日</td>
+                    </tr>
+                    <tr>
+                        <td>世界观设定</td>
+                        <td>按需协商</td>
+                        <td class="price">¥200起</td>
+                        <td>协商确定</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="font-size: 0.85rem; color: #aaa; margin-top: 1rem;">※ 以上为参考报价，实际价格根据题材复杂度、完成度要求浮动。同人/OC创作有优惠。</p>
+    </div>
+
+    <!-- 约稿须知（精简版，引用完整条款） -->
+    <div class="section">
+        <h2>📜 约稿须知</h2>
+        <ul class="notice-list">
+            <li><strong>版权归属：</strong> 约稿作品著作权归作者 Arseeya 所有，您获得个人非商业使用许可。具体详见 <a href="/terms.html#5.2" style="color:#e94560;">完整条款 5.2</a>。</li>
+            <li><strong>修改次数：</strong> 免费修改不超过3次，超出部分按 ¥30/次 收取。</li>
+            <li><strong>禁止行为：</strong> 不得将约稿作品用于商业目的、AI训练、公开发布（未经授权）或声称自己为作者。</li>
+            <li><strong>退款政策：</strong> 若作者未能按约定完成，退还费用50%~100%；因用户原因中断，定金不退。</li>
+            <li><strong>交付格式：</strong> 默认交付 .txt 或 .docx 文件，可免费提供 .pdf。</li>
+        </ul>
+        <p style="margin-top: 1rem;">📖 完整约稿条款请查阅 <a href="/terms.html#5.2" style="color:#e94560;" target="_blank">《完整网站使用条款》第5.2条</a>。</p>
+    </div>
+
+    <!-- 联系邮箱区域 -->
+    <div class="contact-box">
+        <p>✉️ 联系约稿</p>
+        <div class="email">le.arseeya@outlook.com</div>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">请将以下信息连同您的需求一起发送邮件：</p>
+        <ul style="display: inline-block; text-align: left; margin-top: 0.8rem; color: #ccc;">
+            <li>• 期望题材/世界观</li>
+            <li>• 预估字数</li>
+            <li>• 用途（个人收藏/展示/礼物等）</li>
+            <li>• 交付期限要求</li>
+        </ul>
+        <br>
+        <a href="mailto:le.arseeya@outlook.com?subject=文章约稿咨询&body=您好，我想咨询文章约稿：%0D%0A%0D%0A题材：%0D%0A字数：%0D%0A用途：%0D%0A期望交付时间：%0D%0A%0D%0A其他说明：" class="btn">📧 邮件联系约稿</a>
+    </div>
+
+    <!-- 返回导航辅助 -->
+    <div style="text-align: center; margin-top: 1rem;">
+        <a href="/index.html" class="btn-outline btn" style="background: transparent;">← 返回首页</a>
+    </div>
+
+    <footer>
+        <p>© Arseeya（阿尔茜娅）. All Rights Reserved. | 约稿专用邮箱：le.arseeya@outlook.com</p>
+        <p><a href="/terms.html">完整条款</a> | <a href="/about.html">关于 Arseeya</a></p>
+    </footer>
 </div>
+
+<script>
+    // 简单的页面淡入效果（可选）
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.3s';
+    window.addEventListener('load', () => {
+        document.body.style.opacity = '1';
+    });
+</script>
 </body>
 </html>
