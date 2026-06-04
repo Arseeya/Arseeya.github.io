@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>站点维护中 | arseeya.link · 预计6月10日恢复</title>
-    <!-- 纯静态优雅维护页面，包含精确倒计时至2026/06/10 12:00:00，联系方式已更新 -->
+    <title>站点维护中 | arseeya.link</title>
     <style>
         * {
             margin: 0;
@@ -12,571 +11,620 @@
             box-sizing: border-box;
         }
 
+        /* 全局变量: 浅色模式默认 (亮色) */
+        :root {
+            --bg-gradient-start: rgba(240, 248, 255, 0.85);
+            --bg-gradient-end: rgba(230, 242, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --card-border: rgba(255, 255, 240, 0.8);
+            --text-primary: #0a1c2f;
+            --text-secondary: #2c3e50;
+            --accent-glow: rgba(59,130,246,0.15);
+            --gear-bg: #eef2ff;
+            --gear-stroke: #2563eb;
+            --domain-bg: #eef2ff;
+            --domain-color: #1e40af;
+            --notice-bg: #fffbeb;
+            --notice-border: #f59e0b;
+            --notice-text: #b45309;
+            --countdown-bg: #f8fafc;
+            --time-block-bg: #ffffff;
+            --time-block-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+            --progress-bg: #e2e8f0;
+            --progress-fill: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316);
+            --contact-border: #e2edf7;
+            --link-color: #2563eb;
+            --footer-color: #7c8ba0;
+            --toggle-bg: #e2e8f0;
+            --toggle-icon: #1e293b;
+        }
+
+        /* 深色模式变量 */
+        body.dark {
+            --bg-gradient-start: rgba(15, 25, 45, 0.92);
+            --bg-gradient-end: rgba(5, 15, 30, 0.96);
+            --card-bg: rgba(18, 25, 40, 0.94);
+            --card-border: rgba(66, 88, 120, 0.5);
+            --text-primary: #eef2ff;
+            --text-secondary: #cbd5e1;
+            --accent-glow: rgba(139, 92, 246, 0.2);
+            --gear-bg: #1e293b;
+            --gear-stroke: #a78bfa;
+            --domain-bg: #1e293b;
+            --domain-color: #a5b4fc;
+            --notice-bg: #2d2a1e;
+            --notice-border: #f59e0b;
+            --notice-text: #fde047;
+            --countdown-bg: #0f172a;
+            --time-block-bg: #1e293b;
+            --time-block-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            --progress-bg: #334155;
+            --progress-fill: linear-gradient(90deg, #8b5cf6, #f97316, #facc15);
+            --contact-border: #2d3a4e;
+            --link-color: #93c5fd;
+            --footer-color: #94a3b8;
+            --toggle-bg: #334155;
+            --toggle-icon: #facc15;
+        }
+
         body {
-            background: linear-gradient(145deg, #f0f4fa 0%, #e6edf4 100%);
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
             font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            color: #0a1c2f;
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.2s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 动态极光背景层 (canvas) */
+        #aurora-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        body.dark #aurora-canvas {
+            opacity: 0.65;
         }
 
         .maintenance-card {
-            max-width: 760px;
+            position: relative;
+            z-index: 10;
+            max-width: 780px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(0px);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
             border-radius: 2.5rem;
-            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            transition: all 0.2s;
-            border: 1px solid rgba(255,255,240,0.7);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--card-border);
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            z-index: 25;
+            background: var(--toggle-bg);
+            border: none;
+            border-radius: 60px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background: var(--gear-stroke);
+        }
+        .theme-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--toggle-icon);
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.2s;
+        }
+        body.dark .theme-toggle svg {
+            stroke: #facc15;
         }
 
         .status-bar {
-            height: 8px;
+            height: 6px;
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316, #f59e0b);
             width: 100%;
         }
 
         .content {
-            padding: 2.6rem 2.4rem 3rem 2.4rem;
+            padding: 2.2rem 2.2rem 2.5rem 2.2rem;
         }
 
         .icon-area {
             display: flex;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
-
         .gear-icon {
-            background: #eef2ff;
-            width: 84px;
-            height: 84px;
+            background: var(--gear-bg);
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 12px 18px -10px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 12px 18px -10px rgba(0, 0, 0, 0.2);
             transition: all 0.2s;
+            cursor: pointer;
         }
-
         .gear-icon svg {
-            width: 48px;
-            height: 48px;
-            stroke: #2563eb;
+            width: 46px;
+            height: 46px;
+            stroke: var(--gear-stroke);
             stroke-width: 1.6;
             fill: none;
+            transition: transform 0.2s ease;
         }
 
         h1 {
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 800;
             text-align: center;
             letter-spacing: -0.01em;
-            background: linear-gradient(135deg, #1e2a3e, #0f3b5c);
+            background: linear-gradient(135deg, var(--text-primary), #6b7280);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .domain {
             text-align: center;
-            font-family: 'SF Mono', 'JetBrains Mono', monospace;
+            font-family: monospace;
             font-size: 1rem;
-            background: #eef2ff;
+            background: var(--domain-bg);
             display: inline-block;
             width: auto;
-            margin: 0 auto 1.2rem auto;
+            margin: 0 auto 1rem auto;
             padding: 0.3rem 1.2rem;
             border-radius: 60px;
-            color: #1e40af;
+            color: var(--domain-color);
             font-weight: 500;
-            letter-spacing: 0.2px;
         }
 
         .desc {
             text-align: center;
-            font-size: 1.08rem;
-            line-height: 1.5;
-            color: #2c3e50;
-            margin: 0.8rem 0 1rem 0;
-            font-weight: 450;
+            font-size: 1rem;
+            line-height: 1.45;
+            color: var(--text-secondary);
+            margin: 0.5rem 0 0.8rem;
         }
 
         .notice-box {
-            background: #fffbeb;
-            border-left: 6px solid #f59e0b;
+            background: var(--notice-bg);
+            border-left: 6px solid var(--notice-border);
             border-radius: 1.2rem;
-            padding: 1.1rem 1.4rem;
-            margin: 1.5rem 0 1.8rem 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            padding: 0.9rem 1.3rem;
+            margin: 1rem 0 1.5rem;
         }
-
         .notice-box p {
-            font-size: 0.95rem;
-            color: #b45309;
+            font-size: 0.92rem;
+            color: var(--notice-text);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-        }
-
-        .notice-box strong {
-            font-weight: 700;
-            color: #9a3412;
         }
 
         .countdown-container {
-            background: #f8fafc;
+            background: var(--countdown-bg);
             border-radius: 2rem;
-            padding: 1.2rem 0.8rem;
-            margin: 1.2rem 0 1rem 0;
-            box-shadow: inset 0 1px 2px #ffffff80, 0 4px 12px rgba(0,0,0,0.05);
+            padding: 1rem 0.8rem;
+            margin: 1rem 0 1rem;
         }
-
         .clock-row {
             display: flex;
             justify-content: center;
-            gap: 1.8rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
-            margin: 0.5rem 0 0.6rem;
         }
-
         .time-block {
-            background: #ffffff;
-            border-radius: 1.8rem;
-            padding: 0.7rem 1.2rem;
-            min-width: 90px;
+            background: var(--time-block-bg);
+            border-radius: 1.6rem;
+            padding: 0.6rem 1rem;
+            min-width: 80px;
             text-align: center;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(148, 163, 184, 0.1);
-            transition: transform 0.1s ease;
+            box-shadow: var(--time-block-shadow);
         }
-
         .time-number {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            font-family: 'JetBrains Mono', 'SF Mono', monospace;
-            color: #0f172a;
+            font-family: monospace;
+            color: var(--text-primary);
             line-height: 1.2;
-            letter-spacing: 2px;
         }
-
         .time-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             font-weight: 600;
-            letter-spacing: 1.5px;
-            color: #4b5563;
-            margin-top: 4px;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
         }
-
         .restore-date {
             text-align: center;
-            font-size: 0.85rem;
-            font-weight: 500;
-            background: #e6f0ff;
+            font-size: 0.8rem;
+            background: var(--domain-bg);
             display: inline-block;
             width: auto;
-            margin: 0.5rem auto 0;
-            padding: 0.25rem 1rem;
+            margin-top: 0.7rem;
+            padding: 0.2rem 1rem;
             border-radius: 32px;
-            color: #075985;
+            color: var(--domain-color);
         }
 
         .progress-container {
-            background: #e2e8f0;
+            background: var(--progress-bg);
             border-radius: 40px;
             height: 8px;
             width: 100%;
-            margin: 1.2rem 0 0.6rem;
+            margin: 1rem 0 0.5rem;
             overflow: hidden;
         }
-
         .progress-fill {
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316);
+            background: var(--progress-fill);
             width: 0%;
             height: 100%;
             border-radius: 40px;
             transition: width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
-
         .status-text {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             display: flex;
             justify-content: space-between;
-            color: #2c3e66;
-            margin-top: 0.4rem;
+            color: var(--text-secondary);
         }
 
         .contact {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid #e2edf7;
-            font-size: 0.9rem;
-            color: #2c3e50;
+            margin-top: 1.8rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--contact-border);
+            font-size: 0.85rem;
         }
-
         .contact a {
-            color: #2563eb;
+            color: var(--link-color);
             text-decoration: none;
             font-weight: 600;
-            border-bottom: 1px dashed #90b4ff;
+            border-bottom: 1px dashed;
         }
 
-        .contact a:hover {
-            color: #1d4ed8;
-            border-bottom-style: solid;
-        }
-
-        .small-note {
-            font-size: 0.72rem;
+        /* 推荐区域：崩坏星穹铁道彩蛋区 */
+        .game-recommend {
+            margin-top: 1.2rem;
             text-align: center;
-            margin-top: 1rem;
-            color: #5b6e8c;
+            background: rgba(128, 90, 200, 0.08);
+            border-radius: 2rem;
+            padding: 0.7rem 1rem;
+            backdrop-filter: blur(2px);
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
-
+        .game-recommend a {
+            color: var(--link-color);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px dotted;
+        }
+        .game-recommend a:hover {
+            color: #f97316;
+        }
+        .small-note {
+            font-size: 0.68rem;
+            text-align: center;
+            margin-top: 0.9rem;
+            color: var(--footer-color);
+        }
         .footer-grace {
             text-align: center;
-            font-size: 0.7rem;
-            color: #7c8ba0;
-            margin-top: 1rem;
+            font-size: 0.65rem;
+            margin-top: 0.7rem;
+            color: var(--footer-color);
         }
 
         @media (max-width: 550px) {
-            .content {
-                padding: 1.6rem;
-            }
-            h1 {
-                font-size: 1.7rem;
-            }
-            .time-number {
-                font-size: 1.8rem;
-            }
-            .time-block {
-                min-width: 70px;
-                padding: 0.4rem 0.6rem;
-            }
-            .clock-row {
-                gap: 0.8rem;
-            }
+            .content { padding: 1.5rem; }
+            h1 { font-size: 1.7rem; }
+            .time-number { font-size: 1.6rem; }
+            .time-block { min-width: 65px; padding: 0.3rem 0.5rem; }
+            .clock-row { gap: 0.7rem; }
+            .theme-toggle { top: 0.8rem; right: 1rem; width: 34px; height: 34px; }
         }
 
-        .highlight {
-            font-weight: 700;
-            background: #fff0db;
-            border-radius: 20px;
-            padding: 0.1rem 0.5rem;
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293bdd;
+            backdrop-filter: blur(12px);
+            color: #facc15;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
-
-<div class="maintenance-card">
-    <div class="status-bar"></div>
-    <div class="content">
-        <div class="icon-area">
-            <div class="gear-icon">
-                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
-                    <path d="M12 2v2" />
-                    <path d="M12 20v2" />
-                    <path d="M4 4l2 2" />
-                    <path d="M18 18l2 2" />
-                    <path d="M2 12h2" />
-                    <path d="M20 12h2" />
-                </svg>
-            </div>
-        </div>
-        
-        <h1>网站暂时停止服务</h1>
-        <div style="text-align: center;">
-            <span class="domain">arseeya.link</span>
-        </div>
-        
-        <p class="desc">
-            为了提供更优质的服务体验，我们正在对系统进行架构升级与数据优化。<br>
-            网站将暂停访问，敬请期待焕新归来。
-        </p>
-        
-        <!-- 重要通知与精确恢复时间 -->
-        <div class="notice-box">
-            <p>
-                🕒 <strong>预计恢复时间：</strong> 2026年6月10日 12:00 (GMT+8) <br>
-                🔧 维护期间所有数据安全保留，请放心。感谢您的耐心！
-            </p>
-        </div>
-        
-        <!-- 倒计时核心区 动态指向 2026-06-10 12:00:00 -->
-        <div class="countdown-container">
-            <div class="clock-row" id="countdownArea">
-                <div class="time-block">
-                    <div class="time-number" id="days">00</div>
-                    <div class="time-label">天</div>
-                </div>
-                <div class="time-block">
-                    <div class="time-number" id="hours">00</div>
-                    <div class="time-label">小时</div>
-                </div>
-                <div class="time-block">
-                    <div class="time-number" id="minutes">00</div>
-                    <div class="time-label">分钟</div>
-                </div>
-                <div class="time-block">
-                    <div class="time-number" id="seconds">00</div>
-                    <div class="time-label">秒</div>
+    <canvas id="aurora-canvas"></canvas>
+    <div class="maintenance-card">
+        <div class="status-bar"></div>
+        <button class="theme-toggle" id="themeToggle" aria-label="深色/浅色切换">
+            <svg viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+            </svg>
+        </button>
+        <div class="content">
+            <div class="icon-area">
+                <div class="gear-icon" id="gearClick">
+                    <svg viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
+                        <path d="M12 2v2" /><path d="M12 20v2" />
+                        <path d="M4 4l2 2" /><path d="M18 18l2 2" />
+                        <path d="M2 12h2" /><path d="M20 12h2" />
+                    </svg>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 8px;">
-                <span class="restore-date">📅 距离 2026年6月10日 12:00 恢复还有</span>
+            <h1>暂时停运检修</h1>
+            <div style="text-align: center;"><span class="domain">arseeya.link</span></div>
+            <p class="desc">系统深度维护。<br>请耐心等候。</p>
+            <div class="notice-box">
+                <p>🕒 <strong>预计恢复时间：</strong> 2026年6月10日 12:00 (GMT+8)<br>🔧 本次维护后将有全新体验，所有数据安全。</p>
             </div>
-        </div>
-        
-        <!-- 维护进度条 基于时间比例 -->
-        <div class="progress-container">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div class="status-text">
-            <span id="statusMsg">🔧 正在执行重要升级</span>
-            <span id="progressPercent">完成进度 0%</span>
-        </div>
-        
-        <div class="contact">
-            📧 如有紧急事宜，请联系官方邮箱 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
-            我们会在恢复后第一时间回复您。
-        </div>
-        <div class="small-note">
-            arseeya.link · 维护期间服务不可用，带来不便请谅解 ✨
-        </div>
-        <div class="footer-grace">
-            &copy; arseeya 技术团队 | 期待与您再次相遇
+            
+            <div class="countdown-container">
+                <div class="clock-row">
+                    <div class="time-block"><div class="time-number" id="days">00</div><div class="time-label">天</div></div>
+                    <div class="time-block"><div class="time-number" id="hours">00</div><div class="time-label">小时</div></div>
+                    <div class="time-block"><div class="time-number" id="minutes">00</div><div class="time-label">分钟</div></div>
+                    <div class="time-block"><div class="time-number" id="seconds">00</div><div class="time-label">秒</div></div>
+                </div>
+                <div style="text-align:center;"><span class="restore-date">📅 距离重开还有</span></div>
+            </div>
+            
+            <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="status-text"><span id="statusMsg">⚙️ 预热中</span><span id="progressPercent">0%</span></div>
+            
+            <div class="contact">
+                📧 紧急事务请联系 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
+                我们会在恢复后第一时间回复。
+            </div>
+            
+            <!-- 崩坏星穹铁道 推荐专区 无聊时候的好去处 -->
+            <div class="game-recommend">
+                🌌 等待不无聊，推荐开拓者前往 ▶ 
+                <a href="https://sr.mihoyo.com/" target="_blank" rel="noopener noreferrer">《崩坏：星穹铁道》</a> 
+                ◀ 邂逅群星，踏上奇旅
+            </div>
+            <div class="small-note">
+                arseeya.link｜愿此行，终抵群星
+            </div>
+            <div class="footer-grace">
+                &copy; arseeya 技术团队 | 深色模式护眼，极光伴您等候
+            </div>
         </div>
     </div>
-</div>
+    <div id="toastMessage" class="toast-msg"></div>
 
-<script>
-    (function() {
-        // 设定固定的恢复目标: 2026年6月10日 12:00:00  (本地时间以浏览器时区为准，但为了保证用户视角统一，使用UTC+8？使用本地时间解析 "2026-06-10T12:00:00" 根据浏览器本地时区)
-        // 为了让全球用户都能看到对应其本地时区下的倒计时距离“北京时间 2026-06-10 12:00”剩余时间，我们构造一个基于UTC+8的绝对时刻，然后倒计时显示剩余时间。
-        // 更科学：直接构造 Date.UTC 然后计算差值，确保任何时区都指向同一个物理时刻（北京时间2026-06-10 12:00:00对应 UTC+8 偏移）。
-        // 北京时间是 UTC+8，所以目标绝对时间戳 = Date.UTC(2026,5,10,4,0,0) 因为 UTC 时间比北京时间晚8小时，北京时间12:00 = UTC 04:00。
-        // 月份参数: 5 表示六月 (0索引)
-        const TARGET_YEAR = 2026;
-        const TARGET_MONTH = 5;    // 六月
-        const TARGET_DAY = 10;
-        const TARGET_HOUR_UTC = 4;  // 北京时间12:00 => UTC+0 04:00
-        const TARGET_MINUTE = 0;
-        const TARGET_SECOND = 0;
-        
-        let targetTimestamp = Date.UTC(TARGET_YEAR, TARGET_MONTH, TARGET_DAY, TARGET_HOUR_UTC, TARGET_MINUTE, TARGET_SECOND);
-        // 确保目标时间有效，如果用户系统时间错误或过去，可兜底提醒
-        const nowTimestamp = Date.now();
-        
-        // 针对维护总时长计算进度： 从维护开始时间预估？（为了让进度条有意义，我们设定维护开始时间：假设从2026年6月1日0:00开始维护，但也可以根据当前时间与目标时间的比例来计算完成度）
-        // 更友好: 设定维护窗口开始时间为 2026年6月1日 00:00 (北京时间)，到6月10日12:00结束，总共时长 9天12小时 = 228小时 = 820800000 毫秒。
-        // 若当前时间早于开始时间则进度0%，晚于结束则100% . 因为实际情况维护已在进行，所以日期符合常识。
-        const MAINT_START_UTC = Date.UTC(2026, 5, 1, 0, 0, 0);   // 2026年6月1日 00:00 UTC = 北京时间 08:00，但为了统一用UTC，无所谓，比例一样。
-        const MAINT_END_UTC = targetTimestamp;
-        const totalMaintainDuration = MAINT_END_UTC - MAINT_START_UTC;
-        
-        // DOM 元素
-        const daysSpan = document.getElementById('days');
-        const hoursSpan = document.getElementById('hours');
-        const minutesSpan = document.getElementById('minutes');
-        const secondsSpan = document.getElementById('seconds');
-        const progressFill = document.getElementById('progressFill');
-        const statusMsgSpan = document.getElementById('statusMsg');
-        const progressPercentSpan = document.getElementById('progressPercent');
-        
-        // 辅助函数，补零
-        function padZero(num) {
-            return num < 10 ? '0' + num : '' + num;
-        }
-        
-        // 更新倒计时UI 和 进度条
-        function updateCountdownAndProgress() {
-            const now = Date.now();
-            const remainingMs = targetTimestamp - now;
+    <script>
+        (function() {
+            // 目标时间: 2026年6月10日 12:00:00 北京时间 (UTC+8)
+            const TARGET_UTC = Date.UTC(2026, 5, 10, 4, 0, 0); // 月份5=六月, 4点UTC对应北京时间12:00
+            const MAINT_START_UTC = Date.UTC(2026, 5, 1, 0, 0, 0);
+            const MAINT_END_UTC = TARGET_UTC;
+            const totalDuration = MAINT_END_UTC - MAINT_START_UTC;
             
-            // 处理倒计时结束状态
-            if (remainingMs <= 0) {
-                // 维护已过预期时间，显示恢复中/ 已恢复
-                daysSpan.innerText = '00';
-                hoursSpan.innerText = '00';
-                minutesSpan.innerText = '00';
-                secondsSpan.innerText = '00';
-                if (progressFill) progressFill.style.width = '100%';
-                if (progressPercentSpan) progressPercentSpan.innerText = '完成进度 100%';
-                if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 服务即将恢复 / 已恢复，感谢等待';
-                // 可选额外显示提示，但不需要重复修改
-                return;
-            }
+            // DOM
+            const daysSpan = document.getElementById('days');
+            const hoursSpan = document.getElementById('hours');
+            const minutesSpan = document.getElementById('minutes');
+            const secondsSpan = document.getElementById('seconds');
+            const progressFill = document.getElementById('progressFill');
+            const statusMsgSpan = document.getElementById('statusMsg');
+            const progressPercentSpan = document.getElementById('progressPercent');
             
-            // 计算剩余天数、小时、分钟、秒 (基于毫秒)
-            const totalRemainingSeconds = Math.floor(remainingMs / 1000);
-            const days = Math.floor(totalRemainingSeconds / 86400);
-            const hours = Math.floor((totalRemainingSeconds % 86400) / 3600);
-            const minutes = Math.floor((totalRemainingSeconds % 3600) / 60);
-            const seconds = totalRemainingSeconds % 60;
+            function pad(n) { return n < 10 ? '0' + n : n; }
             
-            daysSpan.innerText = padZero(days);
-            hoursSpan.innerText = padZero(hours);
-            minutesSpan.innerText = padZero(minutes);
-            secondsSpan.innerText = padZero(seconds);
-            
-            // ========== 动态进度条 ==========
-            // 当前时间相对于维护阶段的进度 (如果当前早于维护开始，进度为0；如果晚于结束，上面已处理)
-            let progressPercent = 0;
-            if (now <= MAINT_START_UTC) {
-                progressPercent = 0;
-            } else if (now >= MAINT_END_UTC) {
-                progressPercent = 100;
-            } else {
-                const elapsed = now - MAINT_START_UTC;
-                progressPercent = (elapsed / totalMaintainDuration) * 100;
-                progressPercent = Math.min(99.9, Math.max(0, progressPercent));
-            }
-            
-            const fillPercent = Math.min(100, Math.max(0, progressPercent));
-            if (progressFill) {
-                progressFill.style.width = fillPercent + '%';
-                // 动态微调颜色装饰
-                if (fillPercent > 75) {
-                    progressFill.style.background = "linear-gradient(90deg, #22c55e, #16a34a)";
-                } else if (fillPercent > 40) {
-                    progressFill.style.background = "linear-gradient(90deg, #f97316, #eab308)";
-                } else {
-                    progressFill.style.background = "linear-gradient(90deg, #3b82f6, #8b5cf6)";
-                }
-            }
-            
-            // 显示进度百分比整数
-            const percentInt = Math.floor(fillPercent);
-            if (progressPercentSpan) {
-                progressPercentSpan.innerText = `完成进度 ${percentInt}%`;
-            }
-            
-            // 根据进度百分比优化提示信息
-            if (statusMsgSpan) {
-                if (percentInt < 15) {
-                    statusMsgSpan.innerHTML = '⚙️ 环境部署与数据备份中';
-                } else if (percentInt < 35) {
-                    statusMsgSpan.innerHTML = '🔄 数据库升级与架构优化';
-                } else if (percentInt < 65) {
-                    statusMsgSpan.innerHTML = '🚀 性能调优 & 新功能集成';
-                } else if (percentInt < 90) {
-                    statusMsgSpan.innerHTML = '🧪 最终测试与安全校验';
-                } else {
-                    statusMsgSpan.innerHTML = '✨ 服务即将上线，敬请期待';
-                }
-            }
-        }
-        
-        // 附加的页面 title 动态显示倒计时概要
-        function updateTitleWithCountdown() {
-            if (!daysSpan || !hoursSpan || !minutesSpan) return;
-            const remainingMs = targetTimestamp - Date.now();
-            if (remainingMs <= 0) {
-                document.title = "✨ arseeya.link 即将开放 ✨";
-                return;
-            }
-            const totalSec = Math.floor(remainingMs / 1000);
-            const days = Math.floor(totalSec / 86400);
-            const hours = Math.floor((totalSec % 86400) / 3600);
-            const minutes = Math.floor((totalSec % 3600) / 60);
-            if (days > 0) {
-                document.title = `[维护] ${days}d ${hours}h 后恢复 | arseeya.link`;
-            } else {
-                document.title = `[维护] ${hours}h ${minutes}m 后恢复 | arseeya.link`;
-            }
-        }
-        
-        // 确保目标时间有效且未发生错误：如果目标时间已经过去很久(异常情况)显示积极文案，但正常2026年未来时间。
-        function validateAndWarn() {
-            const now = Date.now();
-            if (targetTimestamp <= now) {
-                // 如果当前时间已经超过2026/6/10 12:00，说明用户可能系统时间有误或已经超期，但展示友好接近完成.
-                // 不会影响体验
-                if (progressFill) progressFill.style.width = '99%';
-                if (progressPercentSpan) progressPercentSpan.innerText = '恢复准备中';
-                if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 服务正在重启，很快开放';
-            }
-        }
-        
-        // 添加一个手动刷新确保存储目标不因刷新改变：无需localstorage，完全基于固定绝对时间戳。
-        // 同时处理时区正确性验证：targetTimestamp基于UTC确保了全球同一时刻。
-        // 如果因为用户设备时间严重错误，页面倒计时会不准确，但官网维护页面通常信任客户端时间；同时进度条基于时间差不会产生负面。
-        // 可额外增加一个微小效果每60秒刷新一次云端时间同步？无需复杂。
-        
-        let intervalId = null;
-        function startIntervals() {
-            if (intervalId) clearInterval(intervalId);
-            updateCountdownAndProgress();
-            intervalId = setInterval(() => {
-                updateCountdownAndProgress();
-                updateTitleWithCountdown();
-            }, 1000);
-        }
-        
-        // 初始化执行所有
-        function init() {
-            validateAndWarn();
-            startIntervals();
-            updateTitleWithCountdown();
-            // 给齿轮增加微交互
-            const gearWrapper = document.querySelector('.gear-icon');
-            if (gearWrapper) {
-                gearWrapper.addEventListener('mouseenter', () => {
-                    const svgIcon = gearWrapper.querySelector('svg');
-                    if (svgIcon) svgIcon.style.transform = 'rotate(8deg) scale(1.02)';
-                });
-                gearWrapper.addEventListener('mouseleave', () => {
-                    const svgIcon = gearWrapper.querySelector('svg');
-                    if (svgIcon) svgIcon.style.transform = 'rotate(0deg) scale(1)';
-                });
-            }
-            
-            // 联系邮箱保护增强：额外显示提示防爬，但无伤大雅
-            const mailLink = document.querySelector('a[href^="mailto:arseeya@outlook.com"]');
-            if (mailLink) {
-                mailLink.addEventListener('click', (e) => {
-                    console.log('邮件联系支持');
-                });
-            }
-        }
-        
-        // 增加最终保障: 若维护已经结束或者剩余时间极低(小于0) 特殊样式优化
-        function finalTouch() {
-            setInterval(() => {
+            function updateCountdown() {
                 const now = Date.now();
-                if (now >= targetTimestamp) {
-                    const noticeDiv = document.querySelector('.notice-box p');
-                    if (noticeDiv && !noticeDiv.innerHTML.includes('即将开放')) {
-                        noticeDiv.innerHTML = '✅ <strong>维护已完成！</strong> 服务正在上线中，刷新页面或稍后访问即可。感谢您的耐心！';
-                    }
-                    const restoreBadge = document.querySelector('.restore-date');
-                    if (restoreBadge) restoreBadge.innerHTML = '🎉 服务恢复进行时 · 感谢等待 🎉';
+                let remaining = TARGET_UTC - now;
+                if (remaining <= 0) {
+                    daysSpan.innerText = '00'; hoursSpan.innerText = '00';
+                    minutesSpan.innerText = '00'; secondsSpan.innerText = '00';
+                    if (progressFill) progressFill.style.width = '100%';
+                    if (progressPercentSpan) progressPercentSpan.innerText = '100%';
+                    if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 准备就绪，即将开放';
+                    return;
                 }
-            }, 2000);
-        }
-        
-        init();
-        finalTouch();
-        
-        // 额外增加一个情况页面显示当前时间辅助，但无需求，保留优雅。
-        // 确保联系方式完全正确 arseeya@outlook.com
-        // 对于占位进度如果因为用户机器时间早于维护开始，进度从0开始，合理。
-        // 预检查维护起始时间是否定义有效
-        if (isNaN(totalMaintainDuration) || totalMaintainDuration <= 0) {
-            // 保险：如果没有有效时间窗口，就基于相对比例模拟，但这里目标时间已明确定义且大于开始，忽略
-        }
-    })();
-</script>
+                const secondsTotal = Math.floor(remaining / 1000);
+                const days = Math.floor(secondsTotal / 86400);
+                const hours = Math.floor((secondsTotal % 86400) / 3600);
+                const minutes = Math.floor((secondsTotal % 3600) / 60);
+                const seconds = secondsTotal % 60;
+                daysSpan.innerText = pad(days);
+                hoursSpan.innerText = pad(hours);
+                minutesSpan.innerText = pad(minutes);
+                secondsSpan.innerText = pad(seconds);
+                
+                // 进度条
+                let percent = 0;
+                if (now <= MAINT_START_UTC) percent = 0;
+                else if (now >= MAINT_END_UTC) percent = 100;
+                else percent = ((now - MAINT_START_UTC) / totalDuration) * 100;
+                percent = Math.min(99.9, Math.max(0, percent));
+                const fillW = percent + '%';
+                if (progressFill) progressFill.style.width = fillW;
+                const percentInt = Math.floor(percent);
+                if (progressPercentSpan) progressPercentSpan.innerText = `完成进度 ${percentInt}%`;
+                if (statusMsgSpan) {
+                    if (percentInt < 20) statusMsgSpan.innerHTML = '🔧 重构';
+                    else if (percentInt < 45) statusMsgSpan.innerHTML = '⚡ 校准';
+                    else if (percentInt < 75) statusMsgSpan.innerHTML = '🌟 优化';
+                    else statusMsgSpan.innerHTML = '🚀 即将启程';
+                }
+            }
+            
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+            
+            // 主题切换 深色/浅色 以及本地存储
+            const toggleBtn = document.getElementById('themeToggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+            if (currentTheme === 'dark') document.body.classList.add('dark');
+            else document.body.classList.remove('dark');
+            
+            toggleBtn.addEventListener('click', () => {
+                if (document.body.classList.contains('dark')) {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+            
+            // -------------- 动态极光背景 Canvas (流动光效) ----------
+            const canvas = document.getElementById('aurora-canvas');
+            let ctx = canvas.getContext('2d');
+            let width, height;
+            let time = 0;
+            
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            
+            function drawAurora() {
+                if (!ctx) return;
+                ctx.clearRect(0, 0, width, height);
+                // 多层渐变光晕移动
+                const t = time * 0.002;
+                // 第一层紫色/蓝调极光
+                const grad1 = ctx.createLinearGradient(Math.sin(t)*80 + width*0.2, Math.cos(t*0.7)*50, width*0.7, height*0.4);
+                grad1.addColorStop(0, 'rgba(120, 80, 210, 0.25)');
+                grad1.addColorStop(0.5, 'rgba(60, 130, 230, 0.2)');
+                grad1.addColorStop(1, 'rgba(200, 100, 180, 0.15)');
+                ctx.fillStyle = grad1;
+                ctx.fillRect(0, 0, width, height);
+                
+                const grad2 = ctx.createRadialGradient(width*0.5 + Math.sin(t*0.5)*70, height*0.3 + Math.cos(t*0.3)*40, 50, width*0.7, height*0.5, 300);
+                grad2.addColorStop(0, 'rgba(245, 158, 11, 0.12)');
+                grad2.addColorStop(0.8, 'rgba(139, 92, 246, 0.08)');
+                ctx.fillStyle = grad2;
+                ctx.fillRect(0, 0, width, height);
+                
+                // 流动光晕
+                for (let i = 0; i < 3; i++) {
+                    let offset = (t + i * 2.1) % (Math.PI * 2);
+                    let x = width * (0.3 + 0.4 * Math.sin(offset));
+                    let y = height * (0.5 + 0.2 * Math.cos(offset * 1.3));
+                    let radGrad = ctx.createRadialGradient(x, y, 30, x+40, y-20, 180);
+                    radGrad.addColorStop(0, `rgba(100, 180, 250, 0.1)`);
+                    radGrad.addColorStop(1, `rgba(80, 60, 200, 0.02)`);
+                    ctx.fillStyle = radGrad;
+                    ctx.fillRect(0, 0, width, height);
+                }
+                requestAnimationFrame(() => { time += 16; drawAurora(); });
+            }
+            
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+            resizeCanvas();
+            drawAurora();
+            
+            // 齿轮点击彩蛋 (弹出一个模拟科技感toast)
+            const gearDiv = document.getElementById('gearClick');
+            const toastEl = document.getElementById('toastMessage');
+            function showToast(msg, duration = 2000) {
+                toastEl.innerText = msg;
+                toastEl.style.opacity = '1';
+                setTimeout(() => {
+                    toastEl.style.opacity = '0';
+                }, duration);
+            }
+            const clickMessages = [
+                "⚙️ 正在校准星轨，请稍候…",
+                "🌀 arseeya 引擎: 跃迁能级 87%",
+                "✨ 开拓者，你点击了银河齿轮！",
+                "🔧 维护彩蛋: 崩坏星穹铁道值得一玩~",
+                "🚀 偷听后台: 星穹列车充能中",
+                "📡 坐标锚定 arseeya.link 即将重启",
+                "🎮 无聊？试试崩坏星穹铁道，跃迁解闷"
+            ];
+            gearDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const randMsg = clickMessages[Math.floor(Math.random() * clickMessages.length)];
+                showToast(randMsg, 1800);
+                // 附加微动效齿轮旋转
+                const svg = gearDiv.querySelector('svg');
+                if (svg) {
+                    svg.style.transform = 'rotate(15deg) scale(1.05)';
+                    setTimeout(() => { svg.style.transform = ''; }, 200);
+                }
+            });
+            
+            // 动态标题倒计时
+            function updateTitle() {
+                if (Date.now() >= TARGET_UTC) {
+                    document.title = '✨ arseeya.link 即将恢复 ✨';
+                    return;
+                }
+                const rem = TARGET_UTC - Date.now();
+                const days = Math.floor(rem / 86400000);
+                const hrs = Math.floor((rem % 86400000) / 3600000);
+                if (days > 0) document.title = `[维护] ${days}d ${hrs}h 重开 | arseeya.link`;
+                else document.title = `[维护] ${hrs}h 后跃迁 | arseeya.link`;
+            }
+            setInterval(updateTitle, 2000);
+            updateTitle();
+            
+            // 星穹铁道推荐链接新窗口打开保证安全
+            const gameLink = document.querySelector('.game-recommend a');
+            if (gameLink) gameLink.setAttribute('target', '_blank');
+            
+            // 方便调试兼容
+        })();
+    </script>
 </body>
 </html>
