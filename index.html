@@ -2,16 +2,43 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>站点维护中 | arseeya.link · 备考静心 暂别片刻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Arseeya · 站点</title>
     <style>
+        /* 基础重置与隐藏逻辑 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 全局变量: 浅色模式默认 (明亮柔和) */
+        /* 双页面容器：默认维护页可见，作者页隐藏 */
+        .page {
+            transition: opacity 0.5s ease;
+        }
+        #maintenance-page {
+            display: block;
+        }
+        #author-page {
+            display: none;
+        }
+
+        /* 维护页面样式 (完整保留之前的精美设计，无彩蛋版本，备考氛围) */
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.2s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 变量与深色模式沿用 */
         :root {
             --bg-gradient-start: rgba(240, 248, 255, 0.85);
             --bg-gradient-end: rgba(230, 242, 255, 0.92);
@@ -19,7 +46,6 @@
             --card-border: rgba(255, 255, 240, 0.8);
             --text-primary: #0a1c2f;
             --text-secondary: #2c3e50;
-            --accent-glow: rgba(59,130,246,0.15);
             --gear-bg: #eef2ff;
             --gear-stroke: #2563eb;
             --domain-bg: #eef2ff;
@@ -40,7 +66,6 @@
             --game-bg: rgba(128, 90, 200, 0.08);
         }
 
-        /* 深色模式: 宁静深邃 */
         body.dark {
             --bg-gradient-start: rgba(15, 25, 45, 0.94);
             --bg-gradient-end: rgba(5, 15, 30, 0.98);
@@ -48,7 +73,6 @@
             --card-border: rgba(66, 88, 120, 0.5);
             --text-primary: #eef2ff;
             --text-secondary: #cbd5e1;
-            --accent-glow: rgba(139, 92, 246, 0.2);
             --gear-bg: #1e293b;
             --gear-stroke: #a78bfa;
             --domain-bg: #1e293b;
@@ -69,21 +93,7 @@
             --game-bg: rgba(99, 102, 241, 0.15);
         }
 
-        body {
-            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
-            font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.2s ease;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* 动态极光画布 (无彩蛋纯视觉) */
+        /* 动态极光画布 */
         #aurora-canvas {
             position: fixed;
             top: 0;
@@ -113,7 +123,6 @@
             border: 1px solid var(--card-border);
         }
 
-        /* 主题切换按钮 - 右上角 */
         .theme-toggle {
             position: absolute;
             top: 1.2rem;
@@ -142,7 +151,6 @@
             stroke: var(--toggle-icon);
             fill: none;
             stroke-width: 2;
-            transition: stroke 0.2s;
         }
 
         .status-bar {
@@ -169,8 +177,6 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 12px 18px -10px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s;
-            /* 移除彩蛋互动，仅展示 */
             cursor: default;
         }
         .gear-icon svg {
@@ -314,7 +320,6 @@
             border-bottom: 1px dashed;
         }
 
-        /* 星穹铁道推荐模块 (保留趣味推荐，无其他彩蛋) */
         .game-recommend {
             margin-top: 1.2rem;
             text-align: center;
@@ -323,7 +328,6 @@
             padding: 0.75rem 1rem;
             backdrop-filter: blur(2px);
             font-size: 0.85rem;
-            transition: all 0.2s;
         }
         .game-recommend a {
             color: var(--link-color);
@@ -336,7 +340,6 @@
         }
         .game-recommend a:hover {
             color: #f97316;
-            transform: scale(1.01);
         }
         .small-note {
             font-size: 0.68rem;
@@ -359,91 +362,206 @@
             .clock-row { gap: 0.7rem; }
             .theme-toggle { top: 0.8rem; right: 1rem; width: 36px; height: 36px; }
         }
+
+        /* 作者页面独立样式 (深色融合) */
+        .author-card {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            margin: 0 auto;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e94560;
+            margin-bottom: 1rem;
+        }
+        .author-card h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #fff, #e94560);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid #e94560;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-section {
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+        .info-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e94560;
+            margin-bottom: 0.2rem;
+        }
+        .info-value {
+            font-size: 1rem;
+            word-break: break-all;
+        }
+        .company-section {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .company-name {
+            color: #e94560;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .company-tag {
+            background: rgba(233, 69, 96, 0.15);
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 1rem 0;
+        }
     </style>
 </head>
 <body>
     <canvas id="aurora-canvas"></canvas>
-    <div class="maintenance-card">
-        <div class="status-bar"></div>
-        <button class="theme-toggle" id="themeToggle" aria-label="深色/浅色模式">
-            <svg viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
-            </svg>
-        </button>
-        <div class="content">
-            <div class="icon-area">
-                <div class="gear-icon">
-                    <svg viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
-                        <path d="M12 2v2" /><path d="M12 20v2" />
-                        <path d="M4 4l2 2" /><path d="M18 18l2 2" />
-                        <path d="M2 12h2" /><path d="M20 12h2" />
-                    </svg>
+
+    <!-- 维护页面 (默认显示直到2026/06/15 23:59) -->
+    <div id="maintenance-page" class="page">
+        <div class="maintenance-card">
+            <div class="status-bar"></div>
+            <button class="theme-toggle" id="themeToggle" aria-label="深色/浅色模式">
+                <svg viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+                </svg>
+            </button>
+            <div class="content">
+                <div class="icon-area">
+                    <div class="gear-icon">
+                        <svg viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
+                            <path d="M12 2v2" /><path d="M12 20v2" />
+                            <path d="M4 4l2 2" /><path d="M18 18l2 2" />
+                            <path d="M2 12h2" /><path d="M20 12h2" />
+                        </svg>
+                    </div>
+                </div>
+                <h1>专心备考 · 暂别星穹</h1>
+                <div style="text-align: center;"><span class="domain">arseeya.link</span></div>
+                <p class="desc">站主近日需全力准备考试，网站暂时停止服务。<br>短暂的别离，是为了更好的相遇。愿您理解，也祝各位万事顺意。</p>
+                <div class="notice-box">
+                    <p>📚 <strong>维护原因：</strong> 站主备考重要考试，期间全力复习，无暇运维。<br>
+                    🕒 <strong>预计开放时间：</strong> 2026年6月15日 23:59 (GMT+8)<br>
+                    🔒 所有数据安全保留，考试结束后第一时间恢复服务，感谢耐心等待。</p>
+                </div>
+                
+                <div class="countdown-container">
+                    <div class="clock-row">
+                        <div class="time-block"><div class="time-number" id="days">00</div><div class="time-label">天</div></div>
+                        <div class="time-block"><div class="time-number" id="hours">00</div><div class="time-label">小时</div></div>
+                        <div class="time-block"><div class="time-number" id="minutes">00</div><div class="time-label">分钟</div></div>
+                        <div class="time-block"><div class="time-number" id="seconds">00</div><div class="time-label">秒</div></div>
+                    </div>
+                    <div style="text-align:center;"><span class="restore-date">⏳ 距离网站重新开放还有</span></div>
+                </div>
+                
+                <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="status-text"><span id="statusMsg">📖 站主专心复习中 · 感谢体谅</span><span id="progressPercent">0%</span></div>
+                
+                <div class="contact">
+                    📧 如有紧急事务，可发送邮件至 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
+                    站主每日夜间会统一查看，感谢您的包容。
+                </div>
+                
+                <div class="game-recommend">
+                    🌌 等待不无聊，推荐开拓者前往 ▶ 
+                    <a href="https://sr.mihoyo.com/" target="_blank" rel="noopener noreferrer">《崩坏：星穹铁道》</a> 
+                    ◀ 邂逅群星，踏上奇旅
+                </div>
+                <div class="small-note">
+                    arseeya.link · 愿此行，终抵群星 | 站主备考倒计时
+                </div>
+                <div class="footer-grace">
+                    &copy; arseeya 技术团队 | 深色模式/极光伴你静候
                 </div>
             </div>
-            <h1>专心备考 · 暂别星穹</h1>
-            <div style="text-align: center;"><span class="domain">arseeya.link</span></div>
-            <p class="desc">站主近日需全力准备考试，网站暂时停止服务。<br>短暂的别离，是为了更好的相遇。愿您理解，也祝各位万事顺意。</p>
-            <div class="notice-box">
-                <p>📚 <strong>维护原因：</strong> 站主备考重要考试，期间全力复习，无暇运维。<br>
-                🕒 <strong>预计开放时间：</strong> 2026年6月15日 23:59 (GMT+8)<br>
-                🔒 所有数据安全保留，考试结束后第一时间恢复服务，感谢耐心等待。</p>
-            </div>
-            
-            <!-- 精确倒计时区块 -->
-            <div class="countdown-container">
-                <div class="clock-row">
-                    <div class="time-block"><div class="time-number" id="days">00</div><div class="time-label">天</div></div>
-                    <div class="time-block"><div class="time-number" id="hours">00</div><div class="time-label">小时</div></div>
-                    <div class="time-block"><div class="time-number" id="minutes">00</div><div class="time-label">分钟</div></div>
-                    <div class="time-block"><div class="time-number" id="seconds">00</div><div class="time-label">秒</div></div>
+        </div>
+    </div>
+
+    <!-- 作者页面 (时间到达后展示) -->
+    <div id="author-page" class="page">
+        <div class="author-card">
+            <img class="avatar" src="arseeya_avatar.jpg" alt="Arseeya" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e94560%22/%3E%3Ctext x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22%3EA%3C/text%3E%3C/svg%3E'">
+            <h1>Arseeya</h1>
+            <div class="badge">📖 准高三 · 文科生</div>
+            <div class="info-section">
+                <div class="info-item">
+                    <div class="info-label">✍️ 作者联系</div>
+                    <div class="info-value">arseeya@outlook.com</div>
                 </div>
-                <div style="text-align:center;"><span class="restore-date">⏳ 距离网站重新开放还有</span></div>
             </div>
-            
-            <!-- 维护进度条 (基于维护窗口: 6/5 00:00 至 6/15 23:59) -->
-            <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
-            <div class="status-text"><span id="statusMsg">📖 站主专心复习中 · 感谢体谅</span><span id="progressPercent">0%</span></div>
-            
-            <div class="contact">
-                📧 如有紧急事务，可发送邮件至 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
-                站主每日夜间会统一查看，感谢您的包容。
-            </div>
-            
-            <!-- 崩坏星穹铁道推荐专区 (无彩蛋，仅推荐) -->
-            <div class="game-recommend">
-                🌌 等待不无聊，推荐开拓者前往 ▶ 
-                <a href="https://sr.mihoyo.com/" target="_blank" rel="noopener noreferrer">《崩坏：星穹铁道》</a> 
-                ◀ 邂逅群星，踏上奇旅
-            </div>
-            <div class="small-note">
-                arseeya.link · 愿此行，终抵群星 | 站主备考倒计时
-            </div>
-            <div class="footer-grace">
-                &copy; arseeya 技术团队 | 深色模式/极光伴你静候
+            <div class="company-section">
+                <div class="company-name">🏢 泽尔集团 · Zel Group</div>
+                <div class="company-list">
+                    <span class="company-tag">泽尔文化</span>
+                    <span class="company-tag">泽尔电子</span>
+                    <span class="company-tag">泽尔通讯</span>
+                </div>
+                <div class="info-item" style="margin-top: 0.8rem;">
+                    <div class="info-label">📧 公司联系</div>
+                    <div class="info-value">zelculture@outlook.com</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         (function() {
-            // ======================= 关键更新: 恢复时间 2026/06/15 23:59 (北京时间 GMT+8)
-            // 北京时间 2026-06-15 23:59:59 转为 UTC 时间: 2026-06-15 15:59:59 (因为北京时区+8)
+            // ======================= 定时切换逻辑 =======================
+            // 目标时间: 2026年6月15日 23:59:59 北京时间 (UTC+8)
             const TARGET_YEAR = 2026;
             const TARGET_MONTH = 5;     // 5 = 六月
             const TARGET_DAY = 15;
-            const TARGET_HOUR_UTC = 15;  // 15点UTC => 北京时间 23:00? 注意: 23:59 对应 UTC 15:59，故设置小时15，分钟59
+            const TARGET_HOUR_UTC = 15;  // 15点UTC -> 北京时间23:00 ？ 注意23:59需对应UTC 15:59
             const TARGET_MINUTE = 59;
             const TARGET_SECOND = 59;
             const TARGET_TIMESTAMP = Date.UTC(TARGET_YEAR, TARGET_MONTH, TARGET_DAY, TARGET_HOUR_UTC, TARGET_MINUTE, TARGET_SECOND);
             
-            // 维护开始时间: 2026年6月5日 00:00 北京时间 => 2026-06-04 16:00 UTC
-            const MAINT_START_UTC = Date.UTC(2026, 5, 4, 16, 0, 0);   // 对应 2026/6/5 00:00 CST
+            // 维护开始时间: 2026年6月5日 00:00 北京时间 -> UTC 2026-06-04 16:00:00
+            const MAINT_START_UTC = Date.UTC(2026, 5, 4, 16, 0, 0);
             const MAINT_END_UTC = TARGET_TIMESTAMP;
             const TOTAL_DURATION = MAINT_END_UTC - MAINT_START_UTC;
-            
-            // DOM 元素
+
+            // DOM 元素 (维护页)
             const daysSpan = document.getElementById('days');
             const hoursSpan = document.getElementById('hours');
             const minutesSpan = document.getElementById('minutes');
@@ -452,22 +570,52 @@
             const statusMsgSpan = document.getElementById('statusMsg');
             const progressPercentSpan = document.getElementById('progressPercent');
             
-            function padZero(n) { return n < 10 ? '0' + n : '' + n; }
+            // 两个页面容器
+            const maintenancePage = document.getElementById('maintenance-page');
+            const authorPage = document.getElementById('author-page');
             
-            // 更新倒计时和进度条 (无彩蛋)
+            // 切换页面函数: 若当前时间 >= 目标时间，显示作者页，否则显示维护页
+            function switchPageBasedOnTime() {
+                const now = Date.now();
+                if (now >= TARGET_TIMESTAMP) {
+                    // 时间到，展示作者页面，隐藏维护页面
+                    if (maintenancePage.style.display !== 'none') {
+                        maintenancePage.style.display = 'none';
+                        authorPage.style.display = 'block';
+                        // 可选: 停止维护页面的倒计时刷新，优化性能
+                        // 但为了保险停止计时器 (后面会清除)
+                    }
+                } else {
+                    if (maintenancePage.style.display !== 'block') {
+                        maintenancePage.style.display = 'block';
+                        authorPage.style.display = 'none';
+                    }
+                }
+            }
+            
+            // 更新维护页面的倒计时与进度条 (只有维护页面可见时才需要频繁更新)
+            let countdownInterval = null;
+            
             function updateDashboard() {
+                // 如果当前已经是作者页面，不必更新数据，直接返回
+                if (authorPage.style.display === 'block') return;
+                
                 const now = Date.now();
                 let remaining = TARGET_TIMESTAMP - now;
                 const isExpired = remaining <= 0;
                 
                 if (isExpired) {
-                    daysSpan.innerText = '00';
-                    hoursSpan.innerText = '00';
-                    minutesSpan.innerText = '00';
-                    secondsSpan.innerText = '00';
+                    if (daysSpan) daysSpan.innerText = '00';
+                    if (hoursSpan) hoursSpan.innerText = '00';
+                    if (minutesSpan) minutesSpan.innerText = '00';
+                    if (secondsSpan) secondsSpan.innerText = '00';
                     if (progressFill) progressFill.style.width = '100%';
                     if (progressPercentSpan) progressPercentSpan.innerText = '100%';
                     if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 站主考试完毕 · 网站即将恢复开放，感谢等待！';
+                    // 时间到了，立刻切换页面
+                    if (now >= TARGET_TIMESTAMP) {
+                        switchPageBasedOnTime();
+                    }
                     return;
                 }
                 
@@ -476,12 +624,12 @@
                 const hours = Math.floor((totalSec % 86400) / 3600);
                 const minutes = Math.floor((totalSec % 3600) / 60);
                 const seconds = totalSec % 60;
-                daysSpan.innerText = padZero(days);
-                hoursSpan.innerText = padZero(hours);
-                minutesSpan.innerText = padZero(minutes);
-                secondsSpan.innerText = padZero(seconds);
+                if (daysSpan) daysSpan.innerText = days < 10 ? '0' + days : '' + days;
+                if (hoursSpan) hoursSpan.innerText = hours < 10 ? '0' + hours : '' + hours;
+                if (minutesSpan) minutesSpan.innerText = minutes < 10 ? '0' + minutes : '' + minutes;
+                if (secondsSpan) secondsSpan.innerText = seconds < 10 ? '0' + seconds : '' + seconds;
                 
-                // 进度百分比 (基于维护窗口 6/5 → 6/15)
+                // 进度百分比
                 let percent = 0;
                 if (now <= MAINT_START_UTC) percent = 0;
                 else if (now >= MAINT_END_UTC) percent = 100;
@@ -491,7 +639,6 @@
                 const percentInt = Math.floor(percent);
                 if (progressPercentSpan) progressPercentSpan.innerText = `备考进度 ${percentInt}%`;
                 
-                // 根据百分比切换鼓励语句
                 if (statusMsgSpan) {
                     if (percentInt < 20) statusMsgSpan.innerHTML = '📖 站主正在专注复习 · 感谢体谅';
                     else if (percentInt < 45) statusMsgSpan.innerHTML = '✍️ 刷题巩固中，知识就是力量';
@@ -501,28 +648,43 @@
                 }
             }
             
-            // 每秒更新
-            setInterval(updateDashboard, 1000);
-            updateDashboard();
+            // 启动定时器（仅当维护页活跃时有效，但定期检查切换）
+            function startGlobalTimer() {
+                // 先执行一次页面切换初始化
+                switchPageBasedOnTime();
+                // 倒计时刷新
+                updateDashboard();
+                if (countdownInterval) clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    // 每次先检查是否需要切换
+                    switchPageBasedOnTime();
+                    // 如果当前处于维护页面，更新数值
+                    if (maintenancePage.style.display === 'block') {
+                        updateDashboard();
+                    }
+                }, 1000);
+            }
             
-            // =============== 深色/浅色模式切换 (带本地存储) ==============
+            // =============== 深色模式切换 (只对维护页面有效，但作者页面可共用一个全局样式) ==========
             const toggleBtn = document.getElementById('themeToggle');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
-            if (currentTheme === 'dark') document.body.classList.add('dark');
-            else document.body.classList.remove('dark');
+            if (toggleBtn) {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+                if (currentTheme === 'dark') document.body.classList.add('dark');
+                else document.body.classList.remove('dark');
+                
+                toggleBtn.addEventListener('click', () => {
+                    if (document.body.classList.contains('dark')) {
+                        document.body.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        document.body.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+            }
             
-            toggleBtn.addEventListener('click', () => {
-                if (document.body.classList.contains('dark')) {
-                    document.body.classList.remove('dark');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.body.classList.add('dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-            
-            // =============== 动态极光背景 Canvas (柔和流动) ==============
+            // =============== 极光背景 (与之前一致) ==============
             const canvas = document.getElementById('aurora-canvas');
             let ctx = canvas.getContext('2d');
             let width, height;
@@ -539,7 +701,6 @@
                 if (!ctx) return;
                 ctx.clearRect(0, 0, width, height);
                 const t = timeFlow * 0.002;
-                // 极光层1
                 const grad1 = ctx.createLinearGradient(Math.sin(t)*70 + width*0.2, Math.cos(t*0.6)*40, width*0.8, height*0.5);
                 grad1.addColorStop(0, 'rgba(100, 80, 220, 0.22)');
                 grad1.addColorStop(0.6, 'rgba(60, 130, 230, 0.18)');
@@ -553,7 +714,6 @@
                 ctx.fillStyle = grad2;
                 ctx.fillRect(0, 0, width, height);
                 
-                // 流动光晕
                 for (let i=0; i<3; i++) {
                     const offset = (t + i * 2.2) % (Math.PI*2);
                     const x = width * (0.3 + 0.4 * Math.sin(offset));
@@ -571,36 +731,29 @@
             resizeCanvas();
             drawAurora();
             
-            // 动态标题倒计时 (无彩蛋)
-            function updateDocumentTitle() {
-                if (Date.now() >= TARGET_TIMESTAMP) {
-                    document.title = '✨ arseeya.link 即将恢复 ✨';
+            // 动态标题 (兼顾双页面)
+            function updateTitle() {
+                const now = Date.now();
+                if (now >= TARGET_TIMESTAMP) {
+                    document.title = 'Arseeya · 作者 | 泽尔集团';
                     return;
                 }
-                const rem = TARGET_TIMESTAMP - Date.now();
+                const rem = TARGET_TIMESTAMP - now;
                 const days = Math.floor(rem / 86400000);
                 const hrs = Math.floor((rem % 86400000) / 3600000);
-                const mins = Math.floor((rem % 3600000) / 60000);
-                if (days > 0) document.title = `[备考] ${days}d ${hrs}h 后恢复 | arseeya.link`;
-                else if (hrs > 0) document.title = `[备考] ${hrs}h ${mins}m 后开放 | arseeya.link`;
-                else document.title = `[备考] 最后 ${mins}分钟 倒计时 | arseeya.link`;
+                if (days > 0) document.title = `[备考] ${days}d ${hrs}h 后开放 | arseeya.link`;
+                else if (hrs > 0) document.title = `[备考] ${hrs}h 后恢复 | arseeya.link`;
+                else document.title = `[备考] 即将开放 | arseeya.link`;
             }
-            setInterval(updateDocumentTitle, 2000);
-            updateDocumentTitle();
+            setInterval(updateTitle, 2000);
+            updateTitle();
             
-            // 增加悬浮提示 (显示精确恢复时刻)
-            const restoreSpan = document.querySelector('.restore-date');
-            if (restoreSpan) {
-                restoreSpan.setAttribute('title', '预计 2026年6月15日 23:59 (北京时间) 恢复服务');
-            }
+            // 启动整体控制
+            startGlobalTimer();
             
-            // 确保外部链接安全
+            // 额外确保链接外部跳转安全
             const gameLink = document.querySelector('.game-recommend a');
             if (gameLink) gameLink.setAttribute('rel', 'noopener noreferrer');
-            
-            // 彻底移除任何彩蛋相关的交互 (齿轮无点击事件，无toast)
-            // 确保 gear-icon 没有任何遗留监听器 (此处无需额外代码，因为未添加监听器)
-            // 同时删除可能残留的toast元素（原彩蛋toast div已经不在html中）
         })();
     </script>
 </body>
