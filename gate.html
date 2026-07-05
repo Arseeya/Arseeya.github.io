@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gate · 枢纽 | Arseeya</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== 全局变量 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #fcf8f0;
+            color: #2a2826;
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(198, 168, 124, 0.08) 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 50%, rgba(139, 122, 107, 0.06) 0%, transparent 60%);
+        }
+        .gate-wrapper {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 252, 245, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 2.5rem 2rem;
+            border-radius: 48px 16px 48px 16px;
+            box-shadow: 0 20px 60px -20px rgba(42, 40, 38, 0.15);
+            border: 1px solid rgba(198, 168, 124, 0.15);
+            text-align: center;
+        }
+        /* ===== 头部 ===== */
+        .gate-header {
+            margin-bottom: 2.5rem;
+        }
+        .gate-header h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: #2a2826;
+        }
+        .gate-header .sub {
+            font-size: 0.9rem;
+            color: #8b7a6b;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 0.2rem;
+        }
+        .flow-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c6a87c, transparent);
+            margin: 0.8rem auto 0;
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+        /* ===== 链接卡片网格 ===== */
+        .gate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0 2.5rem;
+        }
+        .gate-card {
+            background: rgba(255, 252, 245, 0.7);
+            padding: 1.8rem 1rem;
+            border-radius: 32px 8px 32px 8px;
+            border: 1px solid rgba(198, 168, 124, 0.15);
+            text-decoration: none;
+            color: #2a2826;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px -8px rgba(42, 40, 38, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .gate-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px -16px rgba(42, 40, 38, 0.2);
+            border-color: #c6a87c;
+            background: rgba(255, 252, 245, 0.9);
+        }
+        .gate-card .icon {
+            font-size: 2.8rem;
+            line-height: 1;
+            margin-bottom: 0.2rem;
+        }
+        .gate-card h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .gate-card p {
+            font-size: 0.85rem;
+            color: #6b5d4f;
+            margin: 0;
+        }
+        .gate-card .tag {
+            font-size: 0.65rem;
+            background: rgba(198, 168, 124, 0.12);
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            color: #6b5d4f;
+            letter-spacing: 0.04em;
+            margin-top: 0.3rem;
+        }
+        /* ===== 返回 & 页脚 ===== */
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #8b7a6b;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
+            transition: border-color 0.2s;
+        }
+        .back-link:hover { border-color: #c6a87c; }
+        .gate-footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #8b7a6b;
+            letter-spacing: 0.04em;
+            border-top: 1px solid rgba(139, 122, 107, 0.1);
+            padding-top: 1.5rem;
+        }
+        /* ===== 响应式 ===== */
+        @media (max-width: 500px) {
+            .gate-wrapper { padding: 1.5rem 1rem; }
+            .gate-header h1 { font-size: 2.4rem; }
+            .gate-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gate-wrapper">
+        <!-- 头部 -->
+        <div class="gate-header">
+            <h1>✦ Gate</h1>
+            <div class="sub">泽尔枢纽 · 路径</div>
+            <div class="flow-line"></div>
+        </div>
+
+        <!-- 链接网格 -->
+        <div class="gate-grid">
+            <!-- 泽尔集团 (内部链接) -->
+            <a href="/Zell.html" class="gate-card">
+                <span class="icon">🏛️</span>
+                <h3>泽尔集团</h3>
+                <p>文化 · 电子 · 通讯</p>
+                <span class="tag">Zell Group</span>
+            </a>
+
+            <!-- 星穹铁道 (外部链接) -->
+            <a href="https://sr.mihoyo.com/" target="_blank" rel="noopener noreferrer" class="gate-card">
+                <span class="icon">🌠</span>
+                <h3>星穹铁道</h3>
+                <p>愿此行，终抵群星</p>
+                <span class="tag">Honkai: Star Rail</span>
+            </a>
+
+            <!-- 预留未来链接示例 (可删除或替换) -->
+            <a href="#" class="gate-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                <span class="icon">🌱</span>
+                <h3>更多旅程</h3>
+                <p>即将开启</p>
+                <span class="tag">Coming soon</span>
+            </a>
+        </div>
+
+        <!-- 返回首页 -->
+        <a href="/" class="back-link">← 返回 Arseeya 主页</a>
+
+        <!-- 页脚 -->
+        <div class="gate-footer">
+            <span>“让科技变成自然” · 泽尔集团</span>
+        </div>
+    </div>
+</body>
+</html>
