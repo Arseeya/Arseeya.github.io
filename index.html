@@ -1,760 +1,429 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Arseeya · 站点</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arseeya · 让科技变成自然</title>
+    <!-- 使用优雅的衬线与无衬线字体组合 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <style>
-        /* 基础重置与隐藏逻辑 */
+        /* 全局重置与变量 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* 双页面容器：默认维护页可见，作者页隐藏 */
-        .page {
-            transition: opacity 0.5s ease;
-        }
-        #maintenance-page {
-            display: block;
-        }
-        #author-page {
-            display: none;
+        :root {
+            --color-cream: #fcf8f0;
+            --color-warm-gray: #e8e0d5;
+            --color-stone: #8b7a6b;
+            --color-charcoal: #2a2826;
+            --color-accent-gold: #c6a87c;
+            --color-text-light: #f5efe8;
+            --font-serif: 'EB Garamond', 'Times New Roman', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* 维护页面样式 (完整保留之前的精美设计，无彩蛋版本，备考氛围) */
         body {
-            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
-            font-family: system-ui, 'Segoe UI', 'SF Pro Text', 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.2s ease;
-            position: relative;
+            background-color: var(--color-cream);
+            color: var(--color-charcoal);
+            font-family: var(--font-sans);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* 变量与深色模式沿用 */
-        :root {
-            --bg-gradient-start: rgba(240, 248, 255, 0.85);
-            --bg-gradient-end: rgba(230, 242, 255, 0.92);
-            --card-bg: rgba(255, 255, 255, 0.96);
-            --card-border: rgba(255, 255, 240, 0.8);
-            --text-primary: #0a1c2f;
-            --text-secondary: #2c3e50;
-            --gear-bg: #eef2ff;
-            --gear-stroke: #2563eb;
-            --domain-bg: #eef2ff;
-            --domain-color: #1e40af;
-            --notice-bg: #fffbeb;
-            --notice-border: #f59e0b;
-            --notice-text: #b45309;
-            --countdown-bg: #f8fafc;
-            --time-block-bg: #ffffff;
-            --time-block-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
-            --progress-bg: #e2e8f0;
-            --progress-fill: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316);
-            --contact-border: #e2edf7;
-            --link-color: #2563eb;
-            --footer-color: #7c8ba0;
-            --toggle-bg: #e2e8f0;
-            --toggle-icon: #1e293b;
-            --game-bg: rgba(128, 90, 200, 0.08);
+        /* 模拟自然光影的背景渐变 */
+        .site-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            background: radial-gradient(ellipse at 10% 20%, rgba(198, 168, 124, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 90% 80%, rgba(139, 122, 107, 0.06) 0%, transparent 50%);
+            min-height: 100vh;
         }
 
-        body.dark {
-            --bg-gradient-start: rgba(15, 25, 45, 0.94);
-            --bg-gradient-end: rgba(5, 15, 30, 0.98);
-            --card-bg: rgba(18, 25, 42, 0.94);
-            --card-border: rgba(66, 88, 120, 0.5);
-            --text-primary: #eef2ff;
-            --text-secondary: #cbd5e1;
-            --gear-bg: #1e293b;
-            --gear-stroke: #a78bfa;
-            --domain-bg: #1e293b;
-            --domain-color: #a5b4fc;
-            --notice-bg: #2d2a1e;
-            --notice-border: #f59e0b;
-            --notice-text: #fde047;
-            --countdown-bg: #0f172a;
-            --time-block-bg: #1e293b;
-            --time-block-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-            --progress-bg: #334155;
-            --progress-fill: linear-gradient(90deg, #8b5cf6, #f97316, #facc15);
-            --contact-border: #2d3a4e;
-            --link-color: #93c5fd;
-            --footer-color: #94a3b8;
-            --toggle-bg: #334155;
-            --toggle-icon: #facc15;
-            --game-bg: rgba(99, 102, 241, 0.15);
-        }
-
-        /* 动态极光画布 */
-        #aurora-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.55;
-            transition: opacity 0.3s ease;
-        }
-        body.dark #aurora-canvas {
-            opacity: 0.68;
-        }
-
-        .maintenance-card {
-            position: relative;
-            z-index: 10;
-            max-width: 800px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 2.5rem;
-            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--card-border);
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 1.2rem;
-            right: 1.5rem;
-            z-index: 25;
-            background: var(--toggle-bg);
-            border: none;
-            border-radius: 60px;
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            background: var(--gear-stroke);
-        }
-        .theme-toggle svg {
-            width: 22px;
-            height: 22px;
-            stroke: var(--toggle-icon);
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .status-bar {
-            height: 6px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f97316, #f59e0b);
-            width: 100%;
-        }
-
-        .content {
-            padding: 2.2rem 2.2rem 2.5rem;
-        }
-
-        .icon-area {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.2rem;
-        }
-        .gear-icon {
-            background: var(--gear-bg);
-            width: 84px;
-            height: 84px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 18px -10px rgba(0, 0, 0, 0.2);
-            cursor: default;
-        }
-        .gear-icon svg {
-            width: 48px;
-            height: 48px;
-            stroke: var(--gear-stroke);
-            stroke-width: 1.6;
-            fill: none;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            text-align: center;
-            letter-spacing: -0.01em;
-            background: linear-gradient(135deg, var(--text-primary), #6b7280);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 0.3rem;
-        }
-
-        .domain {
-            text-align: center;
-            font-family: monospace;
-            font-size: 1rem;
-            background: var(--domain-bg);
-            display: inline-block;
-            width: auto;
-            margin: 0 auto 0.9rem auto;
-            padding: 0.3rem 1.2rem;
-            border-radius: 60px;
-            color: var(--domain-color);
-            font-weight: 500;
-        }
-
-        .desc {
-            text-align: center;
-            font-size: 1rem;
-            line-height: 1.45;
-            color: var(--text-secondary);
-            margin: 0.5rem 0 0.8rem;
-        }
-
-        .notice-box {
-            background: var(--notice-bg);
-            border-left: 6px solid var(--notice-border);
-            border-radius: 1.2rem;
-            padding: 0.9rem 1.3rem;
-            margin: 1rem 0 1.5rem;
-        }
-        .notice-box p {
-            font-size: 0.92rem;
-            color: var(--notice-text);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .countdown-container {
-            background: var(--countdown-bg);
-            border-radius: 2rem;
-            padding: 1rem 0.8rem;
-            margin: 1rem 0 1rem;
-        }
-        .clock-row {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .time-block {
-            background: var(--time-block-bg);
-            border-radius: 1.6rem;
-            padding: 0.6rem 1rem;
-            min-width: 80px;
-            text-align: center;
-            box-shadow: var(--time-block-shadow);
-        }
-        .time-number {
-            font-size: 2.2rem;
-            font-weight: 800;
-            font-family: monospace;
-            color: var(--text-primary);
-            line-height: 1.2;
-        }
-        .time-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-        }
-        .restore-date {
-            text-align: center;
-            font-size: 0.8rem;
-            background: var(--domain-bg);
-            display: inline-block;
-            width: auto;
-            margin-top: 0.7rem;
-            padding: 0.2rem 1rem;
-            border-radius: 32px;
-            color: var(--domain-color);
-        }
-
-        .progress-container {
-            background: var(--progress-bg);
-            border-radius: 40px;
-            height: 8px;
-            width: 100%;
-            margin: 1rem 0 0.5rem;
-            overflow: hidden;
-        }
-        .progress-fill {
-            background: var(--progress-fill);
-            width: 0%;
-            height: 100%;
-            border-radius: 40px;
-            transition: width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        .status-text {
-            font-size: 0.75rem;
-            font-weight: 500;
+        /* ===== 头部 ===== */
+        .header {
             display: flex;
             justify-content: space-between;
-            color: var(--text-secondary);
-        }
-
-        .contact {
-            text-align: center;
-            margin-top: 1.8rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--contact-border);
-            font-size: 0.85rem;
-        }
-        .contact a {
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px dashed;
-        }
-
-        .game-recommend {
-            margin-top: 1.2rem;
-            text-align: center;
-            background: var(--game-bg);
-            border-radius: 2rem;
-            padding: 0.75rem 1rem;
-            backdrop-filter: blur(2px);
-            font-size: 0.85rem;
-        }
-        .game-recommend a {
-            color: var(--link-color);
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            border-bottom: 1px dotted;
-        }
-        .game-recommend a:hover {
-            color: #f97316;
-        }
-        .small-note {
-            font-size: 0.68rem;
-            text-align: center;
-            margin-top: 0.9rem;
-            color: var(--footer-color);
-        }
-        .footer-grace {
-            text-align: center;
-            font-size: 0.65rem;
-            margin-top: 0.7rem;
-            color: var(--footer-color);
+            padding: 1rem 0 3rem;
+            border-bottom: 1px solid rgba(139, 122, 107, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        @media (max-width: 550px) {
-            .content { padding: 1.5rem; }
-            h1 { font-size: 1.7rem; }
-            .time-number { font-size: 1.6rem; }
-            .time-block { min-width: 65px; padding: 0.3rem 0.5rem; }
-            .clock-row { gap: 0.7rem; }
-            .theme-toggle { top: 0.8rem; right: 1rem; width: 36px; height: 36px; }
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
         }
-
-        /* 作者页面独立样式 (深色融合) */
-        .author-card {
-            max-width: 500px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 2rem;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            margin: 0 auto;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #e94560;
-            margin-bottom: 1rem;
-        }
-        .author-card h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, #fff, #e94560);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        .badge {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.2);
-            border: 1px solid #e94560;
-            border-radius: 2rem;
-            padding: 0.3rem 1rem;
-            font-size: 0.8rem;
-            margin-bottom: 1.5rem;
-        }
-        .info-section {
-            text-align: left;
-            margin: 1.5rem 0;
-        }
-        .info-item {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 1rem;
-            padding: 0.8rem 1rem;
-            margin-bottom: 0.8rem;
-        }
-        .info-label {
+        .logo .sub {
+            font-family: var(--font-sans);
             font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--color-stone);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e94560;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+        .nav a {
+            color: var(--color-charcoal);
+            text-decoration: none;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--color-accent-gold);
+            transition: width 0.3s ease;
+        }
+        .nav a:hover {
+            color: var(--color-accent-gold);
+        }
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== Hero 区域 ===== */
+        .hero {
+            padding: 4rem 0 3rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(139, 122, 107, 0.15);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.8rem, 10vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--color-charcoal);
+        }
+        .hero-title .highlight {
+            font-style: italic;
+            color: var(--color-accent-gold);
+            position: relative;
+        }
+        .hero-title .highlight::before {
+            content: '✦';
+            font-size: 0.6em;
+            margin-right: 0.3em;
+            opacity: 0.6;
+        }
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--color-stone);
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* 装饰性流动线条 (纯CSS模拟自然曲线) */
+        .flow-line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--color-accent-gold), transparent);
+            margin: 0 auto 3rem;
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        /* ===== 核心入口卡片 (自然探索) ===== */
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0 4rem;
+        }
+
+        .explore-card {
+            background: rgba(255, 252, 245, 0.6);
+            backdrop-filter: blur(2px);
+            padding: 2rem 1.5rem;
+            border-radius: 32px 12px 32px 12px;
+            box-shadow: 0 8px 24px -12px rgba(42, 40, 38, 0.15);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(198, 168, 124, 0.15);
+            text-decoration: none;
+            color: var(--color-charcoal);
+        }
+        .explore-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px -16px rgba(42, 40, 38, 0.25);
+            border-color: var(--color-accent-gold);
+            background: rgba(255, 252, 245, 0.85);
+        }
+
+        .explore-card .emoji-big {
+            font-size: 2.8rem;
+            display: block;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+        .explore-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .explore-card p {
+            font-size: 0.9rem;
+            color: var(--color-stone);
             margin-bottom: 0.2rem;
         }
-        .info-value {
+        .explore-card .meta-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: rgba(198, 168, 124, 0.15);
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+            color: var(--color-stone);
+            margin-top: 0.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== 关于与联系 ===== */
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 122, 107, 0.15);
+        }
+
+        .info-block h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .info-block p {
+            color: var(--color-stone);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+        .info-block .brand-tag {
+            display: inline-block;
+            background: var(--color-charcoal);
+            color: var(--color-text-light);
+            padding: 0.1rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-right: 0.4rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--color-stone);
+        }
+        .contact-item a {
+            color: var(--color-charcoal);
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
+            transition: border-color 0.2s;
+        }
+        .contact-item a:hover {
+            border-color: var(--color-accent-gold);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 122, 107, 0.15);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--color-stone);
+            letter-spacing: 0.04em;
+        }
+        .footer .quote {
+            font-family: var(--font-serif);
+            font-style: italic;
             font-size: 1rem;
-            word-break: break-all;
-        }
-        .company-section {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .company-name {
-            color: #e94560;
-            font-weight: bold;
+            color: var(--color-charcoal);
             margin-bottom: 0.5rem;
         }
-        .company-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .nav {
+                gap: 1.2rem;
+                font-size: 0.85rem;
+                flex-wrap: wrap;
+            }
+            .hero {
+                padding: 2rem 0;
+            }
+            .info-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .explore-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .explore-card {
+                padding: 1.5rem 1rem;
+            }
         }
-        .company-tag {
-            background: rgba(233, 69, 96, 0.15);
-            border-radius: 2rem;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.8rem;
-        }
-        hr {
-            border: none;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 1rem 0;
+        @media (max-width: 450px) {
+            .explore-grid {
+                grid-template-columns: 1fr;
+            }
+            .site-wrapper {
+                padding: 1rem 1rem 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <canvas id="aurora-canvas"></canvas>
+    <div class="site-wrapper">
+        <!-- 头部 -->
+        <header class="header">
+            <a href="/" class="logo">
+                Arseeya
+                <span class="sub">· 泽尔集团</span>
+            </a>
+            <nav class="nav">
+                <a href="#explore">探索</a>
+                <a href="#about">关于</a>
+                <a href="#contact">联系</a>
+                <!-- 你可以在这里添加更多链接，如 /novels/ -->
+            </nav>
+        </header>
 
-    <!-- 维护页面 (默认显示直到2026/06/15 23:59) -->
-    <div id="maintenance-page" class="page">
-        <div class="maintenance-card">
-            <div class="status-bar"></div>
-            <button class="theme-toggle" id="themeToggle" aria-label="深色/浅色模式">
-                <svg viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
-                </svg>
-            </button>
-            <div class="content">
-                <div class="icon-area">
-                    <div class="gear-icon">
-                        <svg viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H5.78a1.65 1.65 0 0 0-1.51 1 1.65 1.65 0 0 0 .33 1.82l.07.08A10 10 0 0 0 12 17.66a10 10 0 0 0 6.18-2.16l.07-.08Z" />
-                            <path d="M12 2v2" /><path d="M12 20v2" />
-                            <path d="M4 4l2 2" /><path d="M18 18l2 2" />
-                            <path d="M2 12h2" /><path d="M20 12h2" />
-                        </svg>
-                    </div>
-                </div>
-                <h1>专心备考 · 暂别星穹</h1>
-                <div style="text-align: center;"><span class="domain">arseeya.link</span></div>
-                <p class="desc">站主近日需全力准备考试，网站暂时停止服务。<br>短暂的别离，是为了更好的相遇。愿您理解，也祝各位万事顺意。</p>
-                <div class="notice-box">
-                    <p>📚 <strong>维护原因：</strong> 站主备考重要考试，期间全力复习，无暇运维。<br>
-                    🕒 <strong>预计开放时间：</strong> 2026年6月15日 23:59 (GMT+8)<br>
-                    🔒 所有数据安全保留，考试结束后第一时间恢复服务，感谢耐心等待。</p>
-                </div>
-                
-                <div class="countdown-container">
-                    <div class="clock-row">
-                        <div class="time-block"><div class="time-number" id="days">00</div><div class="time-label">天</div></div>
-                        <div class="time-block"><div class="time-number" id="hours">00</div><div class="time-label">小时</div></div>
-                        <div class="time-block"><div class="time-number" id="minutes">00</div><div class="time-label">分钟</div></div>
-                        <div class="time-block"><div class="time-number" id="seconds">00</div><div class="time-label">秒</div></div>
-                    </div>
-                    <div style="text-align:center;"><span class="restore-date">⏳ 距离网站重新开放还有</span></div>
-                </div>
-                
-                <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
-                <div class="status-text"><span id="statusMsg">📖 站主专心复习中 · 感谢体谅</span><span id="progressPercent">0%</span></div>
-                
-                <div class="contact">
-                    📧 如有紧急事务，可发送邮件至 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a><br>
-                    站主每日夜间会统一查看，感谢您的包容。
-                </div>
-                
-                <div class="game-recommend">
-                    🌌 等待不无聊，推荐开拓者前往 ▶ 
-                    <a href="https://sr.mihoyo.com/" target="_blank" rel="noopener noreferrer">《崩坏：星穹铁道》</a> 
-                    ◀ 邂逅群星，踏上奇旅
-                </div>
-                <div class="small-note">
-                    arseeya.link · 愿此行，终抵群星 | 站主备考倒计时
-                </div>
-                <div class="footer-grace">
-                    &copy; arseeya 技术团队 | 深色模式/极光伴你静候
-                </div>
+        <!-- Hero -->
+        <section class="hero">
+            <h1 class="hero-title">
+                让科技<br />
+                <span class="highlight">变成自然</span>
+            </h1>
+            <p class="hero-sub">
+                在泽尔，代码如溪流，数据似林木。<br />
+                一个虚构世界中的科技叙事。
+            </p>
+            <div class="flow-line"></div>
+        </section>
+
+        <!-- 探索入口 (核心内容) -->
+        <section id="explore">
+            <div class="explore-grid">
+                <a href="/novels/" class="explore-card">
+                    <span class="emoji-big">📖</span>
+                    <h3>小说</h3>
+                    <p>泽尔宇宙的故事</p>
+                    <span class="meta-tag">Novels</span>
+                </a>
+                <a href="/world/" class="explore-card">
+                    <span class="emoji-big">🌍</span>
+                    <h3>世界观</h3>
+                    <p>历史 · 地理 · 知识</p>
+                    <span class="meta-tag">World</span>
+                </a>
+                <a href="/download.html" class="explore-card">
+                    <span class="emoji-big">⬇️</span>
+                    <h3>下载</h3>
+                    <p>资源与档案</p>
+                    <span class="meta-tag">Downloads</span>
+                </a>
+                <a href="/reader.html" class="explore-card">
+                    <span class="emoji-big">📚</span>
+                    <h3>阅读器</h3>
+                    <p>沉浸阅读体验</p>
+                    <span class="meta-tag">Reader</span>
+                </a>
+                <a href="/commission.html" class="explore-card">
+                    <span class="emoji-big">✍️</span>
+                    <h3>委托</h3>
+                    <p>创作与定制</p>
+                    <span class="meta-tag">Commission</span>
+                </a>
+                <a href="/gate.html" class="explore-card">
+                    <span class="emoji-big">🚪</span>
+                    <h3>Gate</h3>
+                    <p>入口 · 枢纽</p>
+                    <span class="meta-tag">Hub</span>
+                </a>
             </div>
-        </div>
+        </section>
+
+        <!-- 关于 & 联系 -->
+        <section class="info-section" id="about">
+            <div class="info-block">
+                <h2>关于 · Arseeya</h2>
+                <p>
+                    <span class="brand-tag">准高三</span>
+                    <span class="brand-tag">文科生</span>
+                </p>
+                <p>
+                    以文字编织星穹，用代码构建自然。Arseeya 是创作者，也是泽尔集团的叙事者。
+                    这里存放着关于另一个世界的所有想象。
+                </p>
+                <p style="margin-top: 1rem; font-family: var(--font-serif); font-style: italic; color: var(--color-accent-gold);">
+                    “愿此行，终抵群星。”
+                </p>
+            </div>
+            <div class="info-block" id="contact">
+                <h2>联系 · 泽尔集团</h2>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>个人 · <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a></span>
+                </div>
+                <div class="contact-item">
+                    <span>🏢</span>
+                    <span>集团 · <a href="mailto:zelculture@outlook.com">zelculture@outlook.com</a></span>
+                </div>
+                <p style="margin-top: 1.2rem; font-size: 0.85rem; color: var(--color-stone);">
+                    泽尔文化 · 泽尔电子 · 泽尔通讯
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="quote">“让科技变成自然”</div>
+            <p>© 2026 Arseeya · 泽尔集团 · 虚构世界观</p>
+            <p style="margin-top: 0.4rem; font-size: 0.7rem; opacity: 0.7;">
+                托管于 GitHub · 部署于 Cloudflare
+            </p>
+        </footer>
     </div>
 
-    <!-- 作者页面 (时间到达后展示) -->
-    <div id="author-page" class="page">
-        <div class="author-card">
-            <img class="avatar" src="arseeya_avatar.jpg" alt="Arseeya" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23e94560%22/%3E%3Ctext x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22%3EA%3C/text%3E%3C/svg%3E'">
-            <h1>Arseeya</h1>
-            <div class="badge">📖 准高三 · 文科生</div>
-            <div class="info-section">
-                <div class="info-item">
-                    <div class="info-label">✍️ 作者联系</div>
-                    <div class="info-value">arseeya@outlook.com</div>
-                </div>
-            </div>
-            <div class="company-section">
-                <div class="company-name">🏢 泽尔集团 · Zel Group</div>
-                <div class="company-list">
-                    <span class="company-tag">泽尔文化</span>
-                    <span class="company-tag">泽尔电子</span>
-                    <span class="company-tag">泽尔通讯</span>
-                </div>
-                <div class="info-item" style="margin-top: 0.8rem;">
-                    <div class="info-label">📧 公司联系</div>
-                    <div class="info-value">zelculture@outlook.com</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        (function() {
-            // ======================= 定时切换逻辑 =======================
-            // 目标时间: 2026年6月15日 23:59:59 北京时间 (UTC+8)
-            const TARGET_YEAR = 2026;
-            const TARGET_MONTH = 5;     // 5 = 六月
-            const TARGET_DAY = 15;
-            const TARGET_HOUR_UTC = 15;  // 15点UTC -> 北京时间23:00 ？ 注意23:59需对应UTC 15:59
-            const TARGET_MINUTE = 59;
-            const TARGET_SECOND = 59;
-            const TARGET_TIMESTAMP = Date.UTC(TARGET_YEAR, TARGET_MONTH, TARGET_DAY, TARGET_HOUR_UTC, TARGET_MINUTE, TARGET_SECOND);
-            
-            // 维护开始时间: 2026年6月5日 00:00 北京时间 -> UTC 2026-06-04 16:00:00
-            const MAINT_START_UTC = Date.UTC(2026, 5, 4, 16, 0, 0);
-            const MAINT_END_UTC = TARGET_TIMESTAMP;
-            const TOTAL_DURATION = MAINT_END_UTC - MAINT_START_UTC;
-
-            // DOM 元素 (维护页)
-            const daysSpan = document.getElementById('days');
-            const hoursSpan = document.getElementById('hours');
-            const minutesSpan = document.getElementById('minutes');
-            const secondsSpan = document.getElementById('seconds');
-            const progressFill = document.getElementById('progressFill');
-            const statusMsgSpan = document.getElementById('statusMsg');
-            const progressPercentSpan = document.getElementById('progressPercent');
-            
-            // 两个页面容器
-            const maintenancePage = document.getElementById('maintenance-page');
-            const authorPage = document.getElementById('author-page');
-            
-            // 切换页面函数: 若当前时间 >= 目标时间，显示作者页，否则显示维护页
-            function switchPageBasedOnTime() {
-                const now = Date.now();
-                if (now >= TARGET_TIMESTAMP) {
-                    // 时间到，展示作者页面，隐藏维护页面
-                    if (maintenancePage.style.display !== 'none') {
-                        maintenancePage.style.display = 'none';
-                        authorPage.style.display = 'block';
-                        // 可选: 停止维护页面的倒计时刷新，优化性能
-                        // 但为了保险停止计时器 (后面会清除)
-                    }
-                } else {
-                    if (maintenancePage.style.display !== 'block') {
-                        maintenancePage.style.display = 'block';
-                        authorPage.style.display = 'none';
-                    }
-                }
-            }
-            
-            // 更新维护页面的倒计时与进度条 (只有维护页面可见时才需要频繁更新)
-            let countdownInterval = null;
-            
-            function updateDashboard() {
-                // 如果当前已经是作者页面，不必更新数据，直接返回
-                if (authorPage.style.display === 'block') return;
-                
-                const now = Date.now();
-                let remaining = TARGET_TIMESTAMP - now;
-                const isExpired = remaining <= 0;
-                
-                if (isExpired) {
-                    if (daysSpan) daysSpan.innerText = '00';
-                    if (hoursSpan) hoursSpan.innerText = '00';
-                    if (minutesSpan) minutesSpan.innerText = '00';
-                    if (secondsSpan) secondsSpan.innerText = '00';
-                    if (progressFill) progressFill.style.width = '100%';
-                    if (progressPercentSpan) progressPercentSpan.innerText = '100%';
-                    if (statusMsgSpan) statusMsgSpan.innerHTML = '🎉 站主考试完毕 · 网站即将恢复开放，感谢等待！';
-                    // 时间到了，立刻切换页面
-                    if (now >= TARGET_TIMESTAMP) {
-                        switchPageBasedOnTime();
-                    }
-                    return;
-                }
-                
-                const totalSec = Math.floor(remaining / 1000);
-                const days = Math.floor(totalSec / 86400);
-                const hours = Math.floor((totalSec % 86400) / 3600);
-                const minutes = Math.floor((totalSec % 3600) / 60);
-                const seconds = totalSec % 60;
-                if (daysSpan) daysSpan.innerText = days < 10 ? '0' + days : '' + days;
-                if (hoursSpan) hoursSpan.innerText = hours < 10 ? '0' + hours : '' + hours;
-                if (minutesSpan) minutesSpan.innerText = minutes < 10 ? '0' + minutes : '' + minutes;
-                if (secondsSpan) secondsSpan.innerText = seconds < 10 ? '0' + seconds : '' + seconds;
-                
-                // 进度百分比
-                let percent = 0;
-                if (now <= MAINT_START_UTC) percent = 0;
-                else if (now >= MAINT_END_UTC) percent = 100;
-                else percent = ((now - MAINT_START_UTC) / TOTAL_DURATION) * 100;
-                percent = Math.min(99.8, Math.max(0, percent));
-                if (progressFill) progressFill.style.width = percent + '%';
-                const percentInt = Math.floor(percent);
-                if (progressPercentSpan) progressPercentSpan.innerText = `备考进度 ${percentInt}%`;
-                
-                if (statusMsgSpan) {
-                    if (percentInt < 20) statusMsgSpan.innerHTML = '📖 站主正在专注复习 · 感谢体谅';
-                    else if (percentInt < 45) statusMsgSpan.innerHTML = '✍️ 刷题巩固中，知识就是力量';
-                    else if (percentInt < 70) statusMsgSpan.innerHTML = '☕ 短暂沉淀，为了更好的运维状态';
-                    else if (percentInt < 90) statusMsgSpan.innerHTML = '📚 冲刺阶段，即将归来';
-                    else statusMsgSpan.innerHTML = '✨ 考试结束倒计时，很快恢复访问 ✨';
-                }
-            }
-            
-            // 启动定时器（仅当维护页活跃时有效，但定期检查切换）
-            function startGlobalTimer() {
-                // 先执行一次页面切换初始化
-                switchPageBasedOnTime();
-                // 倒计时刷新
-                updateDashboard();
-                if (countdownInterval) clearInterval(countdownInterval);
-                countdownInterval = setInterval(() => {
-                    // 每次先检查是否需要切换
-                    switchPageBasedOnTime();
-                    // 如果当前处于维护页面，更新数值
-                    if (maintenancePage.style.display === 'block') {
-                        updateDashboard();
-                    }
-                }, 1000);
-            }
-            
-            // =============== 深色模式切换 (只对维护页面有效，但作者页面可共用一个全局样式) ==========
-            const toggleBtn = document.getElementById('themeToggle');
-            if (toggleBtn) {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
-                if (currentTheme === 'dark') document.body.classList.add('dark');
-                else document.body.classList.remove('dark');
-                
-                toggleBtn.addEventListener('click', () => {
-                    if (document.body.classList.contains('dark')) {
-                        document.body.classList.remove('dark');
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        document.body.classList.add('dark');
-                        localStorage.setItem('theme', 'dark');
-                    }
-                });
-            }
-            
-            // =============== 极光背景 (与之前一致) ==============
-            const canvas = document.getElementById('aurora-canvas');
-            let ctx = canvas.getContext('2d');
-            let width, height;
-            let timeFlow = 0;
-            
-            function resizeCanvas() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-            }
-            
-            function drawAurora() {
-                if (!ctx) return;
-                ctx.clearRect(0, 0, width, height);
-                const t = timeFlow * 0.002;
-                const grad1 = ctx.createLinearGradient(Math.sin(t)*70 + width*0.2, Math.cos(t*0.6)*40, width*0.8, height*0.5);
-                grad1.addColorStop(0, 'rgba(100, 80, 220, 0.22)');
-                grad1.addColorStop(0.6, 'rgba(60, 130, 230, 0.18)');
-                grad1.addColorStop(1, 'rgba(180, 100, 150, 0.12)');
-                ctx.fillStyle = grad1;
-                ctx.fillRect(0, 0, width, height);
-                
-                const grad2 = ctx.createRadialGradient(width*0.5 + Math.sin(t*0.4)*60, height*0.3 + Math.cos(t*0.5)*40, 60, width*0.6, height*0.7, 280);
-                grad2.addColorStop(0, 'rgba(245, 158, 11, 0.14)');
-                grad2.addColorStop(0.9, 'rgba(139, 92, 246, 0.08)');
-                ctx.fillStyle = grad2;
-                ctx.fillRect(0, 0, width, height);
-                
-                for (let i=0; i<3; i++) {
-                    const offset = (t + i * 2.2) % (Math.PI*2);
-                    const x = width * (0.3 + 0.4 * Math.sin(offset));
-                    const y = height * (0.5 + 0.25 * Math.cos(offset * 1.2));
-                    const radGrad = ctx.createRadialGradient(x, y, 35, x+30, y-20, 200);
-                    radGrad.addColorStop(0, `rgba(120, 180, 250, 0.12)`);
-                    radGrad.addColorStop(1, `rgba(70, 50, 200, 0.03)`);
-                    ctx.fillStyle = radGrad;
-                    ctx.fillRect(0, 0, width, height);
-                }
-                requestAnimationFrame(() => { timeFlow += 16; drawAurora(); });
-            }
-            
-            window.addEventListener('resize', () => { resizeCanvas(); });
-            resizeCanvas();
-            drawAurora();
-            
-            // 动态标题 (兼顾双页面)
-            function updateTitle() {
-                const now = Date.now();
-                if (now >= TARGET_TIMESTAMP) {
-                    document.title = 'Arseeya · 作者 | 泽尔集团';
-                    return;
-                }
-                const rem = TARGET_TIMESTAMP - now;
-                const days = Math.floor(rem / 86400000);
-                const hrs = Math.floor((rem % 86400000) / 3600000);
-                if (days > 0) document.title = `[备考] ${days}d ${hrs}h 后开放 | arseeya.link`;
-                else if (hrs > 0) document.title = `[备考] ${hrs}h 后恢复 | arseeya.link`;
-                else document.title = `[备考] 即将开放 | arseeya.link`;
-            }
-            setInterval(updateTitle, 2000);
-            updateTitle();
-            
-            // 启动整体控制
-            startGlobalTimer();
-            
-            // 额外确保链接外部跳转安全
-            const gameLink = document.querySelector('.game-recommend a');
-            if (gameLink) gameLink.setAttribute('rel', 'noopener noreferrer');
-        })();
-    </script>
+    <!-- 如果未来需要交互，可在此添加 JS，目前保持纯净 -->
 </body>
 </html>
