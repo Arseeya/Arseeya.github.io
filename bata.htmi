@@ -57,6 +57,10 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
+            position: relative;
+            z-index: 10;
+            background: rgba(11, 11, 12, 0.6);
+            backdrop-filter: blur(8px);
         }
         .navbar .logo {
             font-size: 1.6rem;
@@ -89,10 +93,27 @@
             padding-bottom: 0.2rem;
         }
 
-        /* ===== Hero 区域 ===== */
-        .hero {
-            padding: 5rem 0 4rem;
+        /* ===== Hero 区域 (含Canvas背景) ===== */
+        .hero-wrapper {
+            position: relative;
+            overflow: hidden;
             border-bottom: 1px solid var(--color-border);
+        }
+        #circuitCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero {
+            position: relative;
+            z-index: 2;
+            padding: 5rem 0 4rem;
+            background: transparent;
         }
         .hero h1 {
             font-size: clamp(2.8rem, 8vw, 5rem);
@@ -100,6 +121,7 @@
             letter-spacing: -0.02em;
             line-height: 1.05;
             margin-bottom: 1.2rem;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
         .hero h1 .gold {
             color: var(--color-accent-gold);
@@ -110,6 +132,7 @@
             max-width: 640px;
             font-weight: 300;
             margin-bottom: 2.5rem;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         }
         .hero .hero-meta {
             display: flex;
@@ -123,7 +146,7 @@
             font-weight: 500;
         }
 
-        /* ===== 核心理念 (使命愿景) ===== */
+        /* ===== 其余内容区域 (与之前保持一致) ===== */
         .mission-section {
             padding: 4rem 0;
             border-bottom: 1px solid var(--color-border);
@@ -152,7 +175,6 @@
             line-height: 1.8;
         }
 
-        /* ===== 业务板块 (三大板块) ===== */
         .divisions-section {
             padding: 4rem 0;
             border-bottom: 1px solid var(--color-border);
@@ -212,7 +234,6 @@
             line-height: 1.7;
         }
 
-        /* ===== 数据/荣誉模块 ===== */
         .stats-section {
             padding: 4rem 0;
             border-bottom: 1px solid var(--color-border);
@@ -234,7 +255,6 @@
             margin-top: 0.2rem;
         }
 
-        /* ===== 新闻/动态 (占位) ===== */
         .news-section {
             padding: 4rem 0;
             border-bottom: 1px solid var(--color-border);
@@ -265,7 +285,6 @@
             font-weight: 300;
         }
 
-        /* ===== 页脚 ===== */
         .footer {
             padding: 3rem 0 2.5rem;
             display: grid;
@@ -339,12 +358,12 @@
             .footer { grid-template-columns: 1fr 1fr; }
             .footer-bottom { flex-direction: column; text-align: center; }
             .footer-bottom a { margin: 0 0.5rem; }
+            .hero { padding: 3rem 0; }
+            .hero h1 { font-size: 2.4rem; }
         }
         @media (max-width: 500px) {
             .navbar { flex-direction: column; align-items: flex-start; }
             .nav-links { gap: 1.2rem; flex-wrap: wrap; }
-            .hero { padding: 3rem 0; }
-            .hero h1 { font-size: 2.2rem; }
             .stats-section { grid-template-columns: 1fr; }
             .footer { grid-template-columns: 1fr; }
         }
@@ -364,9 +383,10 @@
         </nav>
     </div>
 
-    <!-- ===== Hero ===== -->
-    <section class="hero">
-        <div class="container">
+    <!-- ===== Hero 区域 (含Canvas动画) ===== -->
+    <div class="hero-wrapper">
+        <canvas id="circuitCanvas"></canvas>
+        <div class="hero container">
             <h1>
                 构建科技<br />
                 <span class="gold">与自然共生</span>的未来
@@ -380,9 +400,9 @@
                 <span>业务覆盖 <strong>12</strong> 个地区</span>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- ===== 使命与愿景 ===== -->
+    <!-- ===== 以下内容保持不变 ===== -->
     <section class="mission-section container" id="mission">
         <div class="item">
             <h3>使命</h3>
@@ -400,7 +420,6 @@
         </div>
     </section>
 
-    <!-- ===== 三大业务板块 ===== -->
     <section class="divisions-section container" id="divisions">
         <div class="section-label">核心业务</div>
         <h2 class="section-title">三大板块 · 协同共生</h2>
@@ -432,7 +451,6 @@
         </div>
     </section>
 
-    <!-- ===== 数据与荣誉 ===== -->
     <section class="stats-section container">
         <div class="stat">
             <h3>12+</h3>
@@ -452,7 +470,6 @@
         </div>
     </section>
 
-    <!-- ===== 新闻动态 ===== -->
     <section class="news-section container" id="news">
         <div class="section-label">最新动态</div>
         <h2 class="section-title">集团资讯</h2>
@@ -475,7 +492,6 @@
         </div>
     </section>
 
-    <!-- ===== 页脚 ===== -->
     <footer>
         <div class="footer container">
             <div class="brand">
@@ -512,5 +528,232 @@
             </span>
         </div>
     </footer>
+
+    <!-- ===== 电路点亮动画脚本 ===== -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('circuitCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let nodes = [];
+            let edges = [];
+            let animationId;
+
+            // 配置参数
+            const NODE_COUNT = 40;
+            const EDGE_DISTANCE = 180;
+            const NODE_SIZE = 2.5;
+            const CONNECTION_WIDTH = 1.2;
+            const PULSE_SPEED = 0.008; // 脉冲移动速度
+
+            // 颜色配置
+            const COLORS = {
+                node: '#c9a87c',
+                edge: 'rgba(201, 168, 124, 0.15)',
+                pulse: 'rgba(201, 168, 124, 0.9)'
+            };
+
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                canvas.width = width;
+                canvas.height = height;
+                // 窗口变化时重新生成节点布局（适配新尺寸）
+                if (nodes.length > 0) {
+                    generateNodes();
+                }
+            }
+
+            // 生成节点（均匀分布 + 随机偏移）
+            function generateNodes() {
+                nodes = [];
+                const cols = 8;
+                const rows = 6;
+                const cellW = width / (cols + 1);
+                const cellH = height / (rows + 1);
+                const offsetX = cellW * 0.3;
+                const offsetY = cellH * 0.3;
+
+                for (let i = 0; i < NODE_COUNT; i++) {
+                    // 使用网格布局保证覆盖均匀，再加入随机偏移
+                    const col = i % cols;
+                    const row = Math.floor(i / cols) % rows;
+                    const x = (col + 1) * cellW + (Math.random() - 0.5) * offsetX * 2;
+                    const y = (row + 1) * cellH + (Math.random() - 0.5) * offsetY * 2;
+                    // 随机相位，用于脉冲动画
+                    const phase = Math.random() * Math.PI * 2;
+                    nodes.push({
+                        x: Math.min(Math.max(x, 20), width - 20),
+                        y: Math.min(Math.max(y, 20), height - 20),
+                        phase: phase,
+                        // 每个节点有一个“点亮”偏移时间
+                        pulseOffset: Math.random() * 100
+                    });
+                }
+                // 确保节点不重叠（简单处理，如果太近则微调）
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 30) {
+                            // 将j推开
+                            const angle = Math.atan2(dy, dx);
+                            const push = 30 - dist;
+                            nodes[j].x += Math.cos(angle) * push;
+                            nodes[j].y += Math.sin(angle) * push;
+                            // 限制边界
+                            nodes[j].x = Math.min(Math.max(nodes[j].x, 20), width - 20);
+                            nodes[j].y = Math.min(Math.max(nodes[j].y, 20), height - 20);
+                        }
+                    }
+                }
+            }
+
+            // 计算边（基于距离）
+            function updateEdges() {
+                edges = [];
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < EDGE_DISTANCE) {
+                            edges.push({
+                                i: i,
+                                j: j,
+                                dist: dist,
+                                // 每一条边也有自己的脉冲延迟
+                                pulseDelay: Math.random() * 200
+                            });
+                        }
+                    }
+                }
+            }
+
+            // 动画绘制
+            function draw(time) {
+                ctx.clearRect(0, 0, width, height);
+
+                // 1. 绘制边 (暗线)
+                for (const edge of edges) {
+                    const n1 = nodes[edge.i];
+                    const n2 = nodes[edge.j];
+                    // 基础透明度随距离变化
+                    const alpha = 0.08 + 0.12 * (1 - edge.dist / EDGE_DISTANCE);
+                    ctx.beginPath();
+                    ctx.moveTo(n1.x, n1.y);
+                    ctx.lineTo(n2.x, n2.y);
+                    ctx.strokeStyle = `rgba(201, 168, 124, ${alpha})`;
+                    ctx.lineWidth = CONNECTION_WIDTH;
+                    ctx.stroke();
+                }
+
+                // 2. 绘制脉冲 (点亮效果)
+                for (const edge of edges) {
+                    const n1 = nodes[edge.i];
+                    const n2 = nodes[edge.j];
+                    // 使用时间 + 边延迟计算脉冲位置
+                    const t = (time / 1000 * PULSE_SPEED + edge.pulseDelay / 1000) % 1;
+                    // 脉冲从两端向中间移动 (双向)
+                    // 正向脉冲
+                    const x1 = n1.x + (n2.x - n1.x) * t;
+                    const y1 = n1.y + (n2.y - n1.y) * t;
+                    // 反向脉冲
+                    const x2 = n2.x + (n1.x - n2.x) * t;
+                    const y2 = n2.y + (n1.y - n2.y) * t;
+
+                    // 绘制正向脉冲 (亮金色)
+                    const gradient1 = ctx.createRadialGradient(x1, y1, 0, x1, y1, 8);
+                    gradient1.addColorStop(0, 'rgba(201, 168, 124, 0.9)');
+                    gradient1.addColorStop(0.4, 'rgba(201, 168, 124, 0.5)');
+                    gradient1.addColorStop(1, 'rgba(201, 168, 124, 0)');
+                    ctx.beginPath();
+                    ctx.arc(x1, y1, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient1;
+                    ctx.fill();
+
+                    // 绘制反向脉冲 (稍暗，产生交错感)
+                    const gradient2 = ctx.createRadialGradient(x2, y2, 0, x2, y2, 6);
+                    gradient2.addColorStop(0, 'rgba(201, 168, 124, 0.6)');
+                    gradient2.addColorStop(0.4, 'rgba(201, 168, 124, 0.3)');
+                    gradient2.addColorStop(1, 'rgba(201, 168, 124, 0)');
+                    ctx.beginPath();
+                    ctx.arc(x2, y2, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient2;
+                    ctx.fill();
+                }
+
+                // 3. 绘制节点 (核心)
+                for (const node of nodes) {
+                    // 节点微光
+                    const glow = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 12);
+                    glow.addColorStop(0, 'rgba(201, 168, 124, 0.3)');
+                    glow.addColorStop(1, 'rgba(201, 168, 124, 0)');
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, 12, 0, Math.PI * 2);
+                    ctx.fillStyle = glow;
+                    ctx.fill();
+
+                    // 节点核心
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, NODE_SIZE, 0, Math.PI * 2);
+                    ctx.fillStyle = COLORS.node;
+                    ctx.fill();
+
+                    // 节点闪烁 (微小呼吸)
+                    const breathe = 0.6 + 0.4 * Math.sin(time / 2000 + node.phase);
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, NODE_SIZE * 1.6, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(201, 168, 124, ${0.08 * breathe})`;
+                    ctx.fill();
+                }
+
+                // 4. 绘制一些“游离”的光点 (增加细节)
+                for (let i = 0; i < 5; i++) {
+                    const offset = (time / 1000 * 0.02 + i * 0.3) % 1;
+                    const idx = Math.floor(offset * edges.length);
+                    if (edges[idx]) {
+                        const edge = edges[idx];
+                        const n1 = nodes[edge.i];
+                        const n2 = nodes[edge.j];
+                        const pos = (offset * edges.length) % 1;
+                        const x = n1.x + (n2.x - n1.x) * pos;
+                        const y = n1.y + (n2.y - n1.y) * pos;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 215, 170, ${0.3 + 0.3 * Math.sin(time / 500 + i)})`;
+                        ctx.fill();
+                    }
+                }
+
+                animationId = requestAnimationFrame(draw);
+            }
+
+            // ===== 初始化 =====
+            function init() {
+                resizeCanvas();
+                generateNodes();
+                updateEdges();
+                // 窗口变化时重新计算
+                window.addEventListener('resize', () => {
+                    resizeCanvas();
+                    generateNodes();
+                    updateEdges();
+                });
+                // 启动动画
+                if (animationId) cancelAnimationFrame(animationId);
+                draw(0);
+            }
+
+            // 等待DOM完全加载后启动
+            if (document.readyState === 'complete') {
+                init();
+            } else {
+                window.addEventListener('load', init);
+            }
+        })();
+    </script>
 </body>
 </html>
