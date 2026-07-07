@@ -75,22 +75,6 @@
             color: var(--color-stone);
             text-transform: uppercase;
         }
-        /* ===== 修改点：让“泽尔集团”变为可点击链接 ===== */
-        .logo .sub-link {
-            font-family: var(--font-sans);
-            font-size: 0.7rem;
-            font-weight: 400;
-            letter-spacing: 0.15em;
-            color: var(--color-stone);
-            text-transform: uppercase;
-            text-decoration: none;
-            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .logo .sub-link:hover {
-            color: var(--color-accent-gold);
-            border-color: var(--color-accent-gold);
-        }
 
         .nav {
             display: flex;
@@ -271,6 +255,17 @@
         .contact-item a:hover {
             border-color: var(--color-accent-gold);
         }
+        /* ===== 修改点：联系标题中的“泽尔集团”变为可点击链接 ===== */
+        .info-block h2 .group-link {
+            color: var(--color-charcoal);
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .info-block h2 .group-link:hover {
+            color: var(--color-accent-gold);
+            border-color: var(--color-accent-gold);
+        }
 
         /* ===== Footer ===== */
         .footer {
@@ -329,18 +324,16 @@
 </head>
 <body>
     <div class="site-wrapper">
-        <!-- 头部 -->
+        <!-- 头部 (保持原版，泽尔集团为纯文本) -->
         <header class="header">
             <a href="/" class="logo">
                 Arseeya
-                <!-- 修改点：将 ".sub" 替换为可点击的链接 ".sub-link" -->
-                <a href="/Zell.html" class="sub-link">· 泽尔集团</a>
+                <span class="sub">· 泽尔集团</span>
             </a>
             <nav class="nav">
                 <a href="#explore">探索</a>
                 <a href="#about">关于</a>
                 <a href="#contact">联系</a>
-                <!-- 你可以在这里添加更多链接，如 /novels/ -->
             </nav>
         </header>
 
@@ -419,7 +412,8 @@
                 </p>
             </div>
             <div class="info-block" id="contact">
-                <h2>联系 · 泽尔集团</h2>
+                <!-- 修改点：将“泽尔集团”变为可点击链接 -->
+                <h2>联系 · <a href="/Zell.html" class="group-link">泽尔集团</a></h2>
                 <div class="contact-item">
                     <span>📧</span>
                     <span>个人 · <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a></span>
