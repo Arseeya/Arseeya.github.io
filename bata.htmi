@@ -6,7 +6,7 @@
     <title>泽尔集团 · Zell Group</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
         /* ===== 全局重置 ===== */
         * {
@@ -16,270 +16,315 @@
         }
 
         :root {
-            --color-bg: #0b0b0c;
-            --color-bg-secondary: #141416;
-            --color-text-primary: #f0efed;
-            --color-text-secondary: #a8a5a0;
-            --color-text-muted: #6b6863;
-            --color-accent-gold: #c9a87c;
-            --color-accent-gold-dim: rgba(201, 168, 124, 0.15);
-            --color-border: #2a2828;
+            --color-black: #0a0a0a;
+            --color-red: #c42e2e;
+            --color-red-dark: #8a1f1f;
+            --color-white: #f0efed;
+            --color-gray: #8a8a8a;
+            --color-light-gray: #d4d4d4;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            background-color: var(--color-bg);
-            color: var(--color-text-primary);
+            background-color: var(--color-black);
+            color: var(--color-white);
             font-family: var(--font-sans);
             font-weight: 400;
-            line-height: 1.6;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         /* ===== 通用容器 ===== */
         .container {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2.5rem;
         }
 
-        /* ===== 顶部导航 ===== */
+        /* ===== 顶部导航 (建构主义风格) ===== */
         .navbar {
             padding: 1.2rem 0;
-            border-bottom: 1px solid var(--color-border);
+            border-bottom: 2px solid var(--color-red);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
             position: relative;
-            z-index: 10;
-            background: rgba(11, 11, 12, 0.6);
-            backdrop-filter: blur(8px);
+        }
+        .navbar::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--color-red);
         }
         .navbar .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: var(--color-text-primary);
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: var(--color-white);
             text-decoration: none;
+            text-transform: uppercase;
         }
-        .navbar .logo .gold {
-            color: var(--color-accent-gold);
+        .navbar .logo .red {
+            color: var(--color-red);
         }
         .nav-links {
             display: flex;
-            gap: 2.2rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
+            gap: 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
         .nav-links a {
-            color: var(--color-text-secondary);
+            color: var(--color-light-gray);
             text-decoration: none;
             transition: color 0.2s;
+            position: relative;
         }
         .nav-links a:hover {
-            color: var(--color-text-primary);
+            color: var(--color-white);
         }
-        .nav-links .active {
-            color: var(--color-text-primary);
-            border-bottom: 2px solid var(--color-accent-gold);
-            padding-bottom: 0.2rem;
+        .nav-links a.active {
+            color: var(--color-red);
         }
-
-        /* ===== Hero 区域 (分栏布局) ===== */
-        .hero-wrapper {
-            position: relative;
-            border-bottom: 1px solid var(--color-border);
-            background: var(--color-bg);
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
+        .nav-links a.active::before {
+            content: '◆ ';
+            font-size: 0.5rem;
+            color: var(--color-red);
         }
 
+        /* ===== Hero 区域 (激进构图) ===== */
         .hero {
+            padding: 4rem 0 3rem;
+            border-bottom: 2px solid var(--color-red);
+            position: relative;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 3rem;
-            align-items: center;
-            padding: 3rem 0;
-            width: 100%;
-            position: relative;
-            z-index: 2;
+            align-items: start;
         }
-
-        /* 文字区域 */
-        .hero-text {
-            z-index: 3;
+        /* 红色斜角装饰块 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: var(--color-red);
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+            opacity: 0.15;
+            pointer-events: none;
         }
-        .hero-text h1 {
-            font-size: clamp(2.8rem, 5vw, 4.5rem);
-            font-weight: 600;
+        .hero-left h1 {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 0.95;
             letter-spacing: -0.02em;
-            line-height: 1.05;
-            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
         }
-        .hero-text h1 .gold {
-            color: var(--color-accent-gold);
+        .hero-left h1 .red {
+            color: var(--color-red);
         }
-        .hero-text p {
-            font-size: 1.1rem;
-            color: var(--color-text-secondary);
-            max-width: 480px;
+        .hero-left .subhead {
+            font-size: 1rem;
+            color: var(--color-gray);
             font-weight: 300;
-            margin-bottom: 2rem;
+            max-width: 420px;
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            border-left: 3px solid var(--color-red);
+            padding-left: 1.2rem;
         }
-        .hero-text .hero-meta {
-            display: flex;
-            gap: 2.5rem;
-            flex-wrap: wrap;
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
+        .hero-right {
+            text-align: right;
+            align-self: end;
+            padding-bottom: 0.5rem;
         }
-        .hero-text .hero-meta span strong {
-            color: var(--color-text-secondary);
-            font-weight: 500;
+        .hero-right .year {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--color-red);
+            line-height: 1;
+            letter-spacing: -0.03em;
         }
-
-        /* 画布容器 (独立区域) */
-        .hero-canvas-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            min-height: 340px;
-            background: transparent;
-            z-index: 1;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(201, 168, 124, 0.06);
+        .hero-right .meta {
+            font-size: 0.8rem;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.2rem;
         }
-
-        #circuitCanvas {
+        .hero-right .meta span {
             display: block;
-            width: 100%;
-            height: 100%;
-            min-height: 340px;
-            background: transparent;
+            color: var(--color-light-gray);
+            font-weight: 600;
         }
 
-        /* ===== 其他内容区域 ===== */
+        /* ===== 建构主义装饰线 ===== */
+        .construct-line {
+            width: 100%;
+            height: 2px;
+            background: var(--color-red);
+            margin: 0;
+            position: relative;
+        }
+        .construct-line::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 20px;
+            height: 10px;
+            background: var(--color-black);
+            border: 2px solid var(--color-red);
+            border-top: none;
+        }
+
+        /* ===== 使命愿景 (双栏) ===== */
         .mission-section {
-            padding: 4rem 0;
-            border-bottom: 1px solid var(--color-border);
+            padding: 3.5rem 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
+            border-bottom: 1px solid rgba(196, 46, 46, 0.3);
         }
-        .mission-section .item h3 {
-            font-size: 0.75rem;
+        .mission-item .label {
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            color: var(--color-accent-gold);
+            color: var(--color-red);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .mission-item h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.2;
             margin-bottom: 0.8rem;
-            font-weight: 600;
+            text-transform: uppercase;
         }
-        .mission-section .item h2 {
-            font-size: 1.6rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-        .mission-section .item p {
-            color: var(--color-text-secondary);
+        .mission-item p {
+            color: var(--color-gray);
             font-size: 0.95rem;
             font-weight: 300;
             line-height: 1.8;
         }
 
+        /* ===== 三大板块 (网格) ===== */
         .divisions-section {
-            padding: 4rem 0;
-            border-bottom: 1px solid var(--color-border);
+            padding: 3.5rem 0;
+            border-bottom: 1px solid rgba(196, 46, 46, 0.3);
         }
-        .section-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--color-accent-gold);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 500;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--color-red);
+            padding-bottom: 0.8rem;
+        }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .section-header .number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-red);
+            line-height: 1;
+            opacity: 0.4;
         }
         .divisions-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
         }
         .division-card {
-            background: var(--color-bg-secondary);
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--color-border);
+            border: 1px solid rgba(196, 46, 46, 0.3);
+            padding: 2rem 1.5rem;
+            position: relative;
             transition: all 0.3s ease;
+            background: rgba(196, 46, 46, 0.02);
         }
         .division-card:hover {
-            border-color: var(--color-accent-gold);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px -16px rgba(0, 0, 0, 0.5);
+            border-color: var(--color-red);
+            background: rgba(196, 46, 46, 0.06);
+        }
+        .division-card .number-mark {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.8rem;
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(196, 46, 46, 0.08);
+            line-height: 1;
         }
         .division-card .icon {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             display: block;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-red);
         }
         .division-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.2rem;
         }
         .division-card .sub {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-accent-gold);
+            letter-spacing: 0.12em;
+            color: var(--color-gray);
             display: block;
             margin-bottom: 0.8rem;
         }
         .division-card p {
-            color: var(--color-text-secondary);
-            font-size: 0.9rem;
+            color: var(--color-gray);
+            font-size: 0.85rem;
             font-weight: 300;
             line-height: 1.7;
         }
 
+        /* ===== 数据统计 (粗体数字) ===== */
         .stats-section {
-            padding: 4rem 0;
-            border-bottom: 1px solid var(--color-border);
+            padding: 3.5rem 0;
+            border-bottom: 1px solid rgba(196, 46, 46, 0.3);
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
             text-align: center;
         }
-        .stats-section .stat h3 {
-            font-size: 2.8rem;
-            font-weight: 600;
-            color: var(--color-accent-gold);
+        .stat-item .number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--color-red);
             letter-spacing: -0.02em;
+            line-height: 1;
         }
-        .stats-section .stat p {
-            color: var(--color-text-muted);
-            font-size: 0.85rem;
-            font-weight: 400;
-            margin-top: 0.2rem;
+        .stat-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-gray);
+            margin-top: 0.3rem;
         }
 
+        /* ===== 新闻动态 ===== */
         .news-section {
-            padding: 4rem 0;
-            border-bottom: 1px solid var(--color-border);
+            padding: 3.5rem 0;
+            border-bottom: 1px solid rgba(196, 46, 46, 0.3);
         }
         .news-grid {
             display: grid;
@@ -287,69 +332,74 @@
             gap: 2rem;
         }
         .news-item {
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--color-border);
+            padding: 1.2rem 0;
+            border-top: 1px solid rgba(196, 46, 46, 0.2);
         }
         .news-item .date {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
+            font-size: 0.7rem;
+            color: var(--color-red);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+            font-weight: 600;
         }
         .news-item h4 {
-            font-weight: 500;
+            font-weight: 700;
             font-size: 1rem;
-            margin: 0.4rem 0;
+            margin: 0.3rem 0;
+            text-transform: uppercase;
         }
         .news-item p {
-            color: var(--color-text-secondary);
+            color: var(--color-gray);
             font-size: 0.85rem;
             font-weight: 300;
         }
 
+        /* ===== 页脚 ===== */
         .footer {
-            padding: 3rem 0 2.5rem;
+            padding: 3rem 0 2rem;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 2rem;
-            border-bottom: 1px solid var(--color-border);
         }
-        .footer .brand h3 {
+        .footer-brand h3 {
             font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
-        .footer .brand .gold {
-            color: var(--color-accent-gold);
+        .footer-brand h3 .red {
+            color: var(--color-red);
         }
-        .footer .brand p {
-            color: var(--color-text-muted);
-            font-size: 0.85rem;
+        .footer-brand p {
+            color: var(--color-gray);
+            font-size: 0.8rem;
             font-weight: 300;
             max-width: 260px;
+            margin-top: 0.3rem;
         }
-        .footer .col h4 {
-            font-size: 0.75rem;
+        .footer-col h4 {
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--color-text-muted);
+            color: var(--color-red);
+            font-weight: 700;
             margin-bottom: 0.8rem;
         }
-        .footer .col a {
+        .footer-col a {
             display: block;
-            color: var(--color-text-secondary);
+            color: var(--color-gray);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 300;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.3rem;
             transition: color 0.2s;
         }
-        .footer .col a:hover {
-            color: var(--color-text-primary);
+        .footer-col a:hover {
+            color: var(--color-white);
         }
 
         .footer-bottom {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 1.5rem 2.5rem 2rem;
             display: flex;
@@ -357,65 +407,40 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
+            font-size: 0.7rem;
+            color: var(--color-gray);
+            border-top: 1px solid rgba(196, 46, 46, 0.2);
         }
         .footer-bottom a {
-            color: var(--color-text-muted);
+            color: var(--color-gray);
             text-decoration: none;
             margin-left: 1.5rem;
             transition: color 0.2s;
         }
         .footer-bottom a:hover {
-            color: var(--color-text-secondary);
+            color: var(--color-white);
         }
 
         /* ===== 响应式 ===== */
         @media (max-width: 900px) {
             .container { padding: 0 1.5rem; }
+            .hero { grid-template-columns: 1fr; gap: 1.5rem; }
+            .hero-right { text-align: left; align-self: start; }
+            .hero-right .year { font-size: 3.5rem; }
             .mission-section { grid-template-columns: 1fr; gap: 2rem; }
             .divisions-grid { grid-template-columns: 1fr; }
             .stats-section { grid-template-columns: 1fr 1fr; }
             .news-grid { grid-template-columns: 1fr; }
             .footer { grid-template-columns: 1fr 1fr; }
-            .footer-bottom { flex-direction: column; text-align: center; }
-            .footer-bottom a { margin: 0 0.5rem; }
         }
-
-        @media (max-width: 800px) {
-            .hero {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 2.5rem 0;
-            }
-            .hero-text h1 {
-                font-size: clamp(2.4rem, 8vw, 3.2rem);
-            }
-            .hero-text p {
-                max-width: 100%;
-                font-size: 1rem;
-            }
-            .hero-canvas-wrapper {
-                min-height: 240px;
-                order: 2;
-            }
-            .hero-text {
-                order: 1;
-            }
-            .hero-wrapper {
-                min-height: auto;
-                padding: 1rem 0;
-            }
-        }
-
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
             .navbar { flex-direction: column; align-items: flex-start; }
             .nav-links { gap: 1.2rem; flex-wrap: wrap; }
             .stats-section { grid-template-columns: 1fr; }
             .footer { grid-template-columns: 1fr; }
-            .hero-canvas-wrapper {
-                min-height: 180px;
-            }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-bottom a { margin: 0 0.5rem; }
+            .hero-left h1 { font-size: 2.8rem; }
         }
     </style>
 </head>
@@ -423,7 +448,7 @@
     <!-- ===== 导航栏 ===== -->
     <div class="container">
         <nav class="navbar">
-            <a href="/Zell.html" class="logo">泽尔<span class="gold">·</span>集团</a>
+            <a href="/Zell.html" class="logo">泽尔<span class="red">·</span>集团</a>
             <div class="nav-links">
                 <a href="#mission" class="active">理念</a>
                 <a href="#divisions">业务</a>
@@ -433,150 +458,162 @@
         </nav>
     </div>
 
-    <!-- ===== Hero 区域 (分栏布局) ===== -->
-    <div class="hero-wrapper">
-        <div class="hero container">
-            <!-- 左/上：文字内容 -->
-            <div class="hero-text">
+    <!-- ===== Hero ===== -->
+    <div class="container">
+        <section class="hero">
+            <div class="hero-left">
                 <h1>
-                    构建科技<br />
-                    <span class="gold">与自然共生</span>的未来
+                    构建<br />
+                    <span class="red">科技</span>与<br />
+                    自然共生
                 </h1>
-                <p>
-                    泽尔集团是一家以人文精神驱动的科技企业。我们相信，真正的创新源于对自然法则的深刻理解与敬畏。
-                </p>
-                <div class="hero-meta">
-                    <span>成立于 <strong>2024</strong></span>
-                    <span>总部 · <strong>中国 · 上海</strong></span>
-                    <span>业务覆盖 <strong>12</strong> 个地区</span>
+                <div class="subhead">
+                    泽尔集团 · 以人文精神驱动的科技企业。<br />
+                    创新，源于对自然法则的深刻理解。
                 </div>
             </div>
-            <!-- 右/下：独立画布容器 -->
-            <div class="hero-canvas-wrapper">
-                <canvas id="circuitCanvas"></canvas>
+            <div class="hero-right">
+                <div class="year">2024</div>
+                <div class="meta">
+                    成立于 <span>上海 · 中国</span>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 
+    <!-- ===== 建构主义装饰线 ===== -->
+    <div class="construct-line"></div>
+
     <!-- ===== 使命与愿景 ===== -->
-    <section class="mission-section container" id="mission">
-        <div class="item">
-            <h3>使命</h3>
-            <h2>让科技回归服务的本质</h2>
-            <p>
-                我们致力于将尖端技术融入人类生活的自然脉络中，创造有温度、可持续、尊重个体尊严的产品与解决方案。
-            </p>
-        </div>
-        <div class="item">
-            <h3>愿景</h3>
-            <h2>成为数字时代的自然主义者</h2>
-            <p>
-                在效率与诗意之间寻找平衡，构建一个技术与人文和谐共生的未来生态。这不仅是商业目标，更是我们的哲学承诺。
-            </p>
-        </div>
-    </section>
+    <div class="container">
+        <section class="mission-section" id="mission">
+            <div class="mission-item">
+                <span class="label">◆ 使命</span>
+                <h2>科技回归<br />服务本质</h2>
+                <p>
+                    将尖端技术融入人类生活的自然脉络中，创造有温度、可持续、尊重个体尊严的产品与解决方案。
+                </p>
+            </div>
+            <div class="mission-item">
+                <span class="label">◆ 愿景</span>
+                <h2>数字时代的<br />自然主义者</h2>
+                <p>
+                    在效率与诗意之间寻找平衡，构建技术与人文和谐共生的未来生态。这是我们的哲学承诺。
+                </p>
+            </div>
+        </section>
+    </div>
 
     <!-- ===== 三大业务板块 ===== -->
-    <section class="divisions-section container" id="divisions">
-        <div class="section-label">核心业务</div>
-        <h2 class="section-title">三大板块 · 协同共生</h2>
-        <div class="divisions-grid">
-            <div class="division-card">
-                <span class="icon">📜</span>
-                <h3>泽尔文化</h3>
-                <span class="sub">Zell Culture</span>
-                <p>
-                    以叙事为纽带，构建跨媒体的内容生态。从世界观架构到沉浸式体验，让文化成为连接心灵的桥梁。
-                </p>
+    <div class="container">
+        <section class="divisions-section" id="divisions">
+            <div class="section-header">
+                <h2>核心业务</h2>
+                <span class="number">03</span>
             </div>
-            <div class="division-card">
-                <span class="icon">⚡</span>
-                <h3>泽尔电子</h3>
-                <span class="sub">Zell Electronics</span>
-                <p>
-                    探索人机共生的新边界。以极简设计、直觉交互与可持续材料，重新定义消费电子产品的价值。
-                </p>
+            <div class="divisions-grid">
+                <div class="division-card">
+                    <span class="number-mark">01</span>
+                    <span class="icon">📜</span>
+                    <h3>泽尔文化</h3>
+                    <span class="sub">Zell Culture</span>
+                    <p>以叙事为纽带，构建跨媒体内容生态。从世界观到沉浸体验，让文化连接心灵。</p>
+                </div>
+                <div class="division-card">
+                    <span class="number-mark">02</span>
+                    <span class="icon">⚡</span>
+                    <h3>泽尔电子</h3>
+                    <span class="sub">Zell Electronics</span>
+                    <p>探索人机共生新边界。极简设计、直觉交互、可持续材料，重新定义电子产品价值。</p>
+                </div>
+                <div class="division-card">
+                    <span class="number-mark">03</span>
+                    <span class="icon">🌐</span>
+                    <h3>泽尔通讯</h3>
+                    <span class="sub">Zell Communications</span>
+                    <p>构建透明、平等、去中心化的连接网络。让信息流动如自然生态循环，自由而有序。</p>
+                </div>
             </div>
-            <div class="division-card">
-                <span class="icon">🌐</span>
-                <h3>泽尔通讯</h3>
-                <span class="sub">Zell Communications</span>
-                <p>
-                    构建透明、平等、去中心化的连接网络。让信息流动如自然界的生态循环，自由而有序。
-                </p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <!-- ===== 数据与荣誉 ===== -->
-    <section class="stats-section container">
-        <div class="stat">
-            <h3>12+</h3>
-            <p>业务覆盖地区</p>
-        </div>
-        <div class="stat">
-            <h3>200+</h3>
-            <p>合作机构</p>
-        </div>
-        <div class="stat">
-            <h3>4.8★</h3>
-            <p>用户满意度</p>
-        </div>
-        <div class="stat">
-            <h3>100%</h3>
-            <p>碳中和目标</p>
-        </div>
-    </section>
+    <!-- ===== 数据统计 ===== -->
+    <div class="container">
+        <section class="stats-section">
+            <div class="stat-item">
+                <div class="number">12+</div>
+                <div class="label">业务覆盖地区</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">200+</div>
+                <div class="label">合作机构</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">4.8★</div>
+                <div class="label">用户满意度</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">100%</div>
+                <div class="label">碳中和目标</div>
+            </div>
+        </section>
+    </div>
 
     <!-- ===== 新闻动态 ===== -->
-    <section class="news-section container" id="news">
-        <div class="section-label">最新动态</div>
-        <h2 class="section-title">集团资讯</h2>
-        <div class="news-grid">
-            <div class="news-item">
-                <div class="date">2026.07.01</div>
-                <h4>泽尔文化启动“星穹叙事”创作者计划</h4>
-                <p>面向全球征集世界观设定与故事，构建开放的内容共创生态。</p>
+    <div class="container">
+        <section class="news-section" id="news">
+            <div class="section-header">
+                <h2>最新动态</h2>
+                <span class="number">03</span>
             </div>
-            <div class="news-item">
-                <div class="date">2026.06.20</div>
-                <h4>泽尔电子发布首款概念产品“Eco-1”</h4>
-                <p>以可回收材料与模块化设计，探索电子产品的可持续未来。</p>
+            <div class="news-grid">
+                <div class="news-item">
+                    <div class="date">2026.07.01</div>
+                    <h4>星穹叙事创作者计划</h4>
+                    <p>面向全球征集世界观设定与故事，构建开放的内容共创生态。</p>
+                </div>
+                <div class="news-item">
+                    <div class="date">2026.06.20</div>
+                    <h4>概念产品 Eco-1 发布</h4>
+                    <p>以可回收材料与模块化设计，探索电子产品的可持续未来。</p>
+                </div>
+                <div class="news-item">
+                    <div class="date">2026.06.05</div>
+                    <h4>去中心化通讯协议达成</h4>
+                    <p>推动构建更开放、安全的下一代信息网络基础设施。</p>
+                </div>
             </div>
-            <div class="news-item">
-                <div class="date">2026.06.05</div>
-                <h4>泽尔通讯与多家机构达成去中心化协议</h4>
-                <p>推动构建更开放、安全的下一代信息网络基础设施。</p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- ===== 页脚 ===== -->
     <footer>
-        <div class="footer container">
-            <div class="brand">
-                <h3>泽尔<span class="gold">·</span>集团</h3>
-                <p>以自然之心，行科技之道。</p>
-                <p style="margin-top: 0.8rem; font-size: 0.8rem; color: #4a4742;">
-                    © 2026 Zell Group. All rights reserved.
-                </p>
-            </div>
-            <div class="col">
-                <h4>业务</h4>
-                <a href="#">泽尔文化</a>
-                <a href="#">泽尔电子</a>
-                <a href="#">泽尔通讯</a>
-            </div>
-            <div class="col">
-                <h4>关于</h4>
-                <a href="#">理念</a>
-                <a href="#">团队</a>
-                <a href="#">合作</a>
-            </div>
-            <div class="col">
-                <h4>联系</h4>
-                <a href="mailto:zelculture@outlook.com">zelculture@outlook.com</a>
-                <a href="/gate.html">Gate 枢纽</a>
+        <div class="container">
+            <div class="footer">
+                <div class="footer-brand">
+                    <h3>泽尔<span class="red">·</span>集团</h3>
+                    <p>以自然之心，行科技之道。</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.7rem; color: #555;">
+                        © 2026 Zell Group. All rights reserved.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>业务</h4>
+                    <a href="#">泽尔文化</a>
+                    <a href="#">泽尔电子</a>
+                    <a href="#">泽尔通讯</a>
+                </div>
+                <div class="footer-col">
+                    <h4>关于</h4>
+                    <a href="#">理念</a>
+                    <a href="#">团队</a>
+                    <a href="#">合作</a>
+                </div>
+                <div class="footer-col">
+                    <h4>联系</h4>
+                    <a href="mailto:zelculture@outlook.com">zelculture@outlook.com</a>
+                    <a href="/gate.html">Gate 枢纽</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -588,208 +625,5 @@
             </span>
         </div>
     </footer>
-
-    <!-- ===== 电路点亮动画脚本 ===== -->
-    <script>
-        (function() {
-            const canvas = document.getElementById('circuitCanvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let nodes = [];
-            let edges = [];
-            let animationId;
-
-            // 配置参数
-            const NODE_COUNT = 50;
-            const EDGE_DISTANCE = 160;
-            const NODE_SIZE = 2.5;
-            const CONNECTION_WIDTH = 1.2;
-            const PULSE_SPEED = 0.008;
-
-            const COLORS = {
-                node: '#c9a87c',
-                edge: 'rgba(201, 168, 124, 0.15)',
-                pulse: 'rgba(201, 168, 124, 0.9)'
-            };
-
-            function resizeCanvas() {
-                const container = canvas.parentElement;
-                const rect = container.getBoundingClientRect();
-                width = rect.width || 400;
-                height = rect.height || 340;
-                canvas.width = width;
-                canvas.height = height;
-                if (nodes.length > 0) {
-                    generateNodes();
-                }
-            }
-
-            function generateNodes() {
-                nodes = [];
-                const cols = 10;
-                const rows = 8;
-                const cellW = width / (cols + 1);
-                const cellH = height / (rows + 1);
-                const offsetX = cellW * 0.3;
-                const offsetY = cellH * 0.3;
-
-                for (let i = 0; i < NODE_COUNT; i++) {
-                    const col = i % cols;
-                    const row = Math.floor(i / cols) % rows;
-                    const x = (col + 1) * cellW + (Math.random() - 0.5) * offsetX * 2;
-                    const y = (row + 1) * cellH + (Math.random() - 0.5) * offsetY * 2;
-                    const phase = Math.random() * Math.PI * 2;
-                    nodes.push({
-                        x: Math.min(Math.max(x, 20), width - 20),
-                        y: Math.min(Math.max(y, 20), height - 20),
-                        phase: phase,
-                        pulseOffset: Math.random() * 100
-                    });
-                }
-                // 防重叠
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 30) {
-                            const angle = Math.atan2(dy, dx);
-                            const push = 30 - dist;
-                            nodes[j].x += Math.cos(angle) * push;
-                            nodes[j].y += Math.sin(angle) * push;
-                            nodes[j].x = Math.min(Math.max(nodes[j].x, 20), width - 20);
-                            nodes[j].y = Math.min(Math.max(nodes[j].y, 20), height - 20);
-                        }
-                    }
-                }
-                updateEdges();
-            }
-
-            function updateEdges() {
-                edges = [];
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < EDGE_DISTANCE) {
-                            edges.push({
-                                i: i,
-                                j: j,
-                                dist: dist,
-                                pulseDelay: Math.random() * 200
-                            });
-                        }
-                    }
-                }
-            }
-
-            function draw(time) {
-                ctx.clearRect(0, 0, width, height);
-
-                // 1. 绘制边 (暗线)
-                for (const edge of edges) {
-                    const n1 = nodes[edge.i];
-                    const n2 = nodes[edge.j];
-                    const alpha = 0.08 + 0.12 * (1 - edge.dist / EDGE_DISTANCE);
-                    ctx.beginPath();
-                    ctx.moveTo(n1.x, n1.y);
-                    ctx.lineTo(n2.x, n2.y);
-                    ctx.strokeStyle = `rgba(201, 168, 124, ${alpha})`;
-                    ctx.lineWidth = CONNECTION_WIDTH;
-                    ctx.stroke();
-                }
-
-                // 2. 绘制脉冲 (点亮效果)
-                for (const edge of edges) {
-                    const n1 = nodes[edge.i];
-                    const n2 = nodes[edge.j];
-                    const t = (time / 1000 * PULSE_SPEED + edge.pulseDelay / 1000) % 1;
-
-                    const x1 = n1.x + (n2.x - n1.x) * t;
-                    const y1 = n1.y + (n2.y - n1.y) * t;
-                    const x2 = n2.x + (n1.x - n2.x) * t;
-                    const y2 = n2.y + (n1.y - n2.y) * t;
-
-                    const gradient1 = ctx.createRadialGradient(x1, y1, 0, x1, y1, 8);
-                    gradient1.addColorStop(0, 'rgba(201, 168, 124, 0.9)');
-                    gradient1.addColorStop(0.4, 'rgba(201, 168, 124, 0.5)');
-                    gradient1.addColorStop(1, 'rgba(201, 168, 124, 0)');
-                    ctx.beginPath();
-                    ctx.arc(x1, y1, 8, 0, Math.PI * 2);
-                    ctx.fillStyle = gradient1;
-                    ctx.fill();
-
-                    const gradient2 = ctx.createRadialGradient(x2, y2, 0, x2, y2, 6);
-                    gradient2.addColorStop(0, 'rgba(201, 168, 124, 0.6)');
-                    gradient2.addColorStop(0.4, 'rgba(201, 168, 124, 0.3)');
-                    gradient2.addColorStop(1, 'rgba(201, 168, 124, 0)');
-                    ctx.beginPath();
-                    ctx.arc(x2, y2, 6, 0, Math.PI * 2);
-                    ctx.fillStyle = gradient2;
-                    ctx.fill();
-                }
-
-                // 3. 绘制节点
-                for (const node of nodes) {
-                    const glow = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 12);
-                    glow.addColorStop(0, 'rgba(201, 168, 124, 0.3)');
-                    glow.addColorStop(1, 'rgba(201, 168, 124, 0)');
-                    ctx.beginPath();
-                    ctx.arc(node.x, node.y, 12, 0, Math.PI * 2);
-                    ctx.fillStyle = glow;
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(node.x, node.y, NODE_SIZE, 0, Math.PI * 2);
-                    ctx.fillStyle = COLORS.node;
-                    ctx.fill();
-
-                    const breathe = 0.6 + 0.4 * Math.sin(time / 2000 + node.phase);
-                    ctx.beginPath();
-                    ctx.arc(node.x, node.y, NODE_SIZE * 1.6, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(201, 168, 124, ${0.08 * breathe})`;
-                    ctx.fill();
-                }
-
-                // 4. 游离光点
-                for (let i = 0; i < 5; i++) {
-                    const offset = (time / 1000 * 0.02 + i * 0.3) % 1;
-                    const idx = Math.floor(offset * edges.length);
-                    if (edges[idx]) {
-                        const edge = edges[idx];
-                        const n1 = nodes[edge.i];
-                        const n2 = nodes[edge.j];
-                        const pos = (offset * edges.length) % 1;
-                        const x = n1.x + (n2.x - n1.x) * pos;
-                        const y = n1.y + (n2.y - n1.y) * pos;
-                        ctx.beginPath();
-                        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(255, 215, 170, ${0.3 + 0.3 * Math.sin(time / 500 + i)})`;
-                        ctx.fill();
-                    }
-                }
-
-                animationId = requestAnimationFrame(draw);
-            }
-
-            function init() {
-                resizeCanvas();
-                generateNodes();
-                window.addEventListener('resize', () => {
-                    resizeCanvas();
-                    generateNodes();
-                });
-                if (animationId) cancelAnimationFrame(animationId);
-                draw(0);
-            }
-
-            if (document.readyState === 'complete') {
-                init();
-            } else {
-                window.addEventListener('load', init);
-            }
-        })();
-    </script>
 </body>
 </html>
