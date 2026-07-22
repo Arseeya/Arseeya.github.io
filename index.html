@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arseeya · 让科技变成自然</title>
-    <!-- 使用优雅的衬线与无衬线字体组合 -->
+    <title>站点停运 · Arseeya</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <style>
-        /* 全局重置与变量 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ===== 全局重置 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --color-cream: #fcf8f0;
-            --color-warm-gray: #e8e0d5;
             --color-stone: #8b7a6b;
             --color-charcoal: #2a2826;
             --color-accent-gold: #c6a87c;
-            --color-text-light: #f5efe8;
+            --color-red: #b33a3a;
             --font-serif: 'EB Garamond', 'Times New Roman', serif;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
@@ -32,412 +26,198 @@
             color: var(--color-charcoal);
             font-family: var(--font-sans);
             line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* 模拟自然光影的背景渐变 */
-        .site-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
-            background: radial-gradient(ellipse at 10% 20%, rgba(198, 168, 124, 0.08) 0%, transparent 60%),
-                        radial-gradient(ellipse at 90% 80%, rgba(139, 122, 107, 0.06) 0%, transparent 50%);
             min-height: 100vh;
-        }
-
-        /* ===== 头部 ===== */
-        .header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1rem 0 3rem;
-            border-bottom: 1px solid rgba(139, 122, 107, 0.2);
-            flex-wrap: wrap;
-            gap: 1rem;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image: radial-gradient(ellipse at 20% 40%, rgba(198, 168, 124, 0.08) 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 60%, rgba(139, 122, 107, 0.05) 0%, transparent 50%);
         }
 
-        .logo {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            color: var(--color-charcoal);
-            text-decoration: none;
-            display: flex;
-            align-items: baseline;
-            gap: 0.4rem;
-        }
-        .logo .sub {
-            font-family: var(--font-sans);
-            font-size: 0.7rem;
-            font-weight: 400;
-            letter-spacing: 0.15em;
-            color: var(--color-stone);
-            text-transform: uppercase;
-        }
-
-        .nav {
-            display: flex;
-            gap: 2rem;
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-        }
-        .nav a {
-            color: var(--color-charcoal);
-            text-decoration: none;
-            transition: color 0.2s;
-            position: relative;
-        }
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1.5px;
-            background: var(--color-accent-gold);
-            transition: width 0.3s ease;
-        }
-        .nav a:hover {
-            color: var(--color-accent-gold);
-        }
-        .nav a:hover::after {
+        .emergency-wrapper {
+            max-width: 720px;
             width: 100%;
-        }
-
-        /* ===== Hero 区域 ===== */
-        .hero {
-            padding: 4rem 0 3rem;
+            background: rgba(255, 252, 245, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 3rem 2.5rem;
+            border-radius: 48px 16px 48px 16px;
+            box-shadow: 0 20px 60px -20px rgba(42, 40, 38, 0.15);
+            border: 1px solid rgba(198, 168, 124, 0.15);
             text-align: center;
-            border-bottom: 1px solid rgba(139, 122, 107, 0.15);
         }
 
-        .hero-title {
+        /* ===== 紧急标识 ===== */
+        .emergency-badge {
+            display: inline-block;
+            background: var(--color-red);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== 主图标 ===== */
+        .emergency-icon {
+            font-size: 4.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== 标题 ===== */
+        .emergency-wrapper h1 {
             font-family: var(--font-serif);
-            font-size: clamp(2.8rem, 10vw, 5.5rem);
+            font-size: 2.8rem;
             font-weight: 400;
-            line-height: 1.1;
-            margin-bottom: 1rem;
             color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
         }
-        .hero-title .highlight {
+        .emergency-wrapper h1 .highlight {
+            color: var(--color-red);
             font-style: italic;
-            color: var(--color-accent-gold);
-            position: relative;
         }
-        .hero-title .highlight::before {
-            content: '✦';
-            font-size: 0.6em;
-            margin-right: 0.3em;
-            opacity: 0.6;
+
+        /* ===== 说明文字 ===== */
+        .emergency-wrapper .reason {
+            font-size: 1.05rem;
+            color: #4a3f39;
+            max-width: 480px;
+            margin: 0.5rem auto 1.2rem;
         }
-        .hero-sub {
-            font-size: 1.1rem;
+        .emergency-wrapper .detail {
+            background: rgba(198, 168, 124, 0.06);
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #5a4f48;
+            margin: 1.2rem 0;
+            border-left: 3px solid var(--color-red);
+            text-align: left;
+        }
+        .emergency-wrapper .detail strong {
+            color: var(--color-red);
+        }
+
+        /* ===== 预计恢复 ===== */
+        .recovery {
+            margin: 1.5rem 0 0.5rem;
+        }
+        .recovery .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
             color: var(--color-stone);
-            max-width: 500px;
-            margin: 0 auto 2.5rem;
+        }
+        .recovery .time {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--color-charcoal);
             letter-spacing: 0.04em;
         }
 
-        /* 装饰性流动线条 (纯CSS模拟自然曲线) */
-        .flow-line {
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--color-accent-gold), transparent);
-            margin: 0 auto 3rem;
-            border-radius: 4px;
-            opacity: 0.5;
-        }
-
-        /* ===== 核心入口卡片 (自然探索) ===== */
-        .explore-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0 4rem;
-        }
-
-        .explore-card {
-            background: rgba(255, 252, 245, 0.6);
-            backdrop-filter: blur(2px);
-            padding: 2rem 1.5rem;
-            border-radius: 32px 12px 32px 12px;
-            box-shadow: 0 8px 24px -12px rgba(42, 40, 38, 0.15);
-            transition: all 0.3s ease;
-            text-align: center;
-            border: 1px solid rgba(198, 168, 124, 0.15);
-            text-decoration: none;
-            color: var(--color-charcoal);
-        }
-        .explore-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px -16px rgba(42, 40, 38, 0.25);
-            border-color: var(--color-accent-gold);
-            background: rgba(255, 252, 245, 0.85);
-        }
-
-        .explore-card .emoji-big {
-            font-size: 2.8rem;
-            display: block;
-            margin-bottom: 1rem;
-            line-height: 1;
-        }
-        .explore-card h3 {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-        .explore-card p {
+        /* ===== 联系与返回 ===== */
+        .contact-line {
+            margin-top: 2rem;
             font-size: 0.9rem;
             color: var(--color-stone);
-            margin-bottom: 0.2rem;
         }
-        .explore-card .meta-tag {
-            display: inline-block;
-            font-size: 0.7rem;
-            background: rgba(198, 168, 124, 0.15);
-            padding: 0.1rem 0.8rem;
-            border-radius: 20px;
-            color: var(--color-stone);
-            margin-top: 0.5rem;
-            letter-spacing: 0.04em;
-        }
-
-        /* ===== 关于与联系 ===== */
-        .info-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin: 3rem 0 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(139, 122, 107, 0.15);
-        }
-
-        .info-block h2 {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-            letter-spacing: 0.02em;
-        }
-        .info-block p {
-            color: var(--color-stone);
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
-        }
-        .info-block .brand-tag {
-            display: inline-block;
-            background: var(--color-charcoal);
-            color: var(--color-text-light);
-            padding: 0.1rem 1rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-right: 0.4rem;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 0.6rem;
-            font-size: 0.95rem;
-            color: var(--color-stone);
-        }
-        .contact-item a {
+        .contact-line a {
             color: var(--color-charcoal);
             text-decoration: none;
             border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
             transition: border-color 0.2s;
         }
-        .contact-item a:hover {
-            border-color: var(--color-accent-gold);
-        }
-        /* ===== 修改点：联系标题中的“泽尔集团”变为可点击链接 ===== */
-        .info-block h2 .group-link {
-            color: var(--color-charcoal);
-            text-decoration: none;
-            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .info-block h2 .group-link:hover {
-            color: var(--color-accent-gold);
+        .contact-line a:hover {
             border-color: var(--color-accent-gold);
         }
 
-        /* ===== Footer ===== */
-        .footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(139, 122, 107, 0.15);
-            text-align: center;
-            font-size: 0.8rem;
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--color-stone);
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(139, 122, 107, 0.3);
+            transition: border-color 0.2s;
+        }
+        .back-link:hover {
+            border-color: var(--color-accent-gold);
+        }
+
+        /* ===== 页脚 ===== */
+        .footer-note {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(139, 122, 107, 0.1);
+            font-size: 0.75rem;
             color: var(--color-stone);
             letter-spacing: 0.04em;
         }
-        .footer .quote {
+        .footer-note .quote {
             font-family: var(--font-serif);
             font-style: italic;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--color-charcoal);
-            margin-bottom: 0.5rem;
         }
 
         /* ===== 响应式 ===== */
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.8rem;
-            }
-            .nav {
-                gap: 1.2rem;
-                font-size: 0.85rem;
-                flex-wrap: wrap;
-            }
-            .hero {
-                padding: 2rem 0;
-            }
-            .info-section {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .explore-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-            .explore-card {
-                padding: 1.5rem 1rem;
-            }
-        }
-        @media (max-width: 450px) {
-            .explore-grid {
-                grid-template-columns: 1fr;
-            }
-            .site-wrapper {
-                padding: 1rem 1rem 2rem;
-            }
+        @media (max-width: 500px) {
+            .emergency-wrapper { padding: 2rem 1.2rem; }
+            .emergency-wrapper h1 { font-size: 2.2rem; }
+            .emergency-icon { font-size: 3.5rem; }
+            .recovery .time { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
-    <div class="site-wrapper">
-        <!-- 头部 (保持原版，泽尔集团为纯文本) -->
-        <header class="header">
-            <a href="/" class="logo">
-                Arseeya
-                <span class="sub">· 泽尔集团</span>
-            </a>
-            <nav class="nav">
-                <a href="#explore">探索</a>
-                <a href="#about">关于</a>
-                <a href="#contact">联系</a>
-            </nav>
-        </header>
+    <div class="emergency-wrapper">
+        <!-- 紧急标识 -->
+        <span class="emergency-badge">⛔ 紧急停运</span>
 
-        <!-- Hero -->
-        <section class="hero">
-            <h1 class="hero-title">
-                让科技<br />
-                <span class="highlight">变成自然</span>
-            </h1>
-            <p class="hero-sub">
-                在泽尔，代码如溪流，数据似林木。<br />
-                一个虚构世界中的科技叙事。
+        <!-- 主图标 -->
+        <span class="emergency-icon">📱</span>
+
+        <!-- 标题 -->
+        <h1>
+            设备被<span class="highlight">收缴</span>，<br />站点暂停
+        </h1>
+
+        <!-- 说明 -->
+        <p class="reason">
+            由于站主设备被老师收缴，目前无法进行任何运维操作。
+        </p>
+
+        <div class="detail">
+            <strong>📌 当前状态：</strong> 所有服务（小说、下载、委托等）暂时无法访问。<br />
+            <strong>🧑‍🏫 原因：</strong> 上课期间使用手机，设备已被老师代为保管。
+        </div>
+
+        <!-- 预计恢复 -->
+        <div class="recovery">
+            <div class="label">⏳ 预计恢复</div>
+            <div class="time">待设备归还后</div>
+            <p style="font-size: 0.8rem; color: var(--color-stone); margin-top: 0.2rem;">
+                请耐心等待，站主会尽快恢复服务。
             </p>
-            <div class="flow-line"></div>
-        </section>
+        </div>
 
-        <!-- 探索入口 (核心内容) -->
-        <section id="explore">
-            <div class="explore-grid">
-                <!-- 小说 · 阅读器 (合并) -->
-                <a href="/service-pause.html?service=novel" class="explore-card">
-                    <span class="emoji-big">📖</span>
-                    <h3>小说 · 阅读器</h3>
-                    <p>沉浸阅读 · 泽尔宇宙</p>
-                    <span class="meta-tag">Novel & Reader</span>
-                </a>
-                
-                <!-- 世界观 -->
-                <a href="/world/" class="explore-card">
-                    <span class="emoji-big">🌍</span>
-                    <h3>世界观</h3>
-                    <p>历史 · 地理 · 知识</p>
-                    <span class="meta-tag">World</span>
-                </a>
-                
-                <!-- 下载 -->
-                <a href="/download.html" class="explore-card">
-                    <span class="emoji-big">⬇️</span>
-                    <h3>下载</h3>
-                    <p>资源与档案</p>
-                    <span class="meta-tag">Downloads</span>
-                </a>
-                
-                <!-- 委托 -->
-                <a href="/commission.html" class="explore-card">
-                    <span class="emoji-big">✍️</span>
-                    <h3>委托</h3>
-                    <p>创作与定制</p>
-                    <span class="meta-tag">Commission</span>
-                </a>
-                
-                <!-- Gate 枢纽 -->
-                <a href="/gate.html" class="explore-card">
-                    <span class="emoji-big">🚪</span>
-                    <h3>Gate</h3>
-                    <p>入口 · 枢纽</p>
-                    <span class="meta-tag">Hub</span>
-                </a>
-            </div>
-        </section>
+        <!-- 联系 -->
+        <div class="contact-line">
+            📧 紧急事务请联系 <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a>
+        </div>
 
-        <!-- 关于 & 联系 -->
-        <section class="info-section" id="about">
-            <div class="info-block">
-                <h2>关于 · Arseeya</h2>
-                <p>
-                    <span class="brand-tag">准高三</span>
-                    <span class="brand-tag">文科生</span>
-                </p>
-                <p>
-                    以文字编织星穹，用代码构建自然。Arseeya 是创作者，也是泽尔集团的叙事者。
-                    这里存放着关于另一个世界的所有想象。
-                </p>
-                <p style="margin-top: 1rem; font-family: var(--font-serif); font-style: italic; color: var(--color-accent-gold);">
-                    “愿此行，终抵群星。”
-                </p>
-            </div>
-            <div class="info-block" id="contact">
-                <!-- 修改点：将“泽尔集团”变为可点击链接 -->
-                <h2>联系 · <a href="/Zell.html" class="group-link">泽尔集团</a></h2>
-                <div class="contact-item">
-                    <span>📧</span>
-                    <span>个人 · <a href="mailto:arseeya@outlook.com">arseeya@outlook.com</a></span>
-                </div>
-                <div class="contact-item">
-                    <span>🏢</span>
-                    <span>集团 · <a href="mailto:zelculture@outlook.com">zelculture@outlook.com</a></span>
-                </div>
-                <p style="margin-top: 1.2rem; font-size: 0.85rem; color: var(--color-stone);">
-                    泽尔文化 · 泽尔电子 · 泽尔通讯
-                </p>
-            </div>
-        </section>
+        <!-- 返回（保留结构，但实际无内容可回） -->
+        <a href="#" class="back-link" style="pointer-events: none; opacity: 0.5;">← 返回首页 (暂不可用)</a>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="quote">“让科技变成自然”</div>
-            <p>© 2026 Arseeya · 泽尔集团 · 虚构世界观</p>
-            <p style="margin-top: 0.4rem; font-size: 0.7rem; opacity: 0.7;">
-                托管于 GitHub · 部署于 Cloudflare
-            </p>
-        </footer>
+        <!-- 页脚 -->
+        <div class="footer-note">
+            <div class="quote">“让科技变成自然” · 泽尔集团</div>
+            <p style="margin-top: 0.3rem;">© 2026 Arseeya · 因故停运中</p>
+        </div>
     </div>
-
-    <!-- 如果未来需要交互，可在此添加 JS，目前保持纯净 -->
 </body>
 </html>
