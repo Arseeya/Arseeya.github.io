@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>下载 · Arseeya</title>
+    <title>下载 · 数学资料</title>
     <style>
         /* 全局重置，确保纯白极简 */
         * {
@@ -25,27 +25,27 @@
 
         .download-container {
             text-align: center;
-            max-width: 480px;
+            max-width: 520px;
             width: 100%;
         }
 
         /* 极简标题 */
         .site-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 300;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             color: #1a1a1a;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
 
         .site-sub {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 300;
-            color: #888;
-            letter-spacing: 0.05em;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 2rem;
+            color: #aaa;
+            letter-spacing: 0.1em;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 1.8rem;
         }
 
         /* 下载卡片 - 极简线条风格 */
@@ -76,14 +76,14 @@
 
         /* 简单文件图标 */
         .file-icon {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 300;
-            color: #aaa;
+            color: #999;
             border: 1px solid #e5e5e5;
             border-radius: 6px;
             background: #fafafa;
@@ -112,20 +112,32 @@
             transform: translateX(3px);
         }
 
-        /* 底部脚注 */
+        /* 备用链接特殊样式 —— 链接形式 */
+        .download-item.link-item .file-icon {
+            font-size: 1rem;
+            background: #f8f8f8;
+        }
+        .download-item.link-item .file-name {
+            color: #333;
+        }
+        .download-item.link-item .file-name:hover {
+            text-decoration: underline;
+        }
+
+        /* 底部脚注 —— 完全留空，不加任何品牌信息 */
         .footer-note {
-            margin-top: 3.5rem;
-            font-size: 0.75rem;
-            color: #ccc;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            color: #ddd;
             letter-spacing: 0.05em;
             font-weight: 300;
         }
 
         /* 移动端调整 */
         @media (max-width: 480px) {
-            .site-title { font-size: 1.5rem; }
+            .site-title { font-size: 1.3rem; }
             .download-item { padding: 1rem 0; }
-            .file-name { font-size: 0.95rem; }
+            .file-name { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -133,11 +145,12 @@
 
     <div class="download-container">
 
-        <!-- 极简标题区 -->
-        <h1 class="site-title">Arseeya</h1>
+        <!-- 极简标题区 —— 完全不提原有品牌 -->
+        <h1 class="site-title">数学资料</h1>
         <p class="site-sub">· 下载 ·</p>
 
         <!-- 下载链接列表 -->
+        <!-- 1. word.jpg -->
         <a class="download-item" href="/downloads/word/word.jpg" download>
             <span class="file-info">
                 <span class="file-icon">🖼</span>
@@ -149,6 +162,7 @@
             <span class="download-arrow">↓</span>
         </a>
 
+        <!-- 2. 答案.zip -->
         <a class="download-item" href="/downloads/word/答案.zip" download>
             <span class="file-info">
                 <span class="file-icon">📦</span>
@@ -160,8 +174,20 @@
             <span class="download-arrow">↓</span>
         </a>
 
-        <!-- 极简脚注 -->
-        <p class="footer-note">泽尔集团 · 内部资源</p>
+        <!-- 3. 备用在线答案（DeepSeek链接） -->
+        <a class="download-item link-item" href="https://chat.deepseek.com/share/5ob7u8khigpi6bdeq0" target="_blank" rel="noopener noreferrer">
+            <span class="file-info">
+                <span class="file-icon">📄</span>
+                <span class="file-name">
+                    数学答案（完整解析）
+                    <span class="file-ext">在线</span>
+                </span>
+            </span>
+            <span class="download-arrow">↗</span>
+        </a>
+
+        <!-- 底部脚注 —— 完全留白 -->
+        <p class="footer-note"></p>
 
     </div>
 
