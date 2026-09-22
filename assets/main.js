@@ -24,12 +24,19 @@
       const el = document.getElementById(id);
       if(el) el.textContent = txt || '—';
     };
+
+    // 主下载区
     set('ver', c.latestVersion);
     set('size', c.apkSize);
     set('date', c.releaseDate);
     set('sha', c.apkSha256);
     set('android-min', c.androidMin);
     set('android-target', c.androidTarget);
+
+    // 系统要求区块
+    set('req-min', c.androidMin);
+    set('req-target', c.androidTarget);
+    set('req-size', c.apkSize);
 
     const btn = document.getElementById('dl-btn');
     if(btn){
