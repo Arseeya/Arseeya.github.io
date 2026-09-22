@@ -1,9 +1,248 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#0a0a0a"/>
-  <polygon points="0,0 55,0 55,45 0,45" fill="#c42e2e"/>
-  <polygon points="55,0 100,0 100,55 55,55" fill="#f0efed"/>
-  <polygon points="0,45 45,45 45,100 0,100" fill="#f0efed"/>
-  <polygon points="45,55 100,55 100,100 45,100" fill="#c42e2e"/>
-  <rect x="20" y="20" width="15" height="15" fill="#0a0a0a"/>
-  <rect x="65" y="65" width="15" height="15" fill="#0a0a0a"/>
-</svg>
+/* ============================================
+   Arseeya 6.0 — 苏联建构主义视觉系统
+   ============================================ */
+
+:root{
+  --black:#0a0a0a;
+  --red:#c42e2e;
+  --white:#f0efed;
+  --gray:#8a8a8a;
+  --dark:#1a1a1a;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;}
+
+html{background:var(--black);color:var(--white);scroll-behavior:auto;}
+body{
+  font-family:'Inter',-apple-system,system-ui,'Segoe UI',sans-serif;
+  font-weight:400;
+  letter-spacing:.02em;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* --- 顶部红线 --- */
+.top-bar{height:8px;background:var(--red);width:100%;}
+.sub-bar{height:3px;background:var(--red);width:100%;opacity:.4;}
+
+/* --- 标题 --- */
+h1,h2,h3,h4{
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  line-height:0.95;
+}
+h1{font-size:clamp(3rem,10vw,8rem);}
+h2{font-size:clamp(2rem,5vw,4rem);}
+h3{font-size:clamp(1.25rem,2.5vw,2rem);}
+h4{font-size:1rem;letter-spacing:.1em;}
+
+/* --- 正文 --- */
+p{color:var(--white);}
+p.muted{color:var(--gray);}
+a{color:var(--red);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* --- 斜切区块 --- */
+.slash{
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 4rem),0 100%);
+  background:var(--dark);
+  padding:4rem 2rem;
+}
+.slash-red{
+  clip-path:polygon(0 4rem,100% 0,100% 100%,0 100%);
+  background:var(--red);
+  color:var(--white);
+  padding:4rem 2rem;
+}
+.slash-both{
+  clip-path:polygon(0 2rem,100% 0,100% calc(100% - 2rem),0 100%);
+  background:var(--dark);
+  padding:5rem 2rem;
+}
+
+/* --- 卡片 --- */
+.card{
+  background:var(--dark);
+  border:3px solid var(--red);
+  padding:2rem;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 2rem),calc(100% - 2rem) 100%,0 100%);
+}
+.card-white{
+  background:var(--white);
+  color:var(--black);
+  padding:2rem;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 2rem),calc(100% - 2rem) 100%,0 100%);
+}
+.card-white h3,.card-white h4{color:var(--black);}
+.card-white p{color:var(--black);}
+
+/* --- 对角线纹理 --- */
+.diag{
+  background-image:repeating-linear-gradient(
+    45deg,
+    rgba(196,46,46,.08) 0 2px,
+    transparent 2px 12px
+  );
+}
+
+/* --- 按钮 --- */
+.btn{
+  display:inline-block;
+  background:var(--red);
+  color:var(--white);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:1.25rem 3rem;
+  border:none;
+  cursor:pointer;
+  font-size:1rem;
+  transition:transform .3s var(--ease);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 1rem),calc(100% - 1rem) 100%,0 100%);
+}
+.btn:hover{transform:translateX(8px);}
+.btn-dark{
+  background:var(--black);
+  border:3px solid var(--red);
+}
+.btn-white{
+  background:var(--white);
+  color:var(--black);
+}
+
+/* --- 列表：红黑交替 --- */
+.list-item{
+  padding:1.5rem 2rem;
+  border-left:3px solid var(--red);
+}
+.list-item:nth-child(odd){background:var(--black);}
+.list-item:nth-child(even){background:var(--dark);}
+
+/* --- 网格 --- */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem;}
+.col-3{grid-column:span 3;}
+.col-4{grid-column:span 4;}
+.col-6{grid-column:span 6;}
+.col-8{grid-column:span 8;}
+.col-12{grid-column:span 12;}
+@media(max-width:768px){
+  .col-3,.col-4,.col-6,.col-8{grid-column:span 12;}
+}
+
+/* --- 导航 --- */
+.nav{
+  display:flex;
+  gap:2rem;
+  padding:1.5rem 2rem;
+  border-bottom:3px solid var(--red);
+  align-items:center;
+  flex-wrap:wrap;
+}
+.nav-brand{
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:1.1rem;
+  color:var(--white);
+}
+.nav a{
+  color:var(--gray);
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:.85rem;
+  letter-spacing:.1em;
+  transition:color .2s var(--ease);
+}
+.nav a:hover,.nav a.active{color:var(--red);text-decoration:none;}
+
+/* --- 代码块 --- */
+code,.mono{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:.9rem;
+  background:var(--dark);
+  padding:.25rem .5rem;
+  color:var(--gray);
+  word-break:break-all;
+}
+.code-block{
+  display:block;
+  background:var(--dark);
+  padding:1.5rem;
+  border-left:3px solid var(--red);
+  word-break:break-all;
+  color:var(--gray);
+  font-size:.85rem;
+  line-height:1.5;
+}
+
+/* --- 警示块 --- */
+.alert{
+  background:var(--red);
+  color:var(--white);
+  padding:1.5rem 2rem;
+  border-left:8px solid var(--black);
+  font-weight:700;
+}
+.alert-dark{
+  background:var(--dark);
+  border-left:8px solid var(--red);
+  color:var(--white);
+  padding:1.5rem 2rem;
+  font-weight:400;
+}
+
+/* --- 页脚 --- */
+.footer{
+  background:var(--red);
+  color:var(--white);
+  padding:3rem 2rem;
+  margin-top:4rem;
+}
+.footer a{color:var(--white);text-decoration:underline;}
+.footer .grid{margin-bottom:1.5rem;}
+.footer-bottom{
+  border-top:3px solid rgba(240,239,237,.3);
+  padding-top:1.5rem;
+  font-size:.85rem;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+
+/* --- 动效：硬位移，无淡入 --- */
+.reveal{opacity:0;transform:translateY(40px);}
+.reveal.in{
+  opacity:1;
+  transform:translateY(0);
+  transition:transform .4s var(--ease),opacity .01s;
+}
+
+/* --- 大标题背景数字 --- */
+.bg-num{
+  position:absolute;
+  font-size:clamp(8rem,25vw,20rem);
+  font-weight:900;
+  color:var(--dark);
+  z-index:-1;
+  letter-spacing:-.05em;
+  line-height:.8;
+  user-select:none;
+}
+
+/* --- 分隔线 --- */
+.divider{
+  height:3px;
+  background:var(--red);
+  margin:3rem 0;
+}
+.divider-thin{
+  height:1px;
+  background:var(--gray);
+  opacity:.3;
+  margin:1.5rem 0;
+}
