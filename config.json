@@ -1,0 +1,17 @@
+{
+  "serverUrl": "https://buer.kdns.fr",
+  "forceUpdate": false,
+  "latestVersion": "1.2.9.1.test",
+  "minVersion": "1.0.0",
+  "downloadUrl": "https://arseeya.link/download",
+  "apkUrl": "https://arseeya.link/downloads/apps/fzxkzd-debug.apk",
+  "apkSize": "8.2 MB",
+  "releaseDate": "2026-09-20",
+  "apkSha256": "61c9e7306e441755d9b4084fb88f7f2a5846ac94a3d11b91a3cac34decd046b5",
+  "androidMin": "7.0 (API 24)",
+  "androidTarget": "11 (API 30)",
+  "announcement": "欢迎使用虚空终端 AZ 版",
+  "maintenanceMode": false,
+  "officialSite": "https://qgs.kdns.fr/",
+  "officialAgreement": "https://buer.kdns.fr/agreement.html"
+}
