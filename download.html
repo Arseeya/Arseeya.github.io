@@ -1,171 +1,163 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>下载中心 · Arseeya</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f0c1f, #1a1a2e);
-            color: #eee;
-            min-height: 100vh;
-            padding: 1rem;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .navbar {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            justify-content: center;
-        }
-        .navbar a {
-            color: #ddd;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            background: rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
-        .navbar a:hover {
-            background: #e94560;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            backdrop-filter: blur(4px);
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-4px);
-        }
-        .card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #e94560;
-        }
-        .version {
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 0.5rem;
-        }
-        .desc {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #ccc;
-        }
-        .btn {
-            display: inline-block;
-            background: #e94560;
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #c5314b;
-        }
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding: 1.5rem;
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-        footer a {
-            color: #aaa;
-            text-decoration: none;
-        }
-        footer a:hover {
-            color: #e94560;
-        }
-        .error-msg {
-            background: rgba(233,69,96,0.2);
-            border: 1px solid #e94560;
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-        }
-        @media (max-width: 640px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>下载 · 虚空终端 AZ 版</title>
+<meta name="description" content="下载虚空终端 AZ 版 APK，含 SHA256 校验。">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-<div class="container">
-    <div class="navbar">
-        <a href="index.html">首页</a>
-        <a href="https://arseeya.github.io/novels/%E5%90%AC%E6%BD%AE%E4%BA%8B%E8%AE%B0/">作品</a>
-        <a href="world.html">百科</a>
-        <a href="download.html">下载</a>
+
+<div class="top-bar"></div>
+
+<nav class="nav">
+  <span class="nav-brand">虚空终端 · AZ</span>
+  <a href="/">首页</a>
+  <a href="/download" class="active">下载</a>
+  <a href="/changelog">更新日志</a>
+  <a href="/about">关于</a>
+  <a href="/privacy">隐私</a>
+  <a href="/terms">协议</a>
+</nav>
+
+<header style="padding:4rem 2rem 2rem;">
+  <h1>下载</h1>
+  <p class="muted" style="margin-top:1rem;letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;">
+    Android · APK · 安泽工作室
+  </p>
+</header>
+
+<!-- 下载主块 -->
+<section class="slash-red">
+  <div class="grid">
+    <div class="col-6">
+      <h2>获取 APK</h2>
+      <p style="margin-top:1.5rem;font-weight:900;letter-spacing:.05em;">
+        最新版本 <span id="ver">—</span>
+      </p>
+      <p style="margin-top:.5rem;color:rgba(240,239,237,.8);">
+        大小 <span id="size">—</span> · 发布 <span id="date">—</span>
+      </p>
+      <p style="margin-top:.5rem;color:rgba(240,239,237,.8);">
+        支持 Android <span id="android-min">—</span> 以上
+      </p>
     </div>
+    <div class="col-6" style="display:flex;align-items:flex-end;justify-content:flex-end;">
+      <a id="dl-btn" class="btn btn-white" href="#" style="font-size:1.25rem;">
+        下载 APK →
+      </a>
+    </div>
+  </div>
+</section>
 
-    <h1 style="text-align:center; margin-bottom:0.5rem;">📦 下载中心</h1>
-    <p style="text-align:center; color:#aaa; margin-bottom:1rem;">Android App 及其它资源</p>
+<!-- SHA256 -->
+<section style="padding:4rem 2rem;">
+  <h3 style="color:var(--red);">SHA256 校验</h3>
+  <p class="muted" style="margin-top:1rem;font-size:.9rem;">
+    下载完成后比对哈希值，不一致请勿安装。
+  </p>
+  <code id="sha" class="code-block" data-copy style="margin-top:1.5rem;display:block;">
+    —
+  </code>
+  <p class="muted" style="margin-top:.75rem;font-size:.8rem;">
+    点击哈希值可复制
+  </p>
+</section>
 
-    <div id="appsGrid" class="grid">加载中...</div>
+<!-- 系统要求 -->
+<section class="diag" style="padding:4rem 2rem;">
+  <h3>系统要求</h3>
+  <div class="grid" style="margin-top:2rem;">
+    <div class="col-4 card">
+      <h4 style="color:var(--red);">最低</h4>
+      <p style="margin-top:1rem;">Android 7.0 (API 24)</p>
+      <p class="muted" style="font-size:.85rem;">2016 年及以后设备</p>
+    </div>
+    <div class="col-4 card">
+      <h4 style="color:var(--red);">目标</h4>
+      <p style="margin-top:1rem;">Android 11 (API 30)</p>
+      <p class="muted" style="font-size:.85rem;">推荐运行环境</p>
+    </div>
+    <div class="col-4 card">
+      <h4 style="color:var(--red);">大小</h4>
+      <p style="margin-top:1rem;">8.2 MB</p>
+      <p class="muted" style="font-size:.85rem;">轻量级安装包</p>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        © Arseeya. All Rights Reserved | <a href="terms.html">📜 完整条款</a>
-    </footer>
-</div>
+<!-- 安装提示 -->
+<section style="padding:4rem 2rem;">
+  <h3>安装提示</h3>
+  <div class="grid" style="margin-top:2rem;">
+    <div class="col-6">
+      <h4 style="color:var(--red);">1. 允许未知来源</h4>
+      <p class="muted" style="margin-top:.75rem;">
+        系统设置 → 安全 → 允许安装未知来源应用。
+      </p>
+    </div>
+    <div class="col-6">
+      <h4 style="color:var(--red);">2. 校验哈希</h4>
+      <p class="muted" style="margin-top:.75rem;">
+        用校验工具比对 SHA256，确认文件未被篡改。
+      </p>
+    </div>
+    <div class="col-6">
+      <h4 style="color:var(--red);">3. 安装</h4>
+      <p class="muted" style="margin-top:.75rem;">
+        点击 APK 文件完成安装。
+      </p>
+    </div>
+    <div class="col-6">
+      <h4 style="color:var(--red);">4. 登录</h4>
+      <p class="muted" style="margin-top:.75rem;">
+        使用官方服务器账号直接登录。
+      </p>
+    </div>
+  </div>
+</section>
 
-<script>
-    async function loadDownloads() {
-        const grid = document.getElementById('appsGrid');
-        try {
-            const res = await fetch('download.json');
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            
-            if (!data.apps || data.apps.length === 0) {
-                grid.innerHTML = '<div class="card">暂无 App，敬请期待。</div>';
-                return;
-            }
-            
-            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-            
-            grid.innerHTML = data.apps.map(app => {
-                const downloadUrl = `${baseUrl}downloads/apps/${encodeURIComponent(app.filename)}`;
-                return `
-                    <div class="card">
-                        <h3>📱 ${app.name}</h3>
-                        <div class="version">版本 ${app.version} | ${app.size}</div>
-                        <div class="desc">${app.description || ''}</div>
-                        <a href="${downloadUrl}" class="btn" download="${app.filename}">⬇️ 下载 APK</a>
-                    </div>
-                `;
-            }).join('');
-        } catch(e) {
-            console.error(e);
-            grid.innerHTML = `<div class="error-msg">⚠️ 加载失败：${e.message}<br><br><button onclick="location.reload()" style="background:#e94560; border:none; color:white; padding:0.5rem 1.2rem; border-radius:2rem; cursor:pointer;">重试</button></div>`;
-        }
-    }
-    
-    loadDownloads();
-</script>
+<!-- 安全警示 -->
+<section style="padding:0 2rem 4rem;">
+  <div class="alert">
+    ⚠️ 请勿通过本 App 传输密码、身份证号、银行卡号等敏感数据。
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="grid">
+    <div class="col-6">
+      <h4>虚空终端 AZ 版</h4>
+      <p style="margin-top:1rem;color:rgba(240,239,237,.8);">
+        安泽工作室 出品<br>
+        基于四生万物工作室授权分发
+      </p>
+    </div>
+    <div class="col-3">
+      <h4>站点</h4>
+      <p style="margin-top:1rem;line-height:2;">
+        <a href="/">首页</a><br>
+        <a href="/changelog">更新日志</a><br>
+        <a href="/about">关于</a>
+      </p>
+    </div>
+    <div class="col-3">
+      <h4>合规</h4>
+      <p style="margin-top:1rem;line-height:2;">
+        <a href="/privacy">隐私政策</a><br>
+        <a href="/terms">用户协议</a><br>
+        <a href="https://buer.kdns.fr/agreement.html">官方协议</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 安泽工作室 · ARSEEYA.LINK</span>
+    <span>联系：arseeya@outlook.com</span>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
 </body>
 </html>
