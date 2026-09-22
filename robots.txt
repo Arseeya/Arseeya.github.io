@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /downloads/
-
 Sitemap: https://arseeya.link/sitemap.xml
