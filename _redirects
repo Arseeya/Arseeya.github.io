@@ -13,17 +13,3 @@
 # 本站统一用 200，保持 URL 干净
 
 # ---------- 路径映射 ----------
-# /download → download.html（地址栏仍显示 /download）
-/download       /download.html      200
-
-# /changelog → changelog.html
-/changelog      /changelog.html     200
-
-# /privacy → privacy.html
-/privacy        /privacy.html       200
-
-# /terms → terms.html
-/terms          /terms.html         200
-
-# /about → about.html
-/about          /about.html         200
