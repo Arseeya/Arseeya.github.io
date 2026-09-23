@@ -1,6 +1,29 @@
-/download       /download.html       200
-/changelog      /changelog.html      200
-/privacy        /privacy.html        200
-/terms          /terms.html          200
-/about          /about.html          200
-/               /index.html          200
+# ============================================
+# Cloudflare Workers/Pages URL 重写配置
+# 文件位置：网站根目录
+# 文件名：_redirects（无扩展名）
+# 作用：把访问路径映射到实际文件，让 URL 不带 .html
+# 格式：访问路径  实际文件  状态码
+# ============================================
+
+# ---------- 状态码说明 ----------
+# 200 = 重写（rewrite）：地址栏不变，内容换成目标文件
+# 301 = 永久跳转：地址栏会变成目标路径
+# 302 = 临时跳转：同上
+# 本站统一用 200，保持 URL 干净
+
+# ---------- 路径映射 ----------
+# /download → download.html（地址栏仍显示 /download）
+/download       /download.html      200
+
+# /changelog → changelog.html
+/changelog      /changelog.html     200
+
+# /privacy → privacy.html
+/privacy        /privacy.html       200
+
+# /terms → terms.html
+/terms          /terms.html         200
+
+# /about → about.html
+/about          /about.html         200
