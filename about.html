@@ -13,12 +13,17 @@
 
 <nav class="nav">
   <span class="nav-brand">虚空终端 · AZ</span>
-  <a href="/">首页</a>
-  <a href="/download">下载</a>
-  <a href="/changelog">更新日志</a>
-  <a href="/about" class="active">关于</a>
-  <a href="/privacy">隐私</a>
-  <a href="/terms">协议</a>
+  <button class="nav-toggle" aria-label="菜单" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-menu">
+    <a href="/">首页</a>
+    <a href="/download">下载</a>
+    <a href="/changelog">更新日志</a>
+    <a href="/about" class="active">关于</a>
+    <a href="/privacy">隐私</a>
+    <a href="/terms">协议</a>
+  </div>
 </nav>
 
 <header style="padding:2.5rem 1.25rem 1.5rem;">
@@ -53,7 +58,7 @@
     <div class="col-6">
       <h3 style="color:var(--red);">授权说明</h3>
       <p class="muted" style="margin-top:1rem;">
-        AZ 版获得四生万物工作室授权分发，
+        AZ 版获得四生万物工作室授权，基于官方 8.9 版本衍生分发，
         使用官方服务器 <code>buer.kdns.fr</code>，
         与官方版共用账号体系，可互相通信。
       </p>
