@@ -25,15 +25,12 @@
       if(el) el.textContent = txt || '—';
     };
 
-    // 主下载区
     set('ver', c.latestVersion);
     set('size', c.apkSize);
     set('date', c.releaseDate);
     set('sha', c.apkSha256);
     set('android-min', c.androidMin);
     set('android-target', c.androidTarget);
-
-    // 系统要求区块
     set('req-min', c.androidMin);
     set('req-target', c.androidTarget);
     set('req-size', c.apkSize);
@@ -43,7 +40,6 @@
       btn.href = c.apkUrl || c.downloadUrl || '#';
       btn.setAttribute('download','');
 
-      // 安卓识别
       const ua = navigator.userAgent.toLowerCase();
       const isAndroid = ua.includes('android');
       if(!isAndroid){
@@ -63,12 +59,12 @@
         '维护中 · MAINTENANCE</div>');
     }
 
-    if(c.announcement){
+    if(c.announcement && c.announcement.trim()){
       const bar = document.querySelector('.top-bar');
       if(bar){
         bar.insertAdjacentHTML('afterend',
-          '<div style="padding:1rem 2rem;color:#8a8a8a;' +
-          'border-bottom:3px solid #1a1a1a;letter-spacing:.05em;">' +
+          '<div style="padding:1rem 1.25rem;color:#8a8a8a;' +
+          'border-bottom:3px solid #1a1a1a;letter-spacing:.05em;font-size:.9rem;">' +
           escapeHtml(c.announcement) + '</div>');
       }
     }
@@ -80,7 +76,7 @@
     })[m]);
   }
 
-  // ---------- 4. 进场动效（硬位移） ----------
+  // ---------- 4. 进场动效 ----------
   function reveal(){
     const els = document.querySelectorAll('section,header,footer,.reveal');
     els.forEach((el, i) => {
@@ -105,6 +101,27 @@
     });
   }
 
+  // ---------- 6. 汉堡菜单 ----------
+  function bindNav(){
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.querySelector('.nav-menu');
+    if(!toggle || !menu) return;
+
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    menu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if(window.innerWidth < 768){
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded','false');
+        }
+      });
+    });
+  }
+
   // ---------- 启动 ----------
   document.addEventListener('DOMContentLoaded', async () => {
     const c = await loadConfig();
@@ -112,5 +129,6 @@
     fillBanner(c);
     reveal();
     bindCopy();
+    bindNav();
   });
 })();
