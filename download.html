@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>下载 · 虚空终端 AZ 版</title>
-<meta name="description" content="下载虚空终端 AZ 版 APK，含 SHA256 校验。">
+<meta name="description" content="下载虚空终端 AZ 版 APK，含历史版本与 SHA256 校验。">
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
@@ -34,12 +34,13 @@
   </p>
 </header>
 
+<!-- 最新版醒目块 -->
 <section class="slash-red">
   <div class="grid">
     <div class="col-6">
-      <h2>获取 APK</h2>
-      <p style="margin-top:1.5rem;font-weight:900;letter-spacing:.05em;">
-        最新版本 <span id="ver">—</span>
+      <h2>最新版本</h2>
+      <p style="margin-top:1.5rem;font-weight:900;letter-spacing:.05em;font-size:1.1rem;">
+        <span id="ver">—</span>
       </p>
       <p style="margin-top:.5rem;color:rgba(240,239,237,.8);">
         大小 <span id="size">—</span> · 发布 <span id="date">—</span>
@@ -56,8 +57,9 @@
   </div>
 </section>
 
+<!-- SHA256 -->
 <section style="padding:2.5rem 1.25rem;">
-  <h3 style="color:var(--red);">SHA256 校验</h3>
+  <h3 style="color:var(--red);">最新版 SHA256 校验</h3>
   <p class="muted" style="margin-top:1rem;font-size:.9rem;">
     下载完成后比对哈希值，不一致请勿安装。
   </p>
@@ -69,7 +71,20 @@
   </p>
 </section>
 
+<!-- 历史版本 -->
 <section class="diag" style="padding:2.5rem 1.25rem;">
+  <h3>历史版本</h3>
+  <p class="muted" style="margin-top:1rem;font-size:.9rem;">
+    按发布时间倒序。旧版本不再维护，仅供存档下载。
+  </p>
+  <div id="version-list" style="margin-top:2rem;">
+    <!-- JS 填充 -->
+    <p class="muted">加载中…</p>
+  </div>
+</section>
+
+<!-- 系统要求 -->
+<section style="padding:2.5rem 1.25rem;">
   <h3>系统要求</h3>
   <div class="grid" style="margin-top:2rem;">
     <div class="col-4 card">
@@ -85,11 +100,12 @@
     <div class="col-4 card">
       <h4 style="color:var(--red);">大小</h4>
       <p style="margin-top:1rem;"><span id="req-size">—</span></p>
-      <p class="muted" style="font-size:.85rem;">轻量级安装包</p>
+      <p class="muted" style="font-size:.85rem;">最新版安装包</p>
     </div>
   </div>
 </section>
 
+<!-- 安装提示 -->
 <section style="padding:2.5rem 1.25rem;">
   <h3>安装提示</h3>
   <div class="grid" style="margin-top:2rem;">
@@ -120,6 +136,7 @@
   </div>
 </section>
 
+<!-- 安全警示 -->
 <section style="padding:0 1.25rem 2.5rem;">
   <div class="alert">
     ⚠️ 请勿通过本 App 传输密码、身份证号、银行卡号等敏感数据。
