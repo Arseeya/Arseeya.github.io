@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>下载 · 虚空终端 AZ 版</title>
-<meta name="description" content="下载虚空终端 AZ 版 APK，含历史版本与 SHA256 校验。">
+<meta name="description" content="下载虚空终端 AZ 版 APK，含 SHA256 校验。">
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
@@ -27,7 +27,16 @@
   </div>
 </nav>
 
-<header style="padding:2.5rem 1.25rem 1.5rem;">
+<!-- 故障提示 -->
+<section style="padding:1.25rem;">
+  <div class="alert">
+    <strong>⚠️ 上传服务临时故障</strong><br>
+    由于 GitHub 故障，1.3.0.2.test 版本暂无法上传。<br>
+    目前仅支持下载 1.2.9.1.test 版本。
+  </div>
+</section>
+
+<header style="padding:1.5rem 1.25rem;">
   <h1>下载</h1>
   <p class="muted" style="margin-top:1rem;letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;">
     Android · APK · 安泽工作室
@@ -38,7 +47,7 @@
 <section class="slash-red">
   <div class="grid">
     <div class="col-6">
-      <h2>最新版本</h2>
+      <h2>获取 APK</h2>
       <p style="margin-top:1.5rem;font-weight:900;letter-spacing:.05em;font-size:1.1rem;">
         <span id="ver">—</span>
       </p>
@@ -59,7 +68,7 @@
 
 <!-- SHA256 -->
 <section style="padding:2.5rem 1.25rem;">
-  <h3 style="color:var(--red);">最新版 SHA256 校验</h3>
+  <h3 style="color:var(--red);">SHA256 校验</h3>
   <p class="muted" style="margin-top:1rem;font-size:.9rem;">
     下载完成后比对哈希值，不一致请勿安装。
   </p>
@@ -71,14 +80,13 @@
   </p>
 </section>
 
-<!-- 历史版本 -->
+<!-- 版本列表（含未上传版本） -->
 <section class="diag" style="padding:2.5rem 1.25rem;">
-  <h3>历史版本</h3>
+  <h3>版本历史</h3>
   <p class="muted" style="margin-top:1rem;font-size:.9rem;">
-    按发布时间倒序。旧版本不再维护，仅供存档下载。
+    按发布时间倒序。
   </p>
   <div id="version-list" style="margin-top:2rem;">
-    <!-- JS 填充 -->
     <p class="muted">加载中…</p>
   </div>
 </section>
@@ -100,7 +108,7 @@
     <div class="col-4 card">
       <h4 style="color:var(--red);">大小</h4>
       <p style="margin-top:1rem;"><span id="req-size">—</span></p>
-      <p class="muted" style="font-size:.85rem;">最新版安装包</p>
+      <p class="muted" style="font-size:.85rem;">当前可下载版本</p>
     </div>
   </div>
 </section>
@@ -138,7 +146,7 @@
 
 <!-- 安全警示 -->
 <section style="padding:0 1.25rem 2.5rem;">
-  <div class="alert">
+  <div class="alert-dark">
     ⚠️ 请勿通过本 App 传输密码、身份证号、银行卡号等敏感数据。
   </div>
 </section>
