@@ -50,48 +50,68 @@
     renderVersions(c.versions);
   }
 
-  // ---------- 3. 渲染历史版本列表 ----------
+  // ---------- 3. 渲染版本列表 ----------
   function renderVersions(list){
     const box = document.getElementById('version-list');
     if(!box) return;
 
     if(!Array.isArray(list) || list.length === 0){
-      box.innerHTML = '<p class="muted">暂无历史版本。</p>';
+      box.innerHTML = '<p class="muted">暂无版本记录。</p>';
       return;
     }
 
+    // 找到第一个 available 的版本作为"当前可下载"
+    const firstAvailableIdx = list.findIndex(v => v.available !== false);
+
     box.innerHTML = list.map((v, i) => {
-      const isLatest = i === 0;
-      const tag = isLatest
-        ? '<span style="color:var(--red);font-weight:900;font-size:.75rem;letter-spacing:.1em;">最新</span>'
-        : '<span class="muted" style="font-size:.75rem;letter-spacing:.1em;">存档</span>';
+      const unavailable = v.available === false;
+
+      let tag;
+      if(unavailable){
+        tag = '<span style="color:#8a8a8a;font-weight:900;font-size:.75rem;letter-spacing:.1em;">未上传</span>';
+      }else if(i === firstAvailableIdx){
+        tag = '<span style="color:var(--red);font-weight:900;font-size:.75rem;letter-spacing:.1em;">当前可下载</span>';
+      }else{
+        tag = '<span class="muted" style="font-size:.75rem;letter-spacing:.1em;">存档</span>';
+      }
+
+      const dlBtn = unavailable
+        ? '<span class="muted" style="display:inline-block;padding:.85rem 1.5rem;border:3px solid #1a1a1a;font-size:.85rem;font-weight:900;letter-spacing:.06em;">暂不可下载</span>'
+        : `<a class="btn ${i === firstAvailableIdx ? '' : 'btn-dark'}" href="${esc(v.apkUrl)}" download style="font-size:.85rem;padding:.85rem 1.5rem;">
+             下载 ${esc(v.version)} →
+           </a>`;
+
+      const shaBlock = unavailable ? '' : `
+        <details style="margin-top:1rem;">
+          <summary class="muted" style="cursor:pointer;font-size:.8rem;">查看 SHA256</summary>
+          <code class="code-block" data-copy style="margin-top:.75rem;display:block;font-size:.75rem;">
+            ${esc(v.sha256)}
+          </code>
+        </details>`;
+
+      const unavailableNote = unavailable
+        ? '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本因上传服务故障暂不可下载，待恢复后开放。</p>'
+        : '';
 
       return `
-        <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card" style="margin-bottom:1.25rem;${unavailable ? 'opacity:.6;' : ''}">
           <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;">
-            <h4 style="color:var(--red);font-size:1.1rem;letter-spacing:.05em;">${esc(v.version)}</h4>
+            <h4 style="color:${unavailable ? '#8a8a8a' : 'var(--red)'};font-size:1.1rem;letter-spacing:.05em;">${esc(v.version)}</h4>
             ${tag}
           </div>
           <p class="muted" style="margin-top:.75rem;font-size:.85rem;">
             ${esc(v.date)} · ${esc(v.size)}${v.channel ? ' · ' + esc(v.channel) : ''}
           </p>
           ${v.notes ? `<p class="muted" style="margin-top:.75rem;font-size:.9rem;line-height:1.6;">${esc(v.notes)}</p>` : ''}
-          <details style="margin-top:1rem;">
-            <summary class="muted" style="cursor:pointer;font-size:.8rem;">查看 SHA256</summary>
-            <code class="code-block" data-copy style="margin-top:.75rem;display:block;font-size:.75rem;">
-              ${esc(v.sha256)}
-            </code>
-          </details>
+          ${unavailableNote}
+          ${shaBlock}
           <p style="margin-top:1.25rem;">
-            <a class="btn ${isLatest ? '' : 'btn-dark'}" href="${esc(v.apkUrl)}" download style="font-size:.85rem;padding:.85rem 1.5rem;">
-              下载 ${esc(v.version)} →
-            </a>
+            ${dlBtn}
           </p>
         </div>
       `;
     }).join('');
 
-    // 重新绑定复制
     bindCopy();
   }
 
