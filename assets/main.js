@@ -60,14 +60,16 @@
       return;
     }
 
-    // 找到第一个 available 的版本作为"当前可下载"
     const firstAvailableIdx = list.findIndex(v => v.available !== false);
 
     box.innerHTML = list.map((v, i) => {
       const unavailable = v.available === false;
+      const removed = v.removed === true;
 
       let tag;
-      if(unavailable){
+      if(removed){
+        tag = '<span style="color:#8a8a8a;font-weight:900;font-size:.75rem;letter-spacing:.1em;">永久删除</span>';
+      }else if(unavailable){
         tag = '<span style="color:#8a8a8a;font-weight:900;font-size:.75rem;letter-spacing:.1em;">未上传</span>';
       }else if(i === firstAvailableIdx){
         tag = '<span style="color:var(--red);font-weight:900;font-size:.75rem;letter-spacing:.1em;">当前可下载</span>';
@@ -75,35 +77,44 @@
         tag = '<span class="muted" style="font-size:.75rem;letter-spacing:.1em;">存档</span>';
       }
 
-      const dlBtn = unavailable
-        ? '<span class="muted" style="display:inline-block;padding:.85rem 1.5rem;border:3px solid #1a1a1a;font-size:.85rem;font-weight:900;letter-spacing:.06em;">暂不可下载</span>'
-        : `<a class="btn ${i === firstAvailableIdx ? '' : 'btn-dark'}" href="${esc(v.apkUrl)}" download style="font-size:.85rem;padding:.85rem 1.5rem;">
-             下载 ${esc(v.version)} →
-           </a>`;
+      // 按钮
+      let dlBtn;
+      if(removed){
+        dlBtn = `<button type="button" class="btn btn-dark" data-removed="${esc(v.version)}" style="font-size:.85rem;padding:.85rem 1.5rem;">已永久删除</button>`;
+      }else if(unavailable){
+        dlBtn = `<button type="button" class="btn btn-dark" data-unavailable="${esc(v.version)}" style="font-size:.85rem;padding:.85rem 1.5rem;">暂不可下载</button>`;
+      }else{
+        dlBtn = `<a class="btn ${i === firstAvailableIdx ? '' : 'btn-dark'}" href="${esc(v.apkUrl)}" download style="font-size:.85rem;padding:.85rem 1.5rem;">下载 ${esc(v.version)} →</a>`;
+      }
 
-      const shaBlock = unavailable ? '' : `
+      // SHA 块：有 sha256 就显示（无论是否可下载）
+      const shaBlock = v.sha256 ? `
         <details style="margin-top:1rem;">
           <summary class="muted" style="cursor:pointer;font-size:.8rem;">查看 SHA256</summary>
           <code class="code-block" data-copy style="margin-top:.75rem;display:block;font-size:.75rem;">
             ${esc(v.sha256)}
           </code>
-        </details>`;
+        </details>` : '';
 
-      const unavailableNote = unavailable
-        ? '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本因上传服务故障暂不可下载，待恢复后开放。</p>'
-        : '';
+      // 状态说明
+      let statusNote = '';
+      if(removed){
+        statusNote = '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本安装包已永久删除，无法找回，不提供下载。</p>';
+      }else if(unavailable){
+        statusNote = '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本因上传服务故障暂不可下载，待恢复后开放。</p>';
+      }
 
       return `
-        <div class="card" style="margin-bottom:1.25rem;${unavailable ? 'opacity:.6;' : ''}">
+        <div class="card" style="margin-bottom:1.25rem;${(unavailable || removed) ? 'opacity:.7;' : ''}">
           <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;">
-            <h4 style="color:${unavailable ? '#8a8a8a' : 'var(--red)'};font-size:1.1rem;letter-spacing:.05em;">${esc(v.version)}</h4>
+            <h4 style="color:${(unavailable || removed) ? '#8a8a8a' : 'var(--red)'};font-size:1.1rem;letter-spacing:.05em;text-decoration:${removed ? 'line-through' : 'none'};">${esc(v.version)}</h4>
             ${tag}
           </div>
           <p class="muted" style="margin-top:.75rem;font-size:.85rem;">
             ${esc(v.date)} · ${esc(v.size)}${v.channel ? ' · ' + esc(v.channel) : ''}
           </p>
           ${v.notes ? `<p class="muted" style="margin-top:.75rem;font-size:.9rem;line-height:1.6;">${esc(v.notes)}</p>` : ''}
-          ${unavailableNote}
+          ${statusNote}
           ${shaBlock}
           <p style="margin-top:1.25rem;">
             ${dlBtn}
@@ -112,10 +123,28 @@
       `;
     }).join('');
 
+    // 绑定弹窗
+    box.querySelectorAll('[data-unavailable]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert(
+          '该版本因上传服务故障暂无法下载，请等待恢复。\n\n' +
+          '当前可下载：' + (firstAvailableIdx >= 0 ? list[firstAvailableIdx].version : '无')
+        );
+      });
+    });
+    box.querySelectorAll('[data-removed]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert(
+          '该版本安装包已永久删除，无法找回。\n\n' +
+          '当前可下载：' + (firstAvailableIdx >= 0 ? list[firstAvailableIdx].version : '无')
+        );
+      });
+    });
+
     bindCopy();
   }
 
-  // ---------- 4. 维护模式 / 公告 ----------
+  // ---------- 4. 公告 ----------
   function fillBanner(c){
     if(!c) return;
 
