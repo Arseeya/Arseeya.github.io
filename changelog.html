@@ -6,6 +6,76 @@
 <title>更新日志 · 虚空终端 AZ 版</title>
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* 折叠面板样式 */
+  .version-panel{
+    border-left:3px solid var(--red);
+    background:var(--black);
+    margin-bottom:1rem;
+  }
+  .version-panel:nth-child(even){ background:var(--dark); }
+
+  .version-panel summary{
+    list-style:none;
+    cursor:pointer;
+    padding:1.25rem 1rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:.5rem;
+    user-select:none;
+  }
+  .version-panel summary::-webkit-details-marker{ display:none; }
+
+  .version-panel summary .v-title{
+    font-weight:900;
+    font-size:1.1rem;
+    letter-spacing:.05em;
+    color:var(--red);
+    text-transform:uppercase;
+  }
+  .version-panel summary .v-title.removed{
+    color:#8a8a8a;
+    text-decoration:line-through;
+  }
+  .version-panel summary .v-meta{
+    color:var(--gray);
+    font-size:.8rem;
+    letter-spacing:.05em;
+  }
+  .version-panel summary .v-toggle{
+    color:var(--red);
+    font-size:.8rem;
+    font-weight:900;
+    letter-spacing:.05em;
+  }
+  .version-panel[open] summary .v-toggle::after{ content:'收起 ▲'; }
+  .version-panel:not([open]) summary .v-toggle::after{ content:'展开 ▼'; }
+  .version-panel[open] summary{ border-bottom:1px solid var(--dark); }
+
+  .version-body{
+    padding:1.25rem 1rem 2rem;
+  }
+  .version-body h4{
+    margin-top:1.5rem;
+    color:var(--white);
+  }
+  .version-body h4:first-child{ margin-top:0; }
+  .version-body ul{
+    margin-top:.75rem;
+    padding-left:1.5rem;
+    color:var(--gray);
+    line-height:1.9;
+  }
+  .version-body ul li strong{ color:var(--white); }
+  .version-body p{ color:var(--gray); font-size:.9rem; line-height:1.8; }
+
+  @media (min-width:768px){
+    .version-panel summary{ padding:1.5rem 2rem; }
+    .version-body{ padding:1.5rem 2rem 2.5rem; }
+  }
+</style>
 </head>
 <body>
 
@@ -40,90 +110,129 @@
 <section style="padding:2.5rem 1.25rem;">
   <div>
 
-    <!-- ==================== 1.3.0.2.test ==================== -->
-    <div class="list-item">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:1rem;">
-        <h3 style="color:var(--red);">1.3.0.2.test</h3>
-        <span class="muted" style="font-size:.85rem;letter-spacing:.05em;">2026-10-07</span>
+    <!-- ==================== 1.3.0.3.test ==================== -->
+    <details class="version-panel">
+      <summary>
+        <span class="v-title">1.3.0.3.test</span>
+        <span class="v-meta">2026-10-10 · 10.31 MB · 测试版</span>
+        <span class="v-toggle"></span>
+      </summary>
+      <div class="version-body">
+
+        <p style="color:#c42e2e;">因 GitHub 故障暂未上传</p>
+
+        <h4>新增功能</h4>
+        <ul>
+          <li><strong>多服务器支持</strong>：设置 → 通用设置 → 服务器设置；支持手动切换主服务器（<code>buer.kdns.fr</code>）和备用服务器（<code>buer.sswwgzs.cn</code>）；切换后自动断开连接、清除登录状态、跳转重新登录；首次启动引导新增"服务器提醒"步骤</li>
+          <li><strong>图片缓存与双重引用</strong>：发送/接收图片自动缓存，断网也能看；缓存优先，失效则引用内部相册副本；图片查看页新增"保存到相册"按钮</li>
+          <li><strong>缓存分类清理</strong>：存储空间页新增图片缓存单独统计；清理时分别提示风险</li>
+          <li><strong>引导流程优化</strong>：扩展为 3 步（权限申请 → 存储位置选择 → 服务器提醒）；完成后无论升级都跳过</li>
+        </ul>
+
+        <h4>优化改进</h4>
+        <ul>
+          <li>图片缓存目录：<code>/data/data/link.arseeya.fzxkzd/cache/img_cache/</code></li>
+          <li>图片缓存元数据：记录缓存文件与相册副本的映射关系</li>
+          <li>发送图片：先保存缓存 → 读取 Base64 上传 → 本地消息引用缓存路径</li>
+          <li>接收图片：下载到缓存 → 显示 → 后续引用本地路径</li>
+          <li>ApiClient 改为动态获取服务器地址（从 ServerManager 读取）</li>
+          <li>WebSocketManager 每次连接前重新读取当前服务器地址</li>
+          <li>切换服务器时自动更新连接地址</li>
+          <li>修复 AlertDialog 主题不兼容问题（改用系统原生）</li>
+        </ul>
+
+        <h4>Bug 修复</h4>
+        <ul>
+          <li>图片发送后自己看不见</li>
+          <li>图片缓存无法单独清理</li>
+          <li>缓存清理无风险提示</li>
+          <li>ApiClient 无法使用当前服务器</li>
+        </ul>
+
+        <h4>已知问题</h4>
+        <ul>
+          <li>部分旧版本（1.2.0.beta ~ 1.2.9.1.test）的加密消息可能显示异常</li>
+          <li>深色模式下部分二级页面尚未适配</li>
+          <li>朋友圈、群组管理、阅读功能尚未完整实现</li>
+        </ul>
+
+        <h4>下一步计划</h4>
+        <p>聊天记录回收站 · 导出聊天记录备份 · 朋友圈完整功能 · 群组管理 · 阅读功能 · 报告系统 · 敏感词检测 · 发布签名版 APK</p>
+
       </div>
+    </details>
 
-      <p class="muted" style="margin-top:1rem;font-size:.85rem;">
-        10.31 MB · 测试版 · <span style="color:#c42e2e;">因 GitHub 故障暂未上传</span>
-      </p>
+    <!-- ==================== 1.3.0.2.test ==================== -->
+    <details class="version-panel">
+      <summary>
+        <span class="v-title removed">1.3.0.2.test</span>
+        <span class="v-meta">2026-10-07 · 10.31 MB · 测试版</span>
+        <span class="v-toggle"></span>
+      </summary>
+      <div class="version-body">
 
-      <h4 style="margin-top:1.5rem;color:var(--white);">新增功能</h4>
-      <ul style="margin-top:.75rem;padding-left:1.5rem;color:var(--gray);line-height:1.9;">
-        <li><strong style="color:var(--white);">App 锁</strong>：6 位数字密码 / 指纹 / 人脸解锁；自动锁定时间（立即 / 30 秒 / 1 分钟 / 5 分钟 / 从不）；密保问题找回；连续输错 5 次锁 30 秒</li>
-        <li><strong style="color:var(--white);">存储空间管理</strong>：展示 App 数据、缓存、相册、手机总空间；分类清理；图片保存位置可选（App 内部 / 系统相册）</li>
-        <li><strong style="color:var(--white);">本地图片缓存</strong>：收发图片自动缓存，断网也能看，减少流量</li>
-        <li><strong style="color:var(--white);">搜索用户</strong>：联系人页新增入口，输用户名直接发好友请求</li>
-        <li><strong style="color:var(--white);">个人资料</strong>：支持修改头像、用户名、个性签名</li>
-        <li><strong style="color:var(--white);">设置页面重构</strong>：通用 / 安全 / 高级 / 开发者选项</li>
-        <li><strong style="color:var(--white);">权限与存储引导</strong>：首次启动引导页</li>
-        <li><strong style="color:var(--white);">网络自动重连</strong>：Wi-Fi / 流量切换自动重连，飞行模式恢复后重连</li>
-      </ul>
+        <p style="color:#c42e2e;">因技术原因，该版本安装包已被删除且无法找回，永久不提供下载。</p>
 
-      <h4 style="margin-top:1.5rem;color:var(--white);">优化改进</h4>
-      <ul style="margin-top:.75rem;padding-left:1.5rem;color:var(--gray);line-height:1.9;">
-        <li>聊天界面：消息排序、时间分组、已读标记、引用回复、长按菜单、未读角标、网络状态提示</li>
-        <li>深色模式适配（我的 / 设置 / 加密 / 聊天 / App 锁 / 权限向导 / 登录注册）</li>
-        <li>修复浅色模式下部分页面输入框文字看不见</li>
-        <li>加密：关于界面显示对方版本号；探测消息带版本号；强制加密开关；取消特定用户加密</li>
-        <li>运行报告内容扩展</li>
-      </ul>
+        <h4>新增功能</h4>
+        <ul>
+          <li><strong>App 锁</strong>：6 位数字密码 / 指纹 / 人脸解锁；自动锁定时间（立即 / 30 秒 / 1 分钟 / 5 分钟 / 从不）；密保问题找回；连续输错 5 次锁 30 秒</li>
+          <li><strong>存储空间管理</strong>：展示 App 数据、缓存、相册、手机总空间；分类清理；图片保存位置可选（App 内部 / 系统相册）</li>
+          <li><strong>本地图片缓存</strong>：收发图片自动缓存，断网也能看，减少流量</li>
+          <li><strong>搜索用户</strong>：联系人页新增入口，输用户名直接发好友请求</li>
+          <li><strong>个人资料</strong>：支持修改头像、用户名、个性签名</li>
+          <li><strong>设置页面重构</strong>：通用 / 安全 / 高级 / 开发者选项</li>
+          <li><strong>权限与存储引导</strong>：首次启动引导页</li>
+          <li><strong>网络自动重连</strong>：Wi-Fi / 流量切换自动重连，飞行模式恢复后重连</li>
+        </ul>
 
-      <h4 style="margin-top:1.5rem;color:var(--white);">Bug 修复</h4>
-      <ul style="margin-top:.75rem;padding-left:1.5rem;color:var(--gray);line-height:1.9;">
-        <li>浅色模式下部分页面输入框文字看不见</li>
-        <li>App 锁密码可超出 6 位</li>
-        <li>两次密码不一致仍显示"App 锁已开启"</li>
-        <li>自动锁定整行无法点击</li>
-        <li>登录界面无法显示已输入文字</li>
-        <li>私聊发送图片后自己看不见</li>
-        <li>应用图标重复显示</li>
-        <li>消息重复显示</li>
-      </ul>
+        <h4>优化改进</h4>
+        <ul>
+          <li>聊天界面：消息排序、时间分组、已读标记、引用回复、长按菜单、未读角标、网络状态提示</li>
+          <li>深色模式适配（我的 / 设置 / 加密 / 聊天 / App 锁 / 权限向导 / 登录注册）</li>
+          <li>修复浅色模式下部分页面输入框文字看不见</li>
+          <li>加密：关于界面显示对方版本号；探测消息带版本号；强制加密开关；取消特定用户加密</li>
+          <li>运行报告内容扩展</li>
+        </ul>
 
-      <h4 style="margin-top:1.5rem;color:var(--white);">已知问题</h4>
-      <ul style="margin-top:.75rem;padding-left:1.5rem;color:var(--gray);line-height:1.9;">
-        <li>部分旧版本（1.2.0.beta ~ 1.2.9.1.test）用户加密消息可能显示异常</li>
-        <li>深色模式下部分二级页面尚未适配</li>
-        <li>朋友圈功能尚未完整实现</li>
-        <li>群组管理功能尚未实现</li>
-      </ul>
+        <h4>Bug 修复</h4>
+        <ul>
+          <li>浅色模式下部分页面输入框文字看不见</li>
+          <li>App 锁密码可超出 6 位</li>
+          <li>两次密码不一致仍显示"App 锁已开启"</li>
+          <li>自动锁定整行无法点击</li>
+          <li>登录界面无法显示已输入文字</li>
+          <li>私聊发送图片后自己看不见</li>
+          <li>应用图标重复显示</li>
+          <li>消息重复显示</li>
+        </ul>
 
-      <h4 style="margin-top:1.5rem;color:var(--white);">下一步计划</h4>
-      <p class="muted" style="margin-top:.75rem;line-height:1.9;font-size:.9rem;">
-        回收站 · 导出聊天记录备份 · 朋友圈完整功能 · 群组管理 · 阅读功能 · 报告系统 · 敏感词检测
-      </p>
-
-      <p style="margin-top:1.5rem;font-size:.85rem;">
-        <span class="muted">暂不可下载，待 GitHub 恢复后开放。</span>
-      </p>
-    </div>
+      </div>
+    </details>
 
     <!-- ==================== 1.2.9.1.test ==================== -->
-    <div class="list-item">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:1rem;">
-        <h3 style="color:var(--red);">1.2.9.1.test</h3>
-        <span class="muted" style="font-size:.85rem;letter-spacing:.05em;">2026-09-23</span>
+    <details class="version-panel">
+      <summary>
+        <span class="v-title">1.2.9.1.test</span>
+        <span class="v-meta">2026-09-23 · 8.5 MB · 测试版</span>
+        <span class="v-toggle"></span>
+      </summary>
+      <div class="version-body">
+
+        <p>AZ 版首发</p>
+
+        <ul>
+          <li>AZ 版首发</li>
+          <li>基于官方 8.9 版本授权衍生</li>
+          <li>兼容官方服务器 <code>buer.kdns.fr</code></li>
+          <li>支持与官方客户端互通</li>
+        </ul>
+
+        <p style="margin-top:1.5rem;">
+          <a href="/download">前往下载 →</a>
+        </p>
+
       </div>
-
-      <p class="muted" style="margin-top:1rem;font-size:.85rem;">
-        8.5 MB · 测试版 · AZ 版首发
-      </p>
-
-      <ul style="margin-top:1rem;padding-left:1.5rem;color:var(--gray);line-height:1.9;">
-        <li>AZ 版首发</li>
-        <li>基于官方 8.9 版本授权衍生</li>
-        <li>兼容官方服务器 <code>buer.kdns.fr</code></li>
-        <li>支持与官方客户端互通</li>
-      </ul>
-
-      <p style="margin-top:1.5rem;font-size:.85rem;">
-        <a href="/download">前往下载 →</a>
-      </p>
-    </div>
+    </details>
 
   </div>
 </section>
