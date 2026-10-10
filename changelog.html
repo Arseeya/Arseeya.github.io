@@ -7,7 +7,6 @@
 <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
 <style>
-  /* 折叠面板样式 */
   .version-panel{
     border-left:3px solid var(--red);
     background:var(--black);
@@ -54,13 +53,8 @@
   .version-panel:not([open]) summary .v-toggle::after{ content:'展开 ▼'; }
   .version-panel[open] summary{ border-bottom:1px solid var(--dark); }
 
-  .version-body{
-    padding:1.25rem 1rem 2rem;
-  }
-  .version-body h4{
-    margin-top:1.5rem;
-    color:var(--white);
-  }
+  .version-body{ padding:1.25rem 1rem 2rem; }
+  .version-body h4{ margin-top:1.5rem; color:var(--white); }
   .version-body h4:first-child{ margin-top:0; }
   .version-body ul{
     margin-top:.75rem;
@@ -110,6 +104,62 @@
 <section style="padding:2.5rem 1.25rem;">
   <div>
 
+    <!-- ==================== 1.3.0.4.test ==================== -->
+    <details class="version-panel">
+      <summary>
+        <span class="v-title">1.3.0.4.test</span>
+        <span class="v-meta">2026-10-10 · 10.31 MB · 测试版</span>
+        <span class="v-toggle"></span>
+      </summary>
+      <div class="version-body">
+
+        <p style="color:#c42e2e;">因 GitHub 故障暂未上传，如需获取请邮件联系 arseeya@outlook.com</p>
+
+        <h4>一、界面优化</h4>
+        <ul>
+          <li><strong>联系人列表深色模式修复</strong>：修复深色模式下联系人和群聊卡片仍显示白底、文字看不清的问题。头像、名称、状态在深浅色模式下都正常显示</li>
+          <li><strong>开发者工具页深色适配</strong>：全部改用主题色，深浅色模式均可正常阅读</li>
+          <li><strong>在线状态颜色调整</strong>：好友在线为绿色，离线为灰色，群聊人数为蓝色；针对深色模式做亮度适配</li>
+        </ul>
+
+        <h4>二、设置结构调整</h4>
+        <ul>
+          <li>移除设置页"取消加密"入口</li>
+          <li>新增"兼容服务"独立页面：取消加密（清除用户版本记录）移至「开发者工具 → 兼容服务」；进入前弹警告，需阅读 5 秒后方可进入</li>
+          <li>新增"关于"页面：设置 → 其他 → 关于，可查看 App 名称与版本号、官方网站（官方版 / AZ 版）、联系邮箱；点击官网用默认浏览器打开，点击邮箱优先打开 Outlook</li>
+        </ul>
+
+        <h4>三、开发者模式</h4>
+        <ul>
+          <li><strong>开发者选项默认隐藏</strong>：设置页不再默认显示</li>
+          <li><strong>点 10 次版本号解锁</strong>：设置 → 其他 → 关于，连续点击版本号 10 次，解锁开发者选项。解锁后返回设置页，底部显示"开发者选项"</li>
+          <li>注：解锁后暂不支持重新隐藏，后续版本会补充关闭入口</li>
+        </ul>
+
+        <h4>四、修复与清理</h4>
+        <ul>
+          <li>修复部分页面输入框文字在浅色模式下看不清的问题（持续处理中）</li>
+          <li>清理开发者工具中与设置页重复的入口</li>
+          <li>各类弹窗统一使用系统原生样式</li>
+        </ul>
+
+        <h4>五、已知问题</h4>
+        <ul>
+          <li>部分页面仍在进行深色模式适配</li>
+          <li>应用尚未使用正式签名，暂不适合发布正式版</li>
+          <li>崩溃自动捕获与日志上报功能正在开发中</li>
+        </ul>
+
+        <h4>六、后续计划</h4>
+        <p>朋友圈完整功能 · 群管理（创建、邀请、踢人、群公告） · 阅读功能（TXT / PDF / EPUB） · 崩溃日志捕获与手动邮箱上报 · 密钥轮换 · 回收站 · 导出备份 ZIP · 剩余页面深色模式适配 · 正式签名与官网 arseeya.link</p>
+
+        <p style="margin-top:1.5rem;font-size:.85rem;">
+          <span class="muted">暂不可下载，如需获取请邮件联系 arseeya@outlook.com</span>
+        </p>
+
+      </div>
+    </details>
+
     <!-- ==================== 1.3.0.3.test ==================== -->
     <details class="version-panel">
       <summary>
@@ -119,7 +169,7 @@
       </summary>
       <div class="version-body">
 
-        <p style="color:#c42e2e;">因 GitHub 故障暂未上传</p>
+        <p style="color:#c42e2e;">因 GitHub 故障暂未上传，如需获取请邮件联系 arseeya@outlook.com</p>
 
         <h4>新增功能</h4>
         <ul>
@@ -158,6 +208,10 @@
 
         <h4>下一步计划</h4>
         <p>聊天记录回收站 · 导出聊天记录备份 · 朋友圈完整功能 · 群组管理 · 阅读功能 · 报告系统 · 敏感词检测 · 发布签名版 APK</p>
+
+        <p style="margin-top:1.5rem;font-size:.85rem;">
+          <span class="muted">暂不可下载，如需获取请邮件联系 arseeya@outlook.com</span>
+        </p>
 
       </div>
     </details>
