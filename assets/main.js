@@ -123,7 +123,6 @@
       );
     }).join('');
 
-    // 绑定"暂不可下载"弹窗
     box.querySelectorAll('[data-unavailable]').forEach(btn => {
       btn.addEventListener('click', () => {
         const v = btn.getAttribute('data-unavailable');
@@ -135,7 +134,6 @@
       });
     });
 
-    // 绑定"永久删除"弹窗
     box.querySelectorAll('[data-removed]').forEach(btn => {
       btn.addEventListener('click', () => {
         const v = btn.getAttribute('data-removed');
