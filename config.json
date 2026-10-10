@@ -16,6 +16,16 @@
   "officialAgreement": "https://buer.kdns.fr/agreement.html",
   "versions": [
     {
+      "version": "1.3.0.4.test",
+      "channel": "test",
+      "date": "2026-10-10",
+      "size": "10.31 MB",
+      "sha256": "dcac51fe706441428cd8325095656e304fe18112ae6db2ad77ba328092f00cdb",
+      "apkUrl": "",
+      "available": false,
+      "notes": "深色模式修复、新增关于页面、开发者模式隐藏、取消加密入口迁移。因 GitHub 故障导致安装包暂无法上传，如需获取请邮件联系。"
+    },
+    {
       "version": "1.3.0.3.test",
       "channel": "test",
       "date": "2026-10-10",
@@ -23,7 +33,7 @@
       "sha256": "c1735d16939b27804802bce8370e3a61a3ff6c9cea0a9430a2aeea9b40134c89",
       "apkUrl": "",
       "available": false,
-      "notes": "新增多服务器支持、图片缓存与双重引用、缓存分类清理、引导流程扩展为 3 步。因 GitHub 故障导致安装包暂无法上传。"
+      "notes": "新增多服务器支持、图片缓存与双重引用、缓存分类清理、引导流程扩展为 3 步。因 GitHub 故障导致安装包暂无法上传，如需获取请邮件联系。"
     },
     {
       "version": "1.3.0.2.test",
