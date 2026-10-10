@@ -5,6 +5,8 @@
 (function(){
   'use strict';
 
+  var CONTACT_EMAIL = 'arseeya@outlook.com';
+
   // ---------- 1. 拉取 config.json ----------
   async function loadConfig(){
     try{
@@ -77,65 +79,68 @@
         tag = '<span class="muted" style="font-size:.75rem;letter-spacing:.1em;">存档</span>';
       }
 
-      // 按钮
       let dlBtn;
       if(removed){
-        dlBtn = `<button type="button" class="btn btn-dark" data-removed="${esc(v.version)}" style="font-size:.85rem;padding:.85rem 1.5rem;">已永久删除</button>`;
+        dlBtn = '<button type="button" class="btn btn-dark" data-removed="' + esc(v.version) + '" style="font-size:.85rem;padding:.85rem 1.5rem;">已永久删除</button>';
       }else if(unavailable){
-        dlBtn = `<button type="button" class="btn btn-dark" data-unavailable="${esc(v.version)}" style="font-size:.85rem;padding:.85rem 1.5rem;">暂不可下载</button>`;
+        dlBtn = '<button type="button" class="btn btn-dark" data-unavailable="' + esc(v.version) + '" style="font-size:.85rem;padding:.85rem 1.5rem;">暂不可下载</button>';
       }else{
-        dlBtn = `<a class="btn ${i === firstAvailableIdx ? '' : 'btn-dark'}" href="${esc(v.apkUrl)}" download style="font-size:.85rem;padding:.85rem 1.5rem;">下载 ${esc(v.version)} →</a>`;
+        dlBtn = '<a class="btn ' + (i === firstAvailableIdx ? '' : 'btn-dark') + '" href="' + esc(v.apkUrl) + '" download style="font-size:.85rem;padding:.85rem 1.5rem;">下载 ' + esc(v.version) + ' →</a>';
       }
 
-      // SHA 块：有 sha256 就显示（无论是否可下载）
-      const shaBlock = v.sha256 ? `
-        <details style="margin-top:1rem;">
-          <summary class="muted" style="cursor:pointer;font-size:.8rem;">查看 SHA256</summary>
-          <code class="code-block" data-copy style="margin-top:.75rem;display:block;font-size:.75rem;">
-            ${esc(v.sha256)}
-          </code>
-        </details>` : '';
+      const shaBlock = v.sha256 ? (
+        '<details style="margin-top:1rem;">' +
+          '<summary class="muted" style="cursor:pointer;font-size:.8rem;">查看 SHA256</summary>' +
+          '<code class="code-block" data-copy style="margin-top:.75rem;display:block;font-size:.75rem;">' +
+            esc(v.sha256) +
+          '</code>' +
+        '</details>'
+      ) : '';
 
-      // 状态说明
       let statusNote = '';
       if(removed){
         statusNote = '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本安装包已永久删除，无法找回，不提供下载。</p>';
       }else if(unavailable){
-        statusNote = '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本因上传服务故障暂不可下载，待恢复后开放。</p>';
+        statusNote = '<p class="muted" style="margin-top:1rem;font-size:.85rem;">该版本因上传服务故障暂无法下载，如需获取请邮件联系 <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>。</p>';
       }
 
-      return `
-        <div class="card" style="margin-bottom:1.25rem;${(unavailable || removed) ? 'opacity:.7;' : ''}">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;">
-            <h4 style="color:${(unavailable || removed) ? '#8a8a8a' : 'var(--red)'};font-size:1.1rem;letter-spacing:.05em;text-decoration:${removed ? 'line-through' : 'none'};">${esc(v.version)}</h4>
-            ${tag}
-          </div>
-          <p class="muted" style="margin-top:.75rem;font-size:.85rem;">
-            ${esc(v.date)} · ${esc(v.size)}${v.channel ? ' · ' + esc(v.channel) : ''}
-          </p>
-          ${v.notes ? `<p class="muted" style="margin-top:.75rem;font-size:.9rem;line-height:1.6;">${esc(v.notes)}</p>` : ''}
-          ${statusNote}
-          ${shaBlock}
-          <p style="margin-top:1.25rem;">
-            ${dlBtn}
-          </p>
-        </div>
-      `;
+      return (
+        '<div class="card" style="margin-bottom:1.25rem;' + ((unavailable || removed) ? 'opacity:.7;' : '') + '">' +
+          '<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;">' +
+            '<h4 style="color:' + ((unavailable || removed) ? '#8a8a8a' : 'var(--red)') + ';font-size:1.1rem;letter-spacing:.05em;text-decoration:' + (removed ? 'line-through' : 'none') + ';">' + esc(v.version) + '</h4>' +
+            tag +
+          '</div>' +
+          '<p class="muted" style="margin-top:.75rem;font-size:.85rem;">' +
+            esc(v.date) + ' · ' + esc(v.size) + (v.channel ? ' · ' + esc(v.channel) : '') +
+          '</p>' +
+          (v.notes ? '<p class="muted" style="margin-top:.75rem;font-size:.9rem;line-height:1.6;">' + esc(v.notes) + '</p>' : '') +
+          statusNote +
+          shaBlock +
+          '<p style="margin-top:1.25rem;">' +
+            dlBtn +
+          '</p>' +
+        '</div>'
+      );
     }).join('');
 
-    // 绑定弹窗
+    // 绑定"暂不可下载"弹窗
     box.querySelectorAll('[data-unavailable]').forEach(btn => {
       btn.addEventListener('click', () => {
+        const v = btn.getAttribute('data-unavailable');
         alert(
-          '该版本因上传服务故障暂无法下载，请等待恢复。\n\n' +
+          '该版本（' + v + '）因上传服务故障暂无法下载。\n\n' +
+          '如需获取，请邮件联系：\n' + CONTACT_EMAIL + '\n\n' +
           '当前可下载：' + (firstAvailableIdx >= 0 ? list[firstAvailableIdx].version : '无')
         );
       });
     });
+
+    // 绑定"永久删除"弹窗
     box.querySelectorAll('[data-removed]').forEach(btn => {
       btn.addEventListener('click', () => {
+        const v = btn.getAttribute('data-removed');
         alert(
-          '该版本安装包已永久删除，无法找回。\n\n' +
+          '该版本（' + v + '）安装包已永久删除，无法找回。\n\n' +
           '当前可下载：' + (firstAvailableIdx >= 0 ? list[firstAvailableIdx].version : '无')
         );
       });
